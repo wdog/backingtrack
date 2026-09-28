@@ -1,0 +1,13 @@
+# Freddie King. Shuffle in C con stop time.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "I'm Tore Down (progressione)"
+tempo: 150
+groove: blues/7
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | C7 | F7 | C7 | C7 |
+      | F7 | F7 | C7 | C7 |
+      | G7 | F7 | C7 | G7 |

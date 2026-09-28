@@ -1,0 +1,14 @@
+# Muddy Waters. Blues a 16 battute in A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Hoochie Coochie Man (progressione)"
+tempo: 88
+groove: blues
+
+sections:
+  - name: Strofa
+    repeat: 3
+    chords: |
+      | A7 | A7 | A7 | A7 |
+      | A7 | A7 | A7 | A7 |
+      | D7 | D7 | A7 | A7 |
+      | E7 | D7 | A7 | E7 |

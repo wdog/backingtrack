@@ -1,0 +1,13 @@
+# Big Joe Turner / Bill Haley. 12-bar in C.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Shake, Rattle and Roll (progressione)"
+tempo: 175
+groove: rockabilly/boogie
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | C | C | C | C |
+      | F | F | C | C |
+      | G7 | F | C | G7 |

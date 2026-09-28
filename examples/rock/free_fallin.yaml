@@ -1,0 +1,11 @@
+# Tom Petty. D - Dsus4 - A, in loop.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Free Fallin' (progressione)"
+tempo: 84
+groove: rock/ballad
+
+sections:
+  - name: Giro
+    repeat: 16
+    chords: |
+      | D . Dsus4 . | D . A . |

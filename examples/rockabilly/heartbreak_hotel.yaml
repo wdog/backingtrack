@@ -1,0 +1,12 @@
+# Elvis Presley. Blues a 8 battute in E.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Heartbreak Hotel (progressione)"
+tempo: 72
+groove: blues/slow
+
+sections:
+  - name: Strofa
+    repeat: 6
+    chords: |
+      | E | E | E | E |
+      | A | A | B7 | E |

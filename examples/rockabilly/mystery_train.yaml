@@ -1,0 +1,13 @@
+# Junior Parker / Elvis. Train beat in E, 12-bar.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Mystery Train (progressione)"
+tempo: 170
+groove: rockabilly
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | E | E | E | E |
+      | A | A | E | E |
+      | B7 | A | E | B7 |

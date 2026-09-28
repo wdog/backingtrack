@@ -1,0 +1,11 @@
+# The White Stripes. E5 G5 E5 D5 C5 B5.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Seven Nation Army (in stile)"
+tempo: 124
+groove: rock/drive
+
+sections:
+  - name: Giro
+    repeat: 8
+    chords: |
+      | E5 . . G5 | E5 D5 C5 B5 |

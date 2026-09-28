@@ -1,0 +1,20 @@
+# AC/DC. E5 - D5 - A5.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Back in Black (in stile)"
+tempo: 94
+groove: rock
+
+sections:
+  - name: Strofa
+    chords: |
+      | E5 . D5 A5 | E5 . D5 A5 | E5 . D5 A5 | E5 . D5 A5 |
+  - name: Rit
+    groove: rock/strum
+    chords: |
+      | A . D . | G . D . | A . D . | E5 |
+
+arrangement:
+  - Strofa x2
+  - Rit
+  - Strofa x2
+  - Rit x2

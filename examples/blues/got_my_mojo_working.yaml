@@ -1,0 +1,22 @@
+# Muddy Waters. Strofa sul I, ritornello 12-bar in A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Got My Mojo Working (progressione)"
+tempo: 136
+groove: blues
+
+sections:
+  - name: Strofa
+    chords: |
+      | A7 | % | % | % |
+      | A7 | % | % | % |
+  - name: Rit
+    chords: |
+      | A7 | A7 | A7 | A7 |
+      | D7 | D7 | A7 | A7 |
+      | E7 | D7 | A7 | E7 |
+
+arrangement:
+  - Strofa
+  - Rit
+  - Strofa
+  - Rit x2

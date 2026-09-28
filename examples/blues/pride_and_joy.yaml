@@ -1,0 +1,13 @@
+# Stevie Ray Vaughan. Shuffle texano in E.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Pride and Joy (progressione)"
+tempo: 118
+groove: blues/7
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | E7 | E7 | E7 | E7 |
+      | A7 | A7 | E7 | E7 |
+      | B7 | A7 | E7 | B7 |

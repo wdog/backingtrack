@@ -1,0 +1,11 @@
+# Lynyrd Skynyrd. D - C - G per tutto il brano.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Sweet Home Alabama (progressione)"
+tempo: 98
+groove: rock/strum
+
+sections:
+  - name: Giro
+    repeat: 16
+    chords: |
+      | D | C . G . |

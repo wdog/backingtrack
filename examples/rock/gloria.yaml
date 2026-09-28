@@ -1,0 +1,11 @@
+# Them / Van Morrison. E - D - A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Gloria (progressione)"
+tempo: 138
+groove: rock/drive
+
+sections:
+  - name: Giro
+    repeat: 16
+    chords: |
+      | E . D . | A . E . |

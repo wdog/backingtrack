@@ -1,0 +1,15 @@
+# Chuck Berry. Rock'n'roll: boogie a ottavi dritti in Bb.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Johnny B. Goode (progressione)"
+tempo: 168
+groove: blues/7
+swing: 0
+amp: crunch
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | Bb | Bb | Bb | Bb |
+      | Eb | Eb | Bb | Bb |
+      | F | Eb | Bb | F |

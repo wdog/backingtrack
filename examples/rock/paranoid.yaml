@@ -1,0 +1,20 @@
+# Black Sabbath. E5 - D5 - G5.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Paranoid (in stile)"
+tempo: 164
+groove: rock
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | E5 | E5 | D5 G5 | E5 |
+  - name: Bridge
+    chords: |
+      | C5 . D5 . | E5 | C5 . D5 . | E5 |
+
+arrangement:
+  - Strofa x4
+  - Bridge
+  - Strofa x4
+  - Bridge

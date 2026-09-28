@@ -1,0 +1,13 @@
+# Blues minore per improvvisare in pentatonica minore.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Minor blues in Am"
+tempo: 76
+groove: blues/slow
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | Am7 | Dm7 | Am7 | Am7 |
+      | Dm7 | Dm7 | Am7 | Am7 |
+      | F7 | E7 | Am7 | E7 |

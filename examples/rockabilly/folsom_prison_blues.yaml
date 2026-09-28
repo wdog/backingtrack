@@ -1,0 +1,13 @@
+# Johnny Cash. Boom-chick in E.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Folsom Prison Blues (progressione)"
+tempo: 216
+groove: rockabilly
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | E | E | E | E7 |
+      | A | A | E | E |
+      | B7 | B7 | E | E |

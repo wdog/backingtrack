@@ -1,0 +1,21 @@
+# Boom-chick con contrabbasso, solo in boogie.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Rockabilly in E"
+tempo: 172
+groove: rockabilly
+bass: true
+
+sections:
+  - name: Strofa
+    repeat: 2
+    chords: |
+      | E | E | E | E7 |
+      | A | A | E | E |
+      | B7 | A7 | E | B7 |
+  - name: Solo
+    repeat: 2
+    groove: rockabilly/boogie
+    chords: |
+      | E | E | E | E |
+      | A | A | E | E |
+      | B | A | E | B |

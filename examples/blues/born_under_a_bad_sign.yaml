@@ -1,0 +1,14 @@
+# Albert King. 12-bar in C# con swing leggero.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Born Under a Bad Sign (progressione)"
+tempo: 92
+groove: blues/strum
+swing: 0.4
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | C#7 | C#7 | C#7 | C#7 |
+      | F#7 | F#7 | C#7 | C#7 |
+      | G#7 | F#7 | C#7 | G#7 |

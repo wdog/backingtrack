@@ -1,0 +1,22 @@
+# Van Morrison. G - C - G - D.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Brown Eyed Girl (progressione)"
+tempo: 150
+groove: rock/strum
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | G | C | G | D |
+  - name: Rit
+    repeat: 2
+    chords: |
+      | C | D | G | Em |
+      | C | D | G | D |
+
+arrangement:
+  - Strofa x4
+  - Rit
+  - Strofa x4
+  - Rit x2

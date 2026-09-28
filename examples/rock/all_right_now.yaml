@@ -1,0 +1,22 @@
+# Free. A - D/A in strofa, G - D - A nel ritornello.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "All Right Now (progressione)"
+tempo: 120
+groove: rock/strum
+
+sections:
+  - name: Strofa
+    repeat: 2
+    chords: |
+      | A . D/A . | A . D/A . | A . D/A . | A . D/A . |
+  - name: Rit
+    groove: rock/drive
+    chords: |
+      | G | D | A | A |
+      | G | D | A | A |
+
+arrangement:
+  - Strofa x2
+  - Rit
+  - Strofa x2
+  - Rit x2

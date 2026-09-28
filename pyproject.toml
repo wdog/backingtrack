@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "backingtrack"
+dynamic = ["version"]
+description = "Backing track realistiche (chitarra ritmica + batteria) da un file YAML di accordi"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = ["numpy>=1.20", "PyYAML>=5.1"]
+keywords = ["backing track", "guitar", "drums", "blues", "rock", "rockabilly", "sfz", "midi"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Environment :: Console",
+    "Topic :: Multimedia :: Sound/Audio :: MIDI",
+    "Topic :: Multimedia :: Sound/Audio :: Sound Synthesis",
+]
+
+[project.scripts]
+backingtrack = "backingtrack.cli:main"
+
+[tool.setuptools]
+packages = ["backingtrack"]
+
+[tool.setuptools.dynamic]
+version = { attr = "backingtrack.__version__" }

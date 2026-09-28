@@ -1,0 +1,28 @@
+# Strofa palm mute, ritornello aperto, bridge in drive.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Rock in E"
+tempo: 132
+groove: rock
+
+sections:
+  - name: Strofa
+    chords: |
+      | E5 | E5 | D5 A5 | E5 |
+      | E5 | E5 | D5 A5 | B5 |
+  - name: Ritornello
+    groove: rock/strum
+    chords: |
+      | A | E | B | E |
+      | A | E | B | B |
+  - name: Bridge
+    groove: rock/drive
+    chords: |
+      | C#m | A | E | B |
+
+arrangement:
+  - Strofa x2
+  - Ritornello
+  - Strofa
+  - Ritornello x2
+  - Bridge x2
+  - Ritornello

@@ -1,0 +1,13 @@
+# Big Mama Thornton / Elvis. 12-bar in C.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Hound Dog (progressione)"
+tempo: 174
+groove: rockabilly/boogie
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | C | C | C | C |
+      | F | F | C | C |
+      | G7 | F | C | G7 |

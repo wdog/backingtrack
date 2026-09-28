@@ -1,0 +1,13 @@
+# Led Zeppelin. 12-bar in A a tutta velocità.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Rock and Roll (progressione)"
+tempo: 170
+groove: rock/drive
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | A | A | A | A |
+      | D | D | A | A |
+      | E | D | A | E |

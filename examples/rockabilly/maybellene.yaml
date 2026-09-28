@@ -1,0 +1,14 @@
+# Chuck Berry. Ritornello 12-bar in Bb.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Maybellene (progressione)"
+tempo: 200
+groove: rockabilly/boogie
+swing: 0.2
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | Bb | % | % | % |
+      | Eb | % | Bb | % |
+      | F | % | Bb | % |

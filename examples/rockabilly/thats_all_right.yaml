@@ -1,0 +1,13 @@
+# Arthur Crudup / Elvis Presley. In A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "That's All Right (progressione)"
+tempo: 160
+groove: rockabilly
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | A | A | A | A7 |
+      | D | D | E7 | E7 |
+      | A | A | E7 | E7 |

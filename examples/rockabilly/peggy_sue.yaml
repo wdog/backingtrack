@@ -1,0 +1,14 @@
+# Buddy Holly. In A con passaggi su D ed E.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Peggy Sue (progressione)"
+tempo: 148
+groove: rockabilly/strum
+swing: 0
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | A | A | D A | A |
+      | D | D | A | A |
+      | E | D | A | E |

@@ -1,0 +1,11 @@
+# Jimi Hendrix. Ciclo delle quinte C-G-D-A-E.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Hey Joe (progressione)"
+tempo: 82
+groove: rock/strum
+
+sections:
+  - name: Giro
+    repeat: 8
+    chords: |
+      | C G | D A | E | E |

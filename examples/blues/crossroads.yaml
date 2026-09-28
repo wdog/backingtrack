@@ -1,0 +1,13 @@
+# Robert Johnson / Cream. Versione rock in A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Crossroads (progressione)"
+tempo: 126
+groove: rock/strum
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | A | A | A | A |
+      | D | D | A | A |
+      | E | D | A | E |

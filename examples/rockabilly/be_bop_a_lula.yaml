@@ -1,0 +1,13 @@
+# Gene Vincent. 12-bar in E.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Be-Bop-A-Lula (progressione)"
+tempo: 128
+groove: rockabilly/strum
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | E | E | E | E |
+      | A | A | E | E |
+      | B7 | A | E | B7 |

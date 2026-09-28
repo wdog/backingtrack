@@ -1,0 +1,13 @@
+# Carl Perkins / Elvis. 12-bar in A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Blue Suede Shoes (progressione)"
+tempo: 184
+groove: rockabilly/boogie
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | A | A | A | A |
+      | D7 | D7 | A | A |
+      | E7 | D7 | A | E7 |

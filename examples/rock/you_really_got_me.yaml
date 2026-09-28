@@ -1,0 +1,25 @@
+# The Kinks. Power chord F-G, poi un tono su.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "You Really Got Me (in stile)"
+tempo: 136
+groove: rock
+
+sections:
+  - name: Riff
+    chords: |
+      | F5 . G5 . | F5 . G5 . |
+  - name: Su
+    chords: |
+      | G5 . A5 . | G5 . A5 . |
+  - name: Rit
+    groove: rock/drive
+    chords: |
+      | D5 . C5 . | D5 . C5 . |
+
+arrangement:
+  - Riff x4
+  - Su x4
+  - Rit x2
+  - Riff x4
+  - Su x4
+  - Rit x4

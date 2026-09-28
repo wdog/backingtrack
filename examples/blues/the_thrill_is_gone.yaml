@@ -1,0 +1,13 @@
+# B.B. King. Blues minore in Bm.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "The Thrill Is Gone (progressione)"
+tempo: 92
+groove: blues/slow
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | Bm7 | Bm7 | Bm7 | Bm7 |
+      | Em7 | Em7 | Bm7 | Bm7 |
+      | Gmaj7 | F#7 | Bm7 | F#7 |

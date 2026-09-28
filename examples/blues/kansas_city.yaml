@@ -1,0 +1,13 @@
+# Wilbert Harrison. Shuffle 12-bar in G.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Kansas City (progressione)"
+tempo: 132
+groove: blues/7
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | G7 | G7 | G7 | G7 |
+      | C7 | C7 | G7 | G7 |
+      | D7 | C7 | G7 | D7 |

@@ -1,0 +1,13 @@
+# Tiny Bradshaw / Johnny Burnette Trio. Boogie su A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Train Kept A-Rollin' (in stile)"
+tempo: 180
+groove: rockabilly/boogie
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | A7 | % | % | % |
+      | D7 | % | A7 | % |
+      | E7 | D7 | A7 | E7 |

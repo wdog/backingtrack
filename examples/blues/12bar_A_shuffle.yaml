@@ -1,0 +1,23 @@
+# Il classico: quick change, turnaround, solo con boogie b7.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "12-bar blues in A (shuffle)"
+tempo: 100
+groove: blues
+
+sections:
+  - name: Intro
+    chords: |
+      | E7 | D7 | A7 | E7 |
+  - name: Strofa
+    repeat: 3
+    chords: |
+      | A7 | D7 | A7 | A7 |
+      | D7 | D7 | A7 | A7 |
+      | E7 | D7 | A7 | E7 |
+  - name: Solo
+    repeat: 2
+    groove: blues/7
+    chords: |
+      | A7 | D7 | A7 | A7 |
+      | D7 | D7 | A7 | A7 |
+      | E7 | D7 | A7 | E7 |

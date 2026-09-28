@@ -1,0 +1,28 @@
+# Deep Purple. Riff G5-Bb5-C5, strofa su Gm, ritornello C-Ab.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Smoke on the Water (in stile)"
+tempo: 112
+groove: rock
+
+sections:
+  - name: Riff
+    repeat: 2
+    chords: |
+      | G5 Bb5 C5 . | G5 Bb5 Db5 C5 |
+  - name: Strofa
+    chords: |
+      | Gm | Gm | Gm | Gm |
+      | Gm | Gm | Gm | Gm |
+  - name: Rit
+    groove: rock/strum
+    chords: |
+      | C | Ab | G | G |
+      | C | Ab | G | G |
+
+arrangement:
+  - Riff x2
+  - Strofa
+  - Rit
+  - Riff x2
+  - Strofa
+  - Rit

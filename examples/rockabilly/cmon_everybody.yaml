@@ -1,0 +1,13 @@
+# Eddie Cochran. In A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "C'mon Everybody (progressione)"
+tempo: 150
+groove: rockabilly
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | A | A | A | A |
+      | D | D | A | A |
+      | E | D | A | E |

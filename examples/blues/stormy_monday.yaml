@@ -1,0 +1,13 @@
+# T-Bone Walker / Allman Brothers. Slow blues in G con passaggi jazz.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Stormy Monday (progressione)"
+tempo: 58
+groove: blues/slow
+
+sections:
+  - name: Strofa
+    repeat: 3
+    chords: |
+      | G7 | C7 | G7 | G7 |
+      | C7 | C7 | G7 Am7 | Bbm7 Bm7 |
+      | Am7 | D7 | G7 C7 | G7 D7 |

@@ -1,0 +1,21 @@
+# Stray Cats. Cm - Bb - Ab - G discendente.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Stray Cat Strut (in stile)"
+tempo: 92
+groove: rockabilly/strum
+swing: 0.8
+
+sections:
+  - name: Giro
+    repeat: 8
+    chords: |
+      | Cm . Bb . | Ab . G . |
+  - name: Bridge
+    chords: |
+      | Fm | Fm | Cm | Cm |
+      | Fm | Fm | G7 | G7 |
+
+arrangement:
+  - Giro x4
+  - Bridge
+  - Giro x4

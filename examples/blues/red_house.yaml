@@ -1,0 +1,14 @@
+# Jimi Hendrix. Slow blues in B, accordato mezzo tono sotto (Bb).
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Red House (progressione)"
+tempo: 62
+groove: blues/slow
+transpose: -1
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | B7 | E7 | B7 | B7 |
+      | E7 | E7 | B7 | B7 |
+      | F#7 | E7 | B7 | F#7 |

@@ -1,0 +1,11 @@
+# Richard Berry / The Kingsmen. A - D - Em - D.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Louie Louie (progressione)"
+tempo: 120
+groove: rock/strum
+
+sections:
+  - name: Giro
+    repeat: 16
+    chords: |
+      | A . D . | Em . D . |

@@ -1,0 +1,11 @@
+# Muddy Waters. Un solo accordo, groove lento e pesante in A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Mannish Boy (in stile)"
+tempo: 68
+groove: blues/slow
+
+sections:
+  - name: Groove
+    repeat: 8
+    chords: |
+      | A7 | A7 | A7 | A7 |

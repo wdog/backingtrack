@@ -1,0 +1,21 @@
+# Jerry Lee Lewis. Strofa su I-IV, bridge sul V. In C.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Great Balls of Fire (in stile)"
+tempo: 156
+groove: rockabilly/boogie
+
+sections:
+  - name: Strofa
+    repeat: 2
+    chords: |
+      | C | C | F | C |
+      | G7 | F | C | G7 |
+  - name: Bridge
+    chords: |
+      | F | F | C | C |
+      | D7 | D7 | G7 | G7 |
+
+arrangement:
+  - Strofa x2
+  - Bridge
+  - Strofa x2

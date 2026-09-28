@@ -1,0 +1,13 @@
+# Little Richard. 12-bar in F.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Tutti Frutti (progressione)"
+tempo: 180
+groove: rockabilly/boogie
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | F | F | F | F |
+      | Bb | Bb | F | F |
+      | C7 | Bb | F | C7 |

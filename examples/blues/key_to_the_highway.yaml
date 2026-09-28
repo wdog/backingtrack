@@ -1,0 +1,12 @@
+# Big Bill Broonzy / Clapton. Blues a 8 battute in E.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Key to the Highway (progressione)"
+tempo: 104
+groove: blues
+
+sections:
+  - name: Strofa
+    repeat: 6
+    chords: |
+      | E | B7 | A | A |
+      | E | B7 | E A | E B7 |

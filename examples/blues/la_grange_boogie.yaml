@@ -1,0 +1,24 @@
+# ZZ Top. Boogie su un accordo in A, poi 12-bar.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "La Grange (in stile)"
+tempo: 162
+groove: blues/7
+swing: 0.8
+
+sections:
+  - name: Boogie
+    repeat: 2
+    chords: |
+      | A7 | % | % | % |
+  - name: Strofa
+    repeat: 3
+    chords: |
+      | A7 | A7 | A7 | A7 |
+      | D7 | D7 | A7 | A7 |
+      | E7 | D7 | A7 | E7 |
+
+arrangement:
+  - Boogie x2
+  - Strofa x2
+  - Boogie
+  - Strofa

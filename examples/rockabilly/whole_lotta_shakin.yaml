@@ -1,0 +1,13 @@
+# Jerry Lee Lewis. 12-bar in A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Whole Lotta Shakin' Goin' On (progressione)"
+tempo: 150
+groove: rockabilly/boogie
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | A | A | A | A |
+      | D | D | A | A |
+      | E | D | A | E |

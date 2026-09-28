@@ -1,0 +1,21 @@
+# AC/DC. A - D/F# - G. Semplificato.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Highway to Hell (in stile)"
+tempo: 116
+groove: rock/strum
+
+sections:
+  - name: Strofa
+    chords: |
+      | A | A | D/F# . G . | D/F# . G . |
+  - name: Rit
+    groove: rock
+    chords: |
+      | A | D/F# . G . | A | D/F# . G . |
+      | A | D/F# . G . | D/F# . G . | E5 |
+
+arrangement:
+  - Strofa x4
+  - Rit x2
+  - Strofa x4
+  - Rit x3

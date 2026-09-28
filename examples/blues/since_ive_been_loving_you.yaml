@@ -1,0 +1,13 @@
+# Led Zeppelin. Slow blues minore in Cm.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Since I've Been Loving You (progressione)"
+tempo: 58
+groove: blues/slow
+
+sections:
+  - name: Strofa
+    repeat: 3
+    chords: |
+      | Cm | Fm | Cm | Cm |
+      | Fm | Fm | Cm | Cm |
+      | Ab7 | G7 | Cm Fm | Cm G7 |

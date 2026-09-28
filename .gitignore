@@ -1,0 +1,23 @@
+# audio e MIDI generati
+out/
+*.wav
+*.mp3
+*.mid
+*.midi
+*_stems/
+
+# campioni scaricati (vanno in ~/.local/share/backingtrack, ma per sicurezza)
+*.sf2
+*.sfz
+soundfonts/
+packs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/

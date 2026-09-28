@@ -1,0 +1,14 @@
+# Booker T. & the M.G.'s. 12-bar in F con riff I-bIII-IV.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Green Onions (in stile)"
+tempo: 134
+groove: blues/strum
+swing: 0.5
+
+sections:
+  - name: Giro
+    repeat: 4
+    chords: |
+      | F . Ab Bb | % | % | % |
+      | Bb . Db Eb | % | F . Ab Bb | % |
+      | C . Eb F | Bb . Db Eb | F . Ab Bb | % |

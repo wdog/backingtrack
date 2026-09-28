@@ -1,0 +1,13 @@
+# Elvis Presley. 12-bar in D con strofa sul I.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Jailhouse Rock (progressione)"
+tempo: 168
+groove: rockabilly/boogie
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | D | D | D | D |
+      | G | G | D | D |
+      | A | G | D | A |

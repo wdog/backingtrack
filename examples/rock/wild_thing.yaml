@@ -1,0 +1,19 @@
+# The Troggs. A - D - E - D.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Wild Thing (progressione)"
+tempo: 108
+groove: rock/drive
+
+sections:
+  - name: Strofa
+    chords: |
+      | A D | E D | A D | E D |
+  - name: Break
+    groove: rock/strum
+    chords: |
+      | D E | D E | D E | D E |
+
+arrangement:
+  - Strofa x4
+  - Break
+  - Strofa x4

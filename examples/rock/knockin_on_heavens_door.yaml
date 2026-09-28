@@ -1,0 +1,12 @@
+# Bob Dylan / Guns N' Roses. In G.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Knockin' on Heaven's Door (progressione)"
+tempo: 68
+groove: rock/ballad
+
+sections:
+  - name: Giro
+    repeat: 8
+    chords: |
+      | G | D | Am | Am |
+      | G | D | C | C |

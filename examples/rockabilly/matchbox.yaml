@@ -1,0 +1,13 @@
+# Carl Perkins. 12-bar in A.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Matchbox (progressione)"
+tempo: 165
+groove: rockabilly
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | A | A | A | A |
+      | D | D | A | A |
+      | E7 | D | A | E7 |

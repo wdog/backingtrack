@@ -1,0 +1,12 @@
+# John Fogerty / Status Quo. C - F - G.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Rockin' All Over the World (progressione)"
+tempo: 132
+groove: rock/drive
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | C | C | F | F |
+      | C | G | C | C |
