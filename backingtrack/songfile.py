@@ -262,10 +262,22 @@ def _str(dumper, value):
 _Dumper.add_representer(str, _str)
 
 
+def header_comments(text):
+    """Righe di commento in testa a un file YAML (conservate quando l'editor lo risalva)."""
+    lines = []
+    for line in text.splitlines():
+        if line.startswith("#"):
+            lines.append(line)
+        elif line.strip():
+            break
+    return lines
+
+
 def to_yaml(song):
     text = yaml.dump(to_song_dict(song), Dumper=_Dumper, sort_keys=False, allow_unicode=True,
                      default_flow_style=False, width=120)
-    return "# Creato con backingtrack\n" + text
+    header = song.get("header") or ["# Creato con backingtrack"]
+    return "\n".join(header) + "\n" + text
 
 
 def groove_label(name):

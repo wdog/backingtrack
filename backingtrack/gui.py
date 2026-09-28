@@ -1027,7 +1027,9 @@ class MainWindow(Adw.ApplicationWindow):
     def load_file(self, path):
         try:
             self.path = str(path)
-            self.load_song(sf.from_song_dict(load_song(path)))
+            song = sf.from_song_dict(load_song(path))
+            song["header"] = sf.header_comments(Path(path).read_text(encoding="utf-8"))
+            self.load_song(song)
             self.toast("Aperto %s" % Path(path).name)
         except SongError as e:
             self.path = None

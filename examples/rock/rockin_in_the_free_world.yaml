@@ -1,14 +1,20 @@
-# Creato con backingtrack
-title: Rockin' in the Free World (progressione)
+# Neil Young. Em - D - C.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Rockin' in the Free World (progressione)"
 tempo: 132
 groove: rock
+
 sections:
-- name: Strofa
-  chords: '| Em . D C | Em . D C |'
-- name: Rit
-  chords: '| G | D | C | Em |'
+  - name: Strofa
+    chords: |
+      | Em . D C | Em . D C |
+  - name: Rit
+    groove: rock/drive
+    chords: |
+      | G | D | C | Em |
+
 arrangement:
-- Strofa x4
-- Rit x2
-- Strofa x4
-- Rit x2
+  - Strofa x4
+  - Rit x2
+  - Strofa x4
+  - Rit x2
