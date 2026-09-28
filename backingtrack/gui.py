@@ -68,8 +68,9 @@ entry:focus-within { outline-color: alpha(#f5a623, 0.7); }
 
 # --------------------------------------------------------------------------- widget di supporto
 
-def combo_row(title, items, subtitle=None):
-    row = Adw.ComboRow(title=title)
+def combo_row(title, items, subtitle=None, long=False):
+    """long=True: valore scelto mostrato sotto il titolo, a tutta larghezza (per voci lunghe)."""
+    row = Adw.ComboRow(title=title, use_subtitle=long)
     row.set_model(Gtk.StringList.new(items))
     if subtitle:
         row.set_subtitle(subtitle)
@@ -231,8 +232,7 @@ class MainWindow(Adw.ApplicationWindow):
         g = Adw.PreferencesGroup(title="🎵 Brano")
         self.w_title = Adw.EntryRow(title="Titolo")
         self.w_tempo = spin_row("Tempo", 30, 320, 1, subtitle="battiti al minuto (BPM)")
-        self.w_groove = combo_row("Groove", [groove_text(n) for n in GROOVE_NAMES])
-        self.w_groove.set_enable_search(True)
+        self.w_groove = combo_row("Groove", [groove_text(n) for n in GROOVE_NAMES], long=True)
         self.w_transpose = spin_row("Trasposizione", -12, 12, 1, subtitle="semitoni: -1 per accordatura mezzo tono sotto")
         self.w_swing = Adw.ExpanderRow(title="Swing personalizzato", subtitle="se spento, lo decide il groove")
         self.w_swing.set_show_enable_switch(True)
@@ -244,7 +244,7 @@ class MainWindow(Adw.ApplicationWindow):
         page.add(g)
 
         g = Adw.PreferencesGroup(title="🔊 Suono")
-        self.w_guitar = combo_row("Chitarra", ["Gretsch Anniversary (hollowbody)", "Epiphone (solid body)"])
+        self.w_guitar = combo_row("Chitarra", ["Gretsch Anniversary (hollowbody)", "Epiphone (solid body)"], long=True)
         self.w_amp = combo_row("Ampli", ["dal groove"] + sf.AMPS, "clean · blues · twang · crunch · high gain")
         self.w_double = combo_row("Chitarra doppiata L/R", TRI)
         self.w_slap = combo_row("Slapback", TRI, "eco corta anni '50")
@@ -347,8 +347,7 @@ class MainWindow(Adw.ApplicationWindow):
         g = Adw.PreferencesGroup(title="🧩 Sezione")
         self.s_name = Adw.EntryRow(title="Nome")
         self.s_repeat = spin_row("Ripetizioni", 1, 64, 1, subtitle="quante volte suonare questa sezione")
-        self.s_groove = combo_row("Groove", ["🎵 come il brano"] + [groove_text(n) for n in GROOVE_NAMES])
-        self.s_groove.set_enable_search(True)
+        self.s_groove = combo_row("Groove", ["🎵 come il brano"] + [groove_text(n) for n in GROOVE_NAMES], long=True)
         self.s_volume = spin_row("Dinamica", 0.2, 1.5, 0.05, 2, "1 = normale, 0.8 = più piano")
         self.s_swing = Adw.ExpanderRow(title="Swing della sezione")
         self.s_swing.set_show_enable_switch(True)
@@ -430,9 +429,14 @@ class MainWindow(Adw.ApplicationWindow):
         self.c_preview.set_label(self.built_chord())
 
         g = Adw.PreferencesGroup(title="✨ Modelli di giro", description="Riempie la sezione con un giro classico.")
-        self.t_name = deco(combo_row("Modello", list(sf.TEMPLATES)), "📜")
+        self.t_name = deco(combo_row("Modello", list(sf.TEMPLATES), long=True), "📜")
+        self.t_key_sub = lambda *_: self.t_name.set_tooltip_text("| " + " | ".join(
+            sf.template_bars(list(sf.TEMPLATES)[self.t_name.get_selected()], sf.KEYS[self.t_key.get_selected()])) + " |")
+        self.t_name.connect("notify::selected", self.t_key_sub)
         self.t_key = deco(combo_row("Tonalità", sf.KEYS), "🔑")
         self.t_key.set_selected(sf.KEYS.index("A"))
+        self.t_key.connect("notify::selected", self.t_key_sub)
+        self.t_key_sub()
         buttons = Gtk.Box(spacing=6, halign=Gtk.Align.END, margin_top=8)
         rep = Gtk.Button(label="Sostituisci accordi")
         rep.connect("clicked", lambda _b: self.apply_template(replace=True))
@@ -454,14 +458,15 @@ class MainWindow(Adw.ApplicationWindow):
         empty.set_child(start)
         self.sec_stack = Gtk.Stack()
         # due colonne affiancate: accordi (larga) | impostazioni della sezione e modelli
-        page.set_size_request(360, -1)
+        page.set_size_request(440, -1)
         chords_scroll = Gtk.ScrolledWindow(child=chords, hexpand=True, vexpand=True,
                                            hscrollbar_policy=Gtk.PolicyType.NEVER)
         chords_scroll.set_min_content_height(480)  # a finestra stretta gli accordi restano in primo piano
-        self.editor_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        self.editor_box.append(chords_scroll)
-        self.editor_box.append(Gtk.Separator(orientation=Gtk.Orientation.VERTICAL))
-        self.editor_box.append(page)
+        # divisore trascinabile: lo spazio in più va agli accordi, le impostazioni restano almeno 440 px
+        self.editor_box = Gtk.Paned(orientation=Gtk.Orientation.HORIZONTAL, wide_handle=True,
+                                    start_child=chords_scroll, end_child=page,
+                                    resize_start_child=True, resize_end_child=False,
+                                    shrink_start_child=False, shrink_end_child=False)
         self.sec_stack.add_named(self.editor_box, "editor")
         self.sec_stack.add_named(empty, "empty")
         content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
