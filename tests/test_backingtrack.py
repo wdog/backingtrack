@@ -163,3 +163,43 @@ class TestSfz(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestSongfile(unittest.TestCase):
+    def test_describe_bar(self):
+        from backingtrack import songfile as sf
+        self.assertEqual(sf.describe_bar("Em . D C"), "Em 2 tempi · D 1 · C 1")
+        self.assertEqual(sf.describe_bar("C . . G"), "C 3 tempi · G 1")
+        self.assertEqual(sf.describe_bar("A7"), "A7 per tutta la battuta")
+        self.assertEqual(sf.describe_bar("%"), "ripete la battuta precedente")
+        self.assertIsNone(sf.describe_bar(". D"))
+
+    def test_check_bar_messages(self):
+        from backingtrack import songfile as sf
+        self.assertIsNone(sf.check_bar("C G Am F"))
+        self.assertIn("Em . D C", sf.check_bar(". D"))
+        self.assertIn("prima", sf.check_bar("%", first=True))
+        self.assertIn("maiuscola", sf.check_bar("am"))
+        self.assertIn("B7", sf.check_bar("H7"))
+        self.assertIn("4 simboli", sf.check_bar("A B C D E"))
+
+    def test_templates(self):
+        from backingtrack import songfile as sf
+        self.assertEqual(sf.template_bars("12-bar blues (quick change)", "E")[:4], ["E7", "A7", "E7", "E7"])
+        self.assertEqual(sf.template_bars("Anni '50 I-vi-IV-V", "Bb"), ["Bb", "Gm", "Eb", "F"])
+        for name in sf.TEMPLATES:
+            for key in sf.KEYS:
+                for bar in sf.template_bars(name, key):
+                    self.assertIsNone(sf.check_bar(bar), (name, key, bar))
+
+    def test_yaml_roundtrip_examples(self):
+        import yaml
+        from backingtrack import songfile as sf
+        for f in sorted(EXAMPLES.glob("*/*.yaml")):
+            with self.subTest(f=f.name):
+                model = sf.from_song_dict(load_song(f))
+                self.assertEqual(sf.validate(model), [])
+                again = yaml.safe_load(sf.to_yaml(model))
+                a, b = build_timeline(load_song(f)), build_timeline(again)
+                self.assertEqual(len(a[1]), len(b[1]))
+                self.assertEqual([(s["name"], r) for s, r in a[0]], [(s["name"], r) for s, r in b[0]])

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# backingtrack — installer per Linux e macOS
+# backingtrack — installer per Linux e macOS (rilanciato = aggiornamento)
 #
 #   curl -fsSL https://raw.githubusercontent.com/wdog/backingtrack/main/install.sh | bash
 #
@@ -94,16 +94,19 @@ BIN="$HOME/.local/bin"
 PKG="$ZIP"
 if [ -n "${BT_SRC:-}" ] || have git; then PKG="$SRC"; fi
 if have pipx; then
-  pipx install --force "$PKG" >/dev/null 2>&1 || die "pipx install fallito"
+  # reinstallazione pulita (vale anche come aggiornamento): i campioni stanno altrove e restano.
+  # --system-site-packages: la GUI usa PyGObject/GTK installati dal sistema
+  pipx uninstall backingtrack >/dev/null 2>&1 || true
+  pipx install --system-site-packages "$PKG" >/dev/null 2>&1 || die "pipx install fallito"
   ok "installato con pipx"
 else
   DATA="${XDG_DATA_HOME:-$HOME/.local/share}/backingtrack"
   [ "$OS" = Darwin ] && DATA="$HOME/Library/Application Support/backingtrack"
   VENV="$DATA/venv"
-  if ! "$PY" -m venv "$VENV" >/dev/null 2>&1; then
+  if ! "$PY" -m venv --clear --system-site-packages "$VENV" >/dev/null 2>&1; then
     if [ "$OS" = Linux ] && have apt-get && ask "Manca python3-venv: lo installo?"; then
       install_pkg python3-venv python3-pip
-      "$PY" -m venv "$VENV"
+      "$PY" -m venv --clear --system-site-packages "$VENV"
     else
       die "impossibile creare il virtualenv (su Debian/Ubuntu: sudo apt install python3-venv)"
     fi
@@ -125,6 +128,7 @@ if [ "${BT_NO_SAMPLES:-0}" = 1 ]; then
   warn "campioni saltati: più tardi esegui  backingtrack setup"
 else
   step "Scarico i campioni (chitarra + batteria + casse, ~300 MB)"
+  # i pacchetti già presenti vengono saltati: rilanciare l'installer = aggiornare
   if [ "${BT_BASS:-0}" = 1 ]; then "$BT" setup --bass; else "$BT" setup; fi
 fi
 
@@ -139,8 +143,11 @@ esac
 cat <<EOF
 
   ${B}Prova subito:${N}
-    backingtrack new mia_canzone.yaml
+    backingtrack gui                     editor grafico
+    backingtrack new mia_canzone.yaml    oppure da terminale
     backingtrack mia_canzone.yaml --mp3
+    backingtrack doctor                  controlla che sia tutto a posto
+    backingtrack update                  aggiornamenti futuri
 
   ${D}Esempi: https://github.com/${REPO}/tree/${REF}/examples${N}
   ${D}Guida:  https://github.com/${REPO}#readme${N}

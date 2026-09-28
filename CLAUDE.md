@@ -16,6 +16,8 @@ python3 -m backingtrack examples/blues/sweet_home_chicago.yaml [--mp3 --stems --
 python3 -m backingtrack render examples/*/*.yaml --dry-run   # valida tutti gli esempi
 python3 -m backingtrack doctor                    # dipendenze e campioni installati
 python3 -m unittest discover tests                # test (non servono i campioni)
+backingtrack gui [file.yaml]                      # editor GTK4 / libadwaita
+backingtrack update [--src DIR]                   # campioni mancanti + aggiornamento programma
 python3 docs/make_images.py                       # rigenera logo/diagramma (Pillow, font DejaVu)
 shellcheck install.sh                             # installer curl|bash (Linux/macOS)
 ```
@@ -35,6 +37,14 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
   `part`: guitar/guitar2/bass/drums. `bus` chitarra = `gtr:<amp>:<L|R|C>[:slap]`.
   `_choke`: una nota per corda, basso monofonico. Batteria in numeri GM.
 - `midi.py` — export MIDI type 1 per DAW (non usato per l'audio).
+- `songfile.py` — modello dell'editor, senza GTK: `SONG_DEFAULTS`, `from_song_dict`/`to_song_dict`/`to_yaml`
+  (solo valori non di default, `chords` come blocco `|`), `check_bar`/`describe_bar` (messaggi e lettura
+  "Em 2 tempi · D 1 · C 1"), `TEMPLATES` a gradi (I, IV, V:7, vi:m…) → `template_bars(nome, tonalità)`.
+- `gui.py` — Adw.Application: schede Brano / Sezioni (3 colonne: elenco | accordi | impostazioni+modelli,
+  `Adw.OverlaySplitView` + `Adw.Breakpoint` < 820sp) / Arrangiamento / YAML; barra menu File, Sezione, Brano,
+  Riproduzione, Aiuto. Render in un thread con `cli.render(song_dict, out)`, player `Gtk.MediaFile`.
+  Scorciatoie Spazio/B/S via `EventControllerKey` in CAPTURE, ignorate se il focus è un `Gtk.Editable`.
+  Bozza automatica in `data_dir()/bozza.json`, proposta al riavvio. Colori sezione `SECTION_COLORS`, accento #e8811a.
 - `sfz.py` — parser SFZ minimale + `read_wav` (RIFF proprio: PCM 8/16/24/32 e float) + `Instrument.select`.
 - `render.py` — `Sampler`: region → campione trasposto (np.interp, cache) → voci; choke `group/off_by`;
   `mix_voices` somma nei bus stereo float32 con release, palm mute (decadimento + FIR passa-basso).
@@ -69,6 +79,13 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 - basso: D. Smolken double bass pizz (CC0), opzionale.
 Nessun campione nel repo: si scaricano con `setup` (~300 MB default). `sfz.Instrument.select` ripiega su un round robin
 presente se quello estratto non è installato. `backingtrack remove <pack>` libera spazio.
+
+## GUI: note
+
+- PyGObject viene dal sistema: pipx/venv vanno creati con `--system-site-packages` (installer, `update` e README lo fanno).
+- Test manuali headless-ish: app di prova che cattura la finestra con `Gtk.WidgetPaintable` + `render_texture`
+  (le immagini del README in `docs/gui-*.jpg` sono fatte così, finestra forzata 1280×820 con `set_size_request`).
+- `Gtk.DropDown.new_from_strings` non accetta kwargs; `Gtk.MediaFile` ha `is_prepared()`, non `get_prepared()`.
 
 ## Vincoli e scelte
 

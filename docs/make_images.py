@@ -100,3 +100,34 @@ for i,(title, lines, col) in enumerate(boxes):
         d.polygon([(ax+gap-28*S,ay-16*S),(ax+gap-8*S,ay),(ax+gap-28*S,ay+16*S)], fill=(120,110,100))
 img.resize((W//S,H//S), Image.LANCZOS).save(Path(__file__).parent / "pipeline.jpg", quality=92)
 print("ok")
+
+# -------- icona dell'app (plettro), 256x256 PNG
+S2 = 4
+W = H = 256 * S2
+img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+cx, cy, r = W / 2, H / 2 + 4 * S2, 104 * S2
+pts = []
+for i in range(360):
+    a = math.radians(i)
+    k = 1 + 0.55 * max(0, math.sin(a)) ** 3
+    pts.append((cx + r * 0.9 * math.cos(a), cy - 18 * S2 + r * k * math.sin(a) * 0.93))
+grad = Image.new("RGBA", (W, H))
+gd = ImageDraw.Draw(grad)
+for y in range(H):
+    t = y / H
+    gd.line([(0, y), (W, y)], fill=(int(250 - 40 * t), int(180 - 90 * t), int(40 + 10 * t), 255))
+mask = Image.new("L", (W, H), 0)
+ImageDraw.Draw(mask).polygon(pts, fill=255)
+img.paste(grad, mask=mask)
+d = ImageDraw.Draw(img)
+d.polygon(pts, outline=(255, 225, 160, 255), width=5 * S2)
+bars = [0.35, 0.6, 1.0, 0.7, 0.9, 0.5, 0.3]
+bw, gap = 16 * S2, 8 * S2
+x0 = cx - (len(bars) * (bw + gap) - gap) / 2
+for i, b in enumerate(bars):
+    h = b * 110 * S2
+    x = x0 + i * (bw + gap)
+    d.rounded_rectangle([x, cy - 12 * S2 - h / 2, x + bw, cy - 12 * S2 + h / 2], radius=bw / 2, fill=(28, 24, 24, 255))
+icon = img.resize((256, 256), Image.LANCZOS)
+icon.save(Path(__file__).parent.parent / "backingtrack" / "data" / "io.github.wdog.backingtrack.png")
+print("icona ok")

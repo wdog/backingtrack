@@ -22,10 +22,13 @@
 - [✨ Caratteristiche](#-caratteristiche)
 - [⚙️ Come funziona](#️-come-funziona)
 - [📦 Installazione](#-installazione)
+- [🔄 Aggiornare, 🩺 diagnosi e 🗑️ disinstallare](#-aggiornare--diagnosi-e-️-disinstallare)
 - [🚀 Avvio rapido](#-avvio-rapido)
+- [🖥️ Editor grafico](#️-editor-grafico)
 - [🎓 Tutorial: la tua prima backing track](#-tutorial-la-tua-prima-backing-track)
 - [💡 Esempi](#-esempi)
 - [📝 Formato della canzone](#-formato-della-canzone)
+- [🎼 Come si legge una battuta](#-come-si-legge-una-battuta)
 - [🥁 Groove disponibili](#-groove-disponibili)
 - [🎸 Accordi supportati](#-accordi-supportati)
 - [🖥️ Riferimento comandi](#️-riferimento-comandi)
@@ -51,6 +54,8 @@
 - 🎚️ **11 groove** tra rock, blues e rockabilly, anche diversi sezione per sezione.
 - 🧑‍🎤 **Suona umano**: micro-timing, velocity variabile, velocità della pennata legata alla dinamica, swing regolabile.
 - 🎛️ **Mix automatico**: EQ, compressione, riverbero a convoluzione, bilanciamento, limiter e loudness costante.
+- 🖥️ **Editor grafico** (GTK 4): sezioni colorate, costruttore di accordi con menu a tendina, modelli di giro
+  in ogni tonalità, validazione mentre scrivi, player integrato con scorciatoie, bozza automatica.
 - 📤 **Output**: WAV, MP3, **MIDI** (per la tua DAW) e **stems** separati.
 - 🎯 **Per esercitarsi**: `--mute guitar` per la sola batteria, `--tempo 80` per rallentare, `--transpose -1` per accordature ribassate.
 - ⚡ **Veloce**: 2 minuti di brano in circa 5 secondi.
@@ -115,6 +120,7 @@ irm https://raw.githubusercontent.com/wdog/backingtrack/main/install.ps1 | iex
 
 Lo script controlla Python, installa ffmpeg se manca (chiedendo conferma), installa `backingtrack`
 (con `pipx` se c'è, altrimenti in un virtualenv dedicato) e scarica i campioni.
+**Rilanciarlo equivale ad aggiornare**: reinstalla il programma e scarica solo i campioni che mancano.
 Opzioni: `BT_BASS=1` aggiunge il contrabbasso, `BT_NO_SAMPLES=1` salta i campioni, `BT_YES=1` non fa domande.
 
 ```sh
@@ -133,13 +139,25 @@ curl -fsSL https://raw.githubusercontent.com/wdog/backingtrack/main/install.sh |
 | 🍎 macOS | `brew install ffmpeg` |
 | 🪟 Windows | `winget install Gyan.FFmpeg` oppure `choco install ffmpeg` |
 
+Per l'**editor grafico** (opzionale) servono anche GTK 4 e libadwaita con i binding Python:
+
+| Sistema | Comando |
+|---|---|
+| 🐧 Debian / Ubuntu | `sudo apt install python3-gi gir1.2-gtk-4.0 gir1.2-adw-1` |
+| 🐧 Fedora | `sudo dnf install python3-gobject gtk4 libadwaita` |
+| 🐧 Arch | `sudo pacman -S python-gobject gtk4 libadwaita` |
+| 🍎 macOS | `brew install pygobject3 gtk4 libadwaita` |
+
 #### 2. backingtrack
 
 ```sh
 git clone https://github.com/wdog/backingtrack.git
 cd backingtrack
-pipx install .            # oppure: pip install .
+pipx install --system-site-packages .     # oppure: pip install .
 ```
+
+`--system-site-packages` permette al programma di vedere GTK installato dal sistema: senza, la riga di comando
+funziona ma `backingtrack gui` no.
 
 Senza installare niente puoi anche usare `python3 -m backingtrack` dalla cartella del progetto
 (servono `pip install numpy pyyaml`).
@@ -178,6 +196,101 @@ e al massimo 2 round robin per la chitarra e 6 per la batteria. Rispetto alle li
 
 ---
 
+## 🔄 Aggiornare, 🩺 diagnosi e 🗑️ disinstallare
+
+### 🔄 Aggiornare
+
+```sh
+backingtrack update
+```
+
+Scarica **solo i campioni che mancano** (quelli già presenti restano dove sono, niente download inutili)
+e poi aggiorna il programma da GitHub, mantenendo il supporto alla GUI. In alternativa rilancia l'installer:
+fa la stessa cosa.
+
+| Comando | A cosa serve |
+|---|---|
+| `backingtrack update` | aggiorna alla versione `main` |
+| `backingtrack update --ref v1.1` | installa un branch o un tag preciso |
+| `backingtrack update --src ~/backingtrack` | aggiorna da una copia locale: utile per provare le modifiche prima di pubblicarle |
+
+Se lavori sul codice (cartella con `.git`), `update` ti ricorda di usare `git pull` e si limita ai campioni.
+
+### 🧪 Provare una copia locale (prima di pubblicare)
+
+Dalla cartella del progetto puoi reinstallare tutto **come lo riceverebbe un utente**, senza passare da GitHub:
+
+```sh
+cd ~/Workspace/tracks                       # la cartella del progetto
+pipx uninstall backingtrack                 # toglie l'installazione attuale (i campioni restano)
+BT_SRC="$PWD" bash install.sh               # installer completo, ma dal codice locale
+backingtrack doctor
+```
+
+I campioni già scaricati vengono saltati. Per provare anche il primo download da zero, prima cancellali:
+`rm -rf ~/.local/share/backingtrack ~/.cache/backingtrack` (poi ~300 MB da riscaricare).
+
+Per lavorare sul codice senza reinstallare a ogni modifica: `pipx install -e --system-site-packages .`
+(editable: il comando usa direttamente i file della cartella).
+
+### 🩺 Diagnosi
+
+```sh
+backingtrack doctor
+```
+
+```
+♪ backingtrack 1.0.0  — diagnosi
+
+Programma
+  ✓ versione     1.0.0
+  ✓ installato   pipx (~/.local/share/pipx/venvs/backingtrack)
+  ✓ python       3.12.3
+
+Dipendenze
+  ✓ ffmpeg       6.1.1
+  ✓ numpy        1.26.4
+  ✓ PyYAML       6.0.1
+  ✓ GUI          GTK 4.14 · libadwaita 1.5  backingtrack gui
+
+Campioni  ~/.local/share/backingtrack/packs
+  ✓ gretsch        175 MB  Black & Green Guitars  376 file
+  ✓ drums          144 MB  Salamander Drumkit  209 file
+  ✓ cabs             2 MB  Jester's Emerald + Brutal IR  21 file
+  · bass         non installato  opzionale: backingtrack setup bass
+    totale       321 MB
+
+Tutto pronto! 🎸
+```
+
+Controlla programma, dipendenze (anche la GUI), campioni, **rilegge alcuni file a caso** per scoprire campioni
+rovinati e mostra le cartelle usate. Se qualcosa non va, chiude con l'elenco numerato di **cosa fare**, con il comando
+giusto per il tuo sistema.
+
+### 🗑️ Disinstallare
+
+Il programma e i campioni stanno in posti diversi: puoi togliere uno, l'altro o tutto.
+
+```sh
+# 1. il programma
+pipx uninstall backingtrack                       # se installato con pipx (o con l'installer e pipx)
+rm -rf ~/.local/share/backingtrack/venv ~/.local/bin/backingtrack   # se installato dall'installer senza pipx
+
+# 2. i campioni, le bozze e la cache
+rm -rf ~/.local/share/backingtrack ~/.cache/backingtrack
+```
+
+| Sistema | Cartella dati (campioni, bozza) | Cartella cache |
+|---|---|---|
+| 🐧 Linux | `~/.local/share/backingtrack` | `~/.cache/backingtrack` |
+| 🍎 macOS | `~/Library/Application Support/backingtrack` | `~/Library/Caches/backingtrack` |
+| 🪟 Windows | `%LOCALAPPDATA%\backingtrack\data` (e `\venv`) | `%LOCALAPPDATA%\backingtrack\cache` |
+
+Su Windows togli anche `%LOCALAPPDATA%\backingtrack\venv\Scripts` dalla variabile PATH dell'utente.
+Per liberare spazio senza disinstallare: `backingtrack remove bass` (o un altro pacchetto).
+
+---
+
 ## 🚀 Avvio rapido
 
 ```sh
@@ -193,6 +306,71 @@ backingtrack examples/blues/sweet_home_chicago.yaml
 ```
 
 Il risultato è in `out/`. Aprilo con qualsiasi player e suonaci sopra. 🎶
+
+Preferisci il mouse? `backingtrack gui` 👇
+
+---
+
+## 🖥️ Editor grafico
+
+```sh
+backingtrack gui                 # nuovo brano
+backingtrack gui mio_brano.yaml  # apri un brano
+```
+
+<p align="center"><img src="docs/gui-sezioni.jpg" alt="editor: pagina Sezioni" width="900"></p>
+
+La finestra ha quattro schede.
+
+**🎵 Brano**: tempo, groove, trasposizione, swing, chitarra e ampli, contrabbasso, conteggio, finale, rullate,
+umanizzazione e cartella di output. Ogni scelta ha il suo menu a tendina e non si può inserire un valore fuori scala.
+
+<p align="center"><img src="docs/gui-brano.jpg" alt="editor: pagina Brano" width="700"></p>
+
+**🧩 Sezioni**: il cuore dell'editor, su tre colonne affiancate.
+- **a sinistra** l'elenco delle sezioni, ognuna col suo colore e l'emoji dello stile (🤘 rock, 🎷 blues, 🕺 rockabilly),
+  con i pulsanti **Nuova**, **Duplica**, **Elimina** e le frecce per riordinarle;
+- **al centro gli accordi**: scegli tonica, tipo e basso dai menu a tendina e premi **Nuova battuta** o
+  **Aggiungi alla battuta**. Ogni battuta è una scheda con **Duplica** e **Rimuovi**; sotto l'accordo c'è la sua
+  *lettura* (per esempio *Em 2 tempi · D 1 · C 1*). Se scrivi un accordo sbagliato la scheda diventa rossa e spiega
+  cosa correggere;
+- **a destra** le impostazioni della sezione (ripetizioni, groove, dinamica, swing, rullata, strumenti) e i
+  **modelli di giro**: 12-bar blues, 8-bar, blues minore, I-IV-V, anni '50, pop-rock… in qualsiasi tonalità.
+
+Con la finestra stretta le colonne si impilano (accordi in alto) e l'elenco delle sezioni diventa un pannello a scomparsa.
+
+**🔁 Arrangiamento**: l'ordine delle sezioni con le ripetizioni, e la durata totale.
+
+<p align="center"><img src="docs/gui-arrangiamento.jpg" alt="editor: arrangiamento" width="700"></p>
+
+**📄 YAML**: il file che verrà salvato, sempre aggiornato, da copiare con un clic.
+
+In basso la **barra di stato** dice se il brano è pronto (✓ verde, con battute e durata) o cosa correggere (⚠).
+**Genera e ascolta** crea l'audio **anche se non hai salvato** e lo suona subito nel player integrato.
+
+### 💾 Salvataggio e bozza automatica
+
+File ▸ **Salva** (Ctrl+S) e **Salva con nome** (Ctrl+Shift+S) scrivono il file YAML. Se chiudi con modifiche non
+salvate la finestra chiede cosa fare. In più ogni modifica finisce in una **bozza automatica**: se il programma
+si chiude male o scegli "Non salvare" per sbaglio, alla riapertura ti propone di **ripristinarla**.
+
+### ⌨️ Scorciatoie
+
+| Tasto | Azione |
+|---|---|
+| `Ctrl+N` / `Ctrl+O` | nuovo / apri |
+| `Ctrl+S` / `Ctrl+Shift+S` | salva / salva con nome |
+| `Ctrl+R` | genera e ascolta |
+| `Ctrl+T` / `Ctrl+D` | nuova sezione / duplica sezione |
+| `Ctrl+B` / `Ctrl+Shift+D` | nuova battuta / duplica battuta |
+| `Invio` (in una battuta) | passa alla battuta successiva (la crea se serve) |
+| `Spazio` | play / pausa |
+| `B` | riparti da capo |
+| `S` | stop |
+| `Ctrl+Q` | esci |
+
+Spazio, B e S funzionano quando **non** stai scrivendo in un campo: così puoi digitare `Bb` o `Dsus4` senza problemi.
+Il menu **File ▸ Apri esempio** carica al volo uno dei brani inclusi.
 
 ---
 
@@ -410,16 +588,42 @@ backingtrack render examples/blues/*.yaml --tempo 80 --mute guitar --bass --mp3 
 | `fill` | `fills` | rullata a fine sezione |
 | `guitar` / `drums` | `true` | `false` per togliere lo strumento nella sezione |
 
-### Sintassi delle battute
+---
+
+## 🎼 Come si legge una battuta
+
+Ogni battuta ha **4 tempi**. I simboli scritti nella battuta si dividono i 4 tempi **in parti uguali**,
+e il punto `.` **prolunga l'accordo che lo precede** di una parte.
+
+Prendiamo `Em . D C`. Sono 4 simboli, quindi ognuno vale 1 tempo:
+
+| tempo | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| simbolo | `Em` | `.` | `D` | `C` |
+| suona | **Em** | Em (continua) | **D** | **C** |
+
+Quindi: **Em per 2 tempi, D per 1, C per 1**. L'editor grafico lo scrive sotto ogni battuta: *Em 2 tempi · D 1 · C 1*.
 
 | Scrittura | Significato |
 |---|---|
-| `\| A7 \| D7 \|` | una battuta per accordo |
-| `\| A7 D7 \|` | due accordi, 2 tempi ciascuno |
+| `\| A7 \|` | A7 per tutta la battuta |
+| `\| A7 D7 \|` | due accordi: 2 tempi ciascuno |
 | `\| C G Am F \|` | un accordo per tempo |
-| `\| C . . G \|` | C per 3 tempi, G per 1 |
+| `\| Em . D C \|` | Em 2 tempi, D 1, C 1 |
+| `\| C . . G \|` | C 3 tempi, G 1 |
+| `\| C G F \|` | tre accordi: 1⅓ tempi ciascuno (possibile ma insolito) |
 | `\| % \|` | ripete la battuta precedente |
-| `\| N.C. \|` | niente chitarra (la batteria continua) |
+| `\| N.C. \|` | niente chitarra, la batteria continua |
+
+Errori comuni, con il messaggio che ricevi:
+
+| Scrivi | Problema | Correggi |
+|---|---|---|
+| `. D` | il `.` prolunga l'accordo precedente, quindi non può aprire la battuta | `D` oppure `Em . D C` |
+| `am` | la tonica va maiuscola | `Am` |
+| `H7` | in notazione inglese il Si è `B` | `B7` |
+| `%` come prima battuta | non c'è una battuta precedente da ripetere | scrivi l'accordo |
+| `A B C D E` | più di 4 simboli (uno per tempo al massimo) | dividi su due battute |
 
 ---
 
@@ -476,9 +680,12 @@ backingtrack render <file.yaml>... [opzioni]
 backingtrack setup [pacchetti] [--bass] [--full] [--force]
                                            scarica i campioni (default: gretsch drums cabs)
 backingtrack remove <pacchetto>...         cancella campioni e libera spazio
+backingtrack update [--ref TAG] [--src DIR]
+                                           aggiorna programma e campioni mancanti
+backingtrack gui [file.yaml]               editor grafico (anche: backingtrack-gui)
 backingtrack grooves                       elenco dei groove
 backingtrack new <file.yaml>               crea un file canzone di partenza
-backingtrack doctor                        controlla dipendenze e campioni
+backingtrack doctor                        diagnosi completa, con cosa fare se manca qualcosa
 ```
 
 ---
@@ -592,6 +799,9 @@ backingtrack render examples/rockabilly/*.yaml --mp3     # tutto il rockabilly
 backingtrack/
 ├── backingtrack/
 │   ├── cli.py         # comandi
+│   ├── gui.py         # editor grafico GTK 4 / libadwaita
+│   ├── songfile.py    # modello dell'editor: validazione, modelli di giro, YAML
+│   ├── data/          # icona dell'app
 │   ├── song.py        # lettura YAML, battute, arrangement
 │   ├── theory.py      # accordi e voicing sulle corde
 │   ├── grooves.py     # pattern di chitarra e batteria
@@ -626,6 +836,21 @@ Installa ffmpeg (vedi [Installazione](#-installazione)) e riapri il terminale. `
 </details>
 
 <details>
+<summary><b>"backingtrack gui" non parte</b></summary>
+
+Lancia `backingtrack doctor` e guarda la riga **GUI**. Di solito mancano GTK 4 e libadwaita (il comando per
+installarli è nel riepilogo finale). Se sono installati ma il programma non li vede, è stato installato con pipx
+senza `--system-site-packages`: `backingtrack update` o l'installer lo reinstallano nel modo giusto.
+</details>
+
+<details>
+<summary><b>Genera senza salvare?</b></summary>
+
+Sì: **Genera e ascolta** usa il brano così com'è nell'editor, salvato o no. Il file audio finisce nella cartella
+di output (scheda Brano, default `out/`).
+</details>
+
+<details>
 <summary><b>Posso usare il MIDI in una DAW?</b></summary>
 
 Sì: ogni render crea anche `out/<nome>.mid` con tracce separate (Guitar L/R, Bass, Drums, batteria in mappa GM).
@@ -647,7 +872,7 @@ Cambia `seed` nel file: cambiano round robin, micro-timing e dinamiche.
 <details>
 <summary><b>Il download dei campioni si interrompe</b></summary>
 
-Rilancia `backingtrack setup`: gli zip scaricati restano in cache fino all'installazione completa.
+Rilancia `backingtrack setup` (o `backingtrack update`): i pacchetti già completi vengono saltati.
 </details>
 
 ---

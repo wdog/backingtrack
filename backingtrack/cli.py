@@ -1,6 +1,7 @@
 """Interfaccia a riga di comando."""
 import argparse
 import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -13,7 +14,7 @@ from .grooves import GROOVES
 from .midi import write_midi
 from .mixer import mix
 from .render import Sampler, make_rng, mix_voices, new_buses
-from .sfz import Instrument
+from .sfz import Instrument, read_wav
 from .song import build_timeline, load_song
 
 TEMPLATE = """\
@@ -42,38 +43,48 @@ sections:
 # arrangement: [Intro, Strofa x2, Intro]
 """
 
-COMMANDS = ("render", "setup", "remove", "grooves", "new", "doctor")
+COMMANDS = ("render", "setup", "remove", "update", "grooves", "new", "doctor", "gui")
 GUITARS = ("gretsch", "epiphone")
 
 
 def render_song(path, args):
-    t_start = time.time()
     song = load_song(path)
     if args.transpose is not None:
         song["transpose"] = args.transpose
-    order, timeline = build_timeline(song, args.groove)
-    arr = Arranger(song, args.tempo, args.bass).arrange(timeline)
-
     out = Path(args.out) if args.out and len(args.songs) == 1 else Path(args.out or "out") / Path(path).stem
     if args.out and len(args.songs) > 1:
         out = Path(args.out) / Path(path).stem
+    render(song, out, tempo=args.tempo, groove=args.groove, bass=args.bass, mute=args.mute, mp3=args.mp3,
+           stems=args.stems, midi_only=args.midi_only, dry_run=args.dry_run)
+
+
+def render(song, out, tempo=None, groove=None, bass=False, mute=None, mp3=False, stems=False,
+           midi_only=False, dry_run=False, log=print):
+    """Genera i file per un brano (dict già caricato). Ritorna {"wav", "mp3", "mid", "stems"}."""
+    t_start = time.time()
+    out = Path(out)
+    order, timeline = build_timeline(song, groove)
+    arr = Arranger(song, tempo, bass).arrange(timeline)
     title = str(song.get("title", out.name))
     secs = arr.seconds(arr.length)
-    print("♪ %s | %g BPM | %d battute | %d:%02d" % (title, arr.tempo, len(timeline), secs // 60, secs % 60))
+    log("♪ %s | %g BPM | %d battute | %d:%02d" % (title, arr.tempo, len(timeline), secs // 60, secs % 60))
     for sec, reps in order:
         chords = " | ".join(" ".join(c.name if c else "N.C." for _, _, c in segs) for segs in sec["bars"])
-        print("   %-12s x%-2d %-19s | %s |" % (sec["name"], reps, "[" + sec["groove"] + "]", chords))
-    if args.dry_run:
-        return
+        log("   %-12s x%-2d %-19s | %s |" % (sec["name"], reps, "[" + sec["groove"] + "]", chords))
+    result = {}
+    if dry_run:
+        return result
 
     out.parent.mkdir(parents=True, exist_ok=True)
-    mid = out.with_suffix(".mid")
+    result["mid"] = mid = out.with_suffix(".mid")
     write_midi(mid, arr, title)
-    if args.midi_only:
-        print("   MIDI  %s" % mid)
-        return
+    if midi_only:
+        log("   MIDI  %s" % mid)
+        return result
 
-    mute = {m.strip() for m in (args.mute or "").split(",") if m.strip()}
+    if isinstance(mute, str):
+        mute = mute.split(",")
+    mute = {m.strip() for m in (mute or ()) if m.strip()}
     unknown = mute - {"guitar", "drums", "bass"}
     if unknown:
         raise SongError("--mute: tracce sconosciute %s (usa guitar, drums, bass)" % ", ".join(sorted(unknown)))
@@ -116,16 +127,18 @@ def render_song(path, args):
         mix_voices(s.voices(groups["bass"], rng), buses)
 
     wav = out.with_suffix(".wav")
-    mp3 = out.with_suffix(".mp3") if args.mp3 else None
-    stems = out.parent / (out.name + "_stems") if args.stems else None
+    mp3 = out.with_suffix(".mp3") if mp3 else None
+    stems = out.parent / (out.name + "_stems") if stems else None
     with tempfile.TemporaryDirectory(prefix="backingtrack-") as tmp:
         cabs = packs.pack_dir("cabs") if packs.is_installed("cabs") else None
         mix(buses, wav, tmp, mp3=mp3, stems_dir=stems, cab_dir=cabs)
-    print("   WAV   %s" % wav)
+    log("   WAV   %s" % wav)
     for label, p in (("MP3", mp3), ("STEMS", stems)):
         if p:
-            print("   %-5s %s" % (label, p))
-    print("   MIDI  %s   (%.1fs)" % (mid, time.time() - t_start))
+            log("   %-5s %s" % (label, p))
+    log("   MIDI  %s   (%.1fs)" % (mid, time.time() - t_start))
+    result.update(wav=wav, mp3=mp3, stems=stems)
+    return result
 
 
 _INSTRUMENTS = {}
@@ -156,25 +169,172 @@ def cmd_remove(args):
         packs.remove(n)
 
 
+REPO_URL = "https://github.com/wdog/backingtrack.git"
+
+
+def cmd_update(args):
+    """Scarica i campioni mancanti (quelli presenti restano) e aggiorna il programma."""
+    names = list(packs.DEFAULT_PACKS) + [n for n in packs.PACKS if n not in packs.DEFAULT_PACKS and packs.is_installed(n)]
+    print("♪ campioni")
+    for n in names:
+        packs.install(n)  # salta i pacchetti già installati
+
+    src = Path(__file__).resolve().parent.parent
+    if (src / ".git").exists() and not (args.force or args.src):
+        print("\n• installazione di sviluppo (%s): aggiorna il codice con  git pull" % src)
+        return
+    if args.src:
+        spec = str(Path(args.src).resolve())
+    elif shutil.which("git"):
+        spec = "git+%s@%s" % (REPO_URL, args.ref)
+    else:
+        spec = "https://github.com/wdog/backingtrack/archive/%s.zip" % args.ref
+    print("\n♪ programma: aggiorno da %s" % spec)
+    if "pipx" in sys.prefix and shutil.which("pipx"):
+        # reinstallazione completa: mantiene --system-site-packages (serve alla GUI per vedere GTK)
+        subprocess.run(["pipx", "uninstall", "backingtrack"], stdout=subprocess.DEVNULL)
+        cmd = ["pipx", "install", "--system-site-packages", spec]
+    else:
+        cmd = [sys.executable, "-m", "pip", "install", "--quiet", "--upgrade", spec]
+    if subprocess.run(cmd).returncode != 0:
+        raise SongError("aggiornamento non riuscito. Riprova o usa l'installer:  "
+                        "curl -fsSL https://raw.githubusercontent.com/wdog/backingtrack/main/install.sh | bash")
+    print("✓ fatto. Le novità sono nel README: https://github.com/wdog/backingtrack#readme")
+
+
+def _install_hint(what):
+    """Comando per installare una dipendenza di sistema sulla piattaforma corrente."""
+    import platform
+    system = platform.system()
+    hints = {
+        "ffmpeg": {"Darwin": "brew install ffmpeg", "Windows": "winget install Gyan.FFmpeg"},
+        "gui": {"Darwin": "brew install pygobject3 gtk4 libadwaita",
+                "Windows": "la GUI su Windows richiede MSYS2 (vedi README)"},
+    }
+    if system in hints[what]:
+        return hints[what][system]
+    for mgr, cmd in (("apt-get", {"ffmpeg": "sudo apt install ffmpeg",
+                                  "gui": "sudo apt install python3-gi gir1.2-gtk-4.0 gir1.2-adw-1"}),
+                     ("dnf", {"ffmpeg": "sudo dnf install ffmpeg", "gui": "sudo dnf install python3-gobject gtk4 libadwaita"}),
+                     ("pacman", {"ffmpeg": "sudo pacman -S ffmpeg", "gui": "sudo pacman -S python-gobject gtk4 libadwaita"})):
+        if shutil.which(mgr):
+            return cmd[what]
+    return "installa %s con il gestore pacchetti del sistema" % what
+
+
+def _install_kind():
+    src = Path(__file__).resolve().parent.parent
+    if (src / ".git").exists():
+        return "sviluppo (%s)" % src
+    if "pipx" in sys.prefix:
+        return "pipx (%s)" % sys.prefix
+    if sys.prefix != getattr(sys, "base_prefix", sys.prefix):
+        return "virtualenv (%s)" % sys.prefix
+    return "Python di sistema"
+
+
+def _dir_mb(path):
+    path = Path(path)
+    if not path.exists():
+        return 0.0
+    return sum(f.stat().st_size for f in path.rglob("*") if f.is_file()) / 2 ** 20
+
+
 def cmd_doctor(_args):
-    ok = True
-    print("backingtrack %s — Python %s" % (__version__, sys.version.split()[0]))
-    for tool in ("ffmpeg",):
-        path = shutil.which(tool)
-        ok &= bool(path)
-        print("  %s %-8s %s" % ("✓" if path else "✗", tool, path or "NON trovato"))
-    for mod in ("numpy", "yaml"):
+    import random
+    tty = sys.stdout.isatty()
+    c = (lambda code, t: "\033[%sm%s\033[0m" % (code, t)) if tty else (lambda code, t: t)
+    ok_s, bad_s, warn_s, dim = c("32", "✓"), c("31", "✗"), c("33", "!"), (lambda t: c("2", t))
+    todo = []
+
+    def head(title):
+        print("\n" + c("1;38;5;214", title))
+
+    def line(mark, label, value, extra=""):
+        print("  %s %-12s %s%s" % (mark, label, value, ("  " + dim(extra)) if extra else ""))
+
+    print(c("1;38;5;214", "♪ backingtrack %s" % __version__) + dim("  — diagnosi"))
+
+    head("Programma")
+    line(ok_s, "versione", __version__)
+    line(ok_s, "installato", _install_kind())
+    line(ok_s, "python", sys.version.split()[0], sys.executable)
+    line(ok_s, "comando", shutil.which("backingtrack") or dim("(non nel PATH: usa python -m backingtrack)"))
+
+    head("Dipendenze")
+    ff = shutil.which("ffmpeg")
+    if ff:
+        ver = subprocess.run([ff, "-version"], stdout=subprocess.PIPE, universal_newlines=True).stdout.split("\n")[0]
+        line(ok_s, "ffmpeg", ver.split(" Copyright")[0].replace("ffmpeg version ", ""), ff)
+    else:
+        line(bad_s, "ffmpeg", "NON trovato", "serve per mix e mp3")
+        todo.append(("installa ffmpeg", _install_hint("ffmpeg")))
+    for mod, label in (("numpy", "numpy"), ("yaml", "PyYAML")):
         try:
-            __import__(mod)
-            print("  ✓ %-8s ok" % mod)
+            m = __import__(mod)
+            line(ok_s, label, getattr(m, "__version__", "ok"))
         except ImportError:
-            ok = False
-            print("  ✗ %-8s mancante (pip install numpy pyyaml)" % mod)
-    print("  campioni in %s" % (packs.data_dir() / "packs"))
-    for name, state, title, lic in packs.status():
-        print("  %s %-8s %-10s %s [%s]" % ("✓" if state.startswith("installato") else "·", name, state, title, lic))
-    if not ok:
-        sys.exit(1)
+            line(bad_s, label, "mancante")
+            todo.append(("installa %s" % label, "pip install numpy pyyaml"))
+    try:
+        import gi
+        gi.require_version("Gtk", "4.0")
+        gi.require_version("Adw", "1")
+        from gi.repository import Adw, Gtk
+        line(ok_s, "GUI", "GTK %d.%d · libadwaita %d.%d" % (Gtk.get_major_version(), Gtk.get_minor_version(),
+                                                           Adw.get_major_version(), Adw.get_minor_version()),
+             "backingtrack gui")
+    except (ImportError, ValueError) as e:
+        line(warn_s, "GUI", "non disponibile (opzionale)", str(e).split("\n")[0][:60])
+        hint = _install_hint("gui")
+        if "pipx" in sys.prefix:
+            hint += "  poi  pipx reinstall --system-site-packages backingtrack"
+        todo.append(("per la GUI installa GTK 4 e libadwaita", hint))
+
+    head("Campioni  " + dim(str(packs.data_dir() / "packs")))
+    total = 0.0
+    for name, info in packs.PACKS.items():
+        needed = info.get("default")
+        if packs.is_installed(name):
+            mb = packs.disk_mb(name)
+            total += mb
+            # integrità: rileggo qualche campione a caso (scopre file corrotti o troncati)
+            files = [f for f in packs.pack_dir(name).rglob("*.wav")]
+            bad = 0
+            for f in random.sample(files, min(12, len(files))):
+                try:
+                    read_wav(f)
+                except (ValueError, OSError):
+                    bad += 1
+            if bad:
+                line(bad_s, name, "%d file illeggibili su %d controllati" % (bad, min(12, len(files))))
+                todo.append(("reinstalla i campioni '%s'" % name, "backingtrack setup %s --force" % name))
+            else:
+                line(ok_s, name, "%5.0f MB  %s" % (mb, info["title"].split(" — ")[0]), "%d file" % len(files))
+        elif needed:
+            line(bad_s, name, "mancante  %s" % info["title"].split(" — ")[0], "~%d MB" % info.get("light_mb", 0))
+            todo.append(("scarica i campioni", "backingtrack setup"))
+        else:
+            line(dim("·"), name, dim("non installato  %s" % info["title"].split(" — ")[0]),
+                 "opzionale: backingtrack setup %s" % name)
+    print("  %s %-12s %.0f MB" % (" ", "totale", total))
+
+    head("Cartelle")
+    line(ok_s, "dati", packs.data_dir())
+    cache = packs.cache_dir()
+    line(ok_s, "cache", "%s  %s" % (cache, dim("%.0f MB" % _dir_mb(cache))))
+    line(ok_s, "output", Path("out").resolve(), "default di render")
+
+    print()
+    todo = list(dict.fromkeys(todo))
+    if todo:
+        print(c("1;33", "Da sistemare:"))
+        for i, (what, cmd) in enumerate(todo, 1):
+            print("  %d. %s\n     %s" % (i, what, c("1", cmd)))
+        if any(what != "per la GUI installa GTK 4 e libadwaita" for what, _ in todo):
+            sys.exit(1)
+    else:
+        print(c("1;32", "Tutto pronto! 🎸") + "  prova:  backingtrack examples/blues/sweet_home_chicago.yaml")
 
 
 def build_parser():
@@ -204,11 +364,17 @@ def build_parser():
     s.add_argument("--force", action="store_true", help="reinstalla")
     rm = sub.add_parser("remove", help="cancella pacchetti di campioni")
     rm.add_argument("packs", nargs="+")
+    up = sub.add_parser("update", help="aggiorna il programma e scarica solo i campioni mancanti")
+    up.add_argument("--ref", default="main", help="branch o tag da installare (default main)")
+    up.add_argument("--src", help="aggiorna da una cartella locale (per provare prima di pubblicare)")
+    up.add_argument("--force", action="store_true", help="aggiorna anche un'installazione di sviluppo")
 
     sub.add_parser("grooves", help="elenca i groove")
     n = sub.add_parser("new", help="crea un file canzone di esempio")
     n.add_argument("file")
     sub.add_parser("doctor", help="controlla dipendenze e campioni")
+    gp = sub.add_parser("gui", help="apre l'editor grafico (GTK)")
+    gp.add_argument("file", nargs="?", help="brano da aprire")
     return ap
 
 
@@ -228,6 +394,8 @@ def main(argv=None):
             cmd_setup(args)
         elif args.command == "remove":
             cmd_remove(args)
+        elif args.command == "update":
+            cmd_update(args)
         elif args.command == "grooves":
             for k, g in GROOVES.items():
                 print("  %-19s %s" % (k, g["desc"]))
@@ -239,6 +407,9 @@ def main(argv=None):
             print("creato %s — modificalo e poi: backingtrack %s" % (p, p))
         elif args.command == "doctor":
             cmd_doctor(args)
+        elif args.command == "gui":
+            from .gui import main as gui_main
+            sys.exit(gui_main([args.file] if args.file else []))
         else:
             ap.print_help()
     except SongError as e:

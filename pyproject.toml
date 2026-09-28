@@ -21,8 +21,14 @@ classifiers = [
 [project.scripts]
 backingtrack = "backingtrack.cli:main"
 
+[project.gui-scripts]
+backingtrack-gui = "backingtrack.gui:main"
+
 [tool.setuptools]
 packages = ["backingtrack"]
 
 [tool.setuptools.dynamic]
 version = { attr = "backingtrack.__version__" }
+
+[tool.setuptools.package-data]
+backingtrack = ["data/*"]
