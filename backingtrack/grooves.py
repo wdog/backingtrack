@@ -55,6 +55,21 @@ SLOW_TURN = [(3, SNARE, 100), (3, RIDE, 78), (3 + T1, RIDE, 45), (3 + T2, SNARE,
 SLOW_FILL = [(2, SNARE, 80), (2 + T1, SNARE, 65), (2 + T2, SNARE, 90),
              (3, HT, 95), (3 + T1, MT, 95), (3 + T2, LT, 105), (2, KICK, 90)]
 
+HALFTIME_BEAT = [(0, KICK, 112), (1.5, KICK, 95), (2, SNARE, 118)] + hat8(92, 62)
+HALFTIME_TURN = [(3, SNARE, 90), (3.25, SNARE, 70), (3.5, SNARE, 100), (3.75, SNARE, 110), (3, KICK, 90)]
+GALLOP_BEAT = ([(b + d, KICK, 105 if d == 0 else 85) for b in (0, 2) for d in (0, 0.5, 0.75)] +
+               [(1, SNARE, 115), (3, SNARE, 115)] + hat8(90, 60))
+RHUMBA_BEAT = ([(0, KICK, 100), (1.5, KICK, 88), (2, KICK, 95), (3.5, KICK, 85),
+                (1, STICK, 95), (2.5, STICK, 70), (3, STICK, 100)] + hat8(80, 55))
+RHUMBA_TURN = [(3, STICK, 100), (3, KICK, 90), (3.5, LT, 90), (3.75, LT, 100)]
+FUNK_BEAT = ([(0, KICK, 110), (0.75, KICK, 85), (2.5, KICK, 95), (1, SNARE, 112), (3, SNARE, 112),
+              (1.75, SNARE, 35), (3.25, SNARE, 30), (3.5, OHH, 70)] +
+             [(i / 4, HH, 85 if i % 2 == 0 else 45) for i in range(16) if i != 14])
+FUNK_TURN = [(3, SNARE, 112), (3.25, SNARE, 60), (3.5, SNARE, 80), (3.75, SNARE, 95), (3, KICK, 90)]
+STOP_BEAT = [(0, KICK, 118), (0, SNARE, 90), (0, CRASH, 90), (1, HH, 45), (2, HH, 45), (3, HH, 45)]
+COUNTRY_BEAT = ([(0, KICK, 95), (2, KICK, 90), (1, SNARE, 100), (3, SNARE, 100)] +
+                [(i / 2, SNARE, 30) for i in (1, 3, 5, 7)] + hat8(70, 45, PEDAL))
+
 STRUM_DDU = [(0, "D", 110), (1, "D", 95), (1.5, "U", 75), (2.5, "U", 80), (3, "D", 95), (3.5, "U", 75)]
 
 # amp: clean | blues | twang | crunch | high     double: chitarra doppiata L/R
@@ -78,6 +93,23 @@ GROOVES = {
         amp="clean", double=False, swing=0, bass_style="slow",
         guitar=[(0, "D", 105), (1.5, "U", 60), (2, "D", 85), (2.5, "U", 65), (3.5, "U", 60)],
         drums=BALLAD_BEAT, turn=BALLAD_TURN, fill=BALLAD_FILL),
+    "rock/halftime": dict(
+        desc="Rock: half-time pesante, power chord lunghi e rullante sul 3",
+        amp="high", double=True, swing=0, bass_style="slow",
+        guitar=[(0, "P", 118, 1.9), (2, "P", 108, 1.4), (3.5, "Pm", 95)],
+        drums=HALFTIME_BEAT, turn=HALFTIME_TURN, fill=ROCK_FILL),
+    "rock/gallop": dict(
+        desc="Rock: galoppo (ottavo + due sedicesimi) in palm mute, stile heavy metal classico",
+        amp="high", double=True, swing=0, bass_style="eighths",
+        guitar=[(b + d, "P" if (b, d) == (0, 0) else "Pm", 110 if d == 0 else 88, 0.25 if (b, d) == (0, 0) else None)
+                for b in range(4) for d in (0, 0.5, 0.75)],
+        drums=GALLOP_BEAT, turn=ROCK_TURN, fill=ROCK_FILL),
+    "rock/pop": dict(
+        desc="Pop-rock: pennate a sedicesimi D D DU DU, crunch leggero",
+        amp="crunch", double=True, swing=0, bass_style="eighths",
+        guitar=[(0, "D", 105), (0.5, "D", 78), (1, "D", 95), (1.5, "U", 70), (1.75, "U", 58), (2, "D", 98),
+                (2.5, "D", 78), (3, "D", 95), (3.5, "U", 70), (3.75, "U", 58)],
+        drums=ROCK_BEAT, turn=ROCK_TURN, fill=ROCK_FILL),
     "blues": dict(
         desc="Blues: shuffle boogie 5-6 (stile Jimmy Reed)",
         amp="blues", double=False, swing=1, bass_style="walk", mute_len=0.4,
@@ -97,6 +129,22 @@ GROOVES = {
         amp="blues", double=False, swing=0, bass_style="slow",
         guitar=[(0, "D", 100)] + [(b + T2, "U", 60) for b in range(4)] + [(b, "D", 80) for b in (1, 2, 3)],
         drums=SLOW_BEAT, turn=SLOW_TURN, fill=SLOW_FILL),
+    "blues/rhumba": dict(
+        desc="Blues rhumba: boogie dritto con ritmo latino e side-stick",
+        amp="blues", double=False, swing=0, bass_style="walk", mute_len=0.35,
+        guitar=boogie("55665566"),
+        drums=RHUMBA_BEAT, turn=RHUMBA_TURN, fill=SHUFFLE_FILL),
+    "blues/funk": dict(
+        desc="Funk blues: chop a sedicesimi (chicken scratch) su accordi di nona",
+        amp="clean", double=False, swing=0, bass_style="eighths",
+        guitar=[(0, "D", 100, 0.2), (0.5, "C", 70), (0.75, "C", 85), (1, "C", 100), (1.5, "C", 65), (1.75, "C", 80),
+                (2, "D", 95, 0.2), (2.5, "C", 70), (3, "C", 100), (3.25, "C", 65), (3.5, "C", 80)],
+        drums=FUNK_BEAT, turn=FUNK_TURN, fill=ROCK_FILL),
+    "blues/stop": dict(
+        desc="Blues stop-time: un colpo secco sul primo tempo, poi silenzio (per le strofe cantate)",
+        amp="blues", double=False, swing=1, bass_style="stop",
+        guitar=[(0, "D", 118, 0.6)],
+        drums=STOP_BEAT, turn=SHUFFLE_TURN, fill=SHUFFLE_FILL),
     "rockabilly": dict(
         desc="Rockabilly: boom-chick (basso/accordo) + train beat, slapback",
         amp="twang", double=False, swing=0.5, bass_style="rootfifth", slap=True,
@@ -113,6 +161,16 @@ GROOVES = {
         guitar=[(0, "D", 102), (0.5, "Um", 55), (1, "C", 105), (1.5, "Um", 55),
                 (2, "D", 98), (2.5, "Um", 55), (3, "C", 105), (3.5, "Um", 55)],
         drums=BILLY_BEAT, turn=SHUFFLE_TURN, fill=SHUFFLE_FILL),
+    "country": dict(
+        desc="Country: boom-chick dritto, basso alternato e spazzolata sul 2 e 4",
+        amp="twang", double=False, swing=0, bass_style="rootfifth",
+        guitar=[(0, "B", 100), (1, "C", 95), (2, "B5", 98), (3, "C", 95), (3.5, "Um", 55)],
+        drums=COUNTRY_BEAT, turn=TRAIN_TURN, fill=SHUFFLE_FILL),
+    "country/shuffle": dict(
+        desc="Country shuffle: boom-chick in swing, stile Texas / honky-tonk",
+        amp="twang", double=False, swing=0.7, bass_style="walk",
+        guitar=[(0, "B", 100), (1, "C", 95), (1.5, "Um", 55), (2, "B5", 98), (3, "C", 95), (3.5, "Um", 55)],
+        drums=SHUFFLE_BEAT, turn=SHUFFLE_TURN, fill=SHUFFLE_FILL),
 }
 
 

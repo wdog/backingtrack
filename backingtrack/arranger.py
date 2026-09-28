@@ -91,6 +91,8 @@ class Arranger:
             hits = [(i / 2, 0) for i in range(8)]
         elif style == "rootfifth":
             hits = [(0, 0), (1, 7), (2, 0), (3, 7)]
+        elif style == "stop":
+            hits = [(0, 0)]
         elif style == "slow":
             hits = [(0, 0), (1, 7), (2, 9), (3, 7)]
         else:  # walk: R 3 5 6 | b7 6 5 3
@@ -153,7 +155,10 @@ class Arranger:
                     c = chord_at(segs, beat)
                     if c is None:
                         continue
-                    end_beat = beat + ev[3] if len(ev) > 3 else (events[k + 1][0] if k + 1 < len(events) else 4)
+                    if len(ev) > 3 and ev[3] is not None:
+                        end_beat = beat + ev[3]
+                    else:
+                        end_beat = events[k + 1][0] if k + 1 < len(events) else 4
                     for s, _, _ in segs:  # non suonare oltre un cambio accordo
                         if beat < s < end_beat:
                             end_beat = s
