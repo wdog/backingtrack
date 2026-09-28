@@ -10,27 +10,38 @@ import numpy as np
 from .errors import SongError
 from .render import SR
 
-# catene ffmpeg per ogni ampli: preamp (passa-basso anti-aliasing) -> saturazione -> cassa (EQ + passa-basso)
+# Ampli: pre = preamp + saturazione (con passa-basso anti-aliasing), ir = cassa vera (convoluzione),
+# cab_eq = cassa simulata con EQ se le IR non sono installate, post = timbro finale.
 AMPS = {
-    "clean": ("highpass=f=70,acompressor=threshold=0.1:ratio=3:attack=5:release=120:makeup=2,"
-              "volume=3dB,asoftclip=type=tanh:threshold=0.9,"
-              "equalizer=f=110:t=q:w=1:g=2,equalizer=f=800:t=q:w=1:g=-2,equalizer=f=2800:t=q:w=1.2:g=3,"
-              "lowpass=f=6500,lowpass=f=7000"),
-    "blues": ("highpass=f=90,acompressor=threshold=0.1:ratio=3:attack=5:release=120:makeup=2,"
-              + "lowpass=f=6000,volume=12dB,asoftclip=type=tanh,"
-              "equalizer=f=120:t=q:w=1:g=2,equalizer=f=1000:t=q:w=1:g=2,equalizer=f=3000:t=q:w=1:g=-1,"
-              "lowpass=f=5000,lowpass=f=5500"),
-    "twang": ("highpass=f=80,acompressor=threshold=0.12:ratio=4:attack=3:release=100:makeup=2,"
-              "volume=3dB,asoftclip=type=tanh:threshold=0.85,"
-              "equalizer=f=150:t=q:w=1:g=1,equalizer=f=900:t=q:w=1:g=-2,equalizer=f=3500:t=q:w=1:g=5,"
-              "lowpass=f=8000"),
-    "crunch": ("highpass=f=130,lowpass=f=5000,volume=20dB,asoftclip=type=tanh,"
-               "highpass=f=90,equalizer=f=110:t=q:w=1:g=3,equalizer=f=650:t=q:w=1:g=-2,"
+    "clean": dict(
+        pre="highpass=f=70,acompressor=threshold=0.1:ratio=3:attack=5:release=120:makeup=2,"
+            "volume=3dB,asoftclip=type=tanh:threshold=0.9",
+        ir="1_Nacho_Guacamole_44.wav", post="equalizer=f=800:t=q:w=1:g=-1.5",
+        cab_eq="equalizer=f=110:t=q:w=1:g=2,equalizer=f=800:t=q:w=1:g=-2,equalizer=f=2800:t=q:w=1.2:g=3,"
+               "lowpass=f=6500,lowpass=f=7000"),
+    "blues": dict(
+        pre="highpass=f=90,acompressor=threshold=0.1:ratio=3:attack=5:release=120:makeup=2,"
+            "lowpass=f=6000,volume=12dB,asoftclip=type=tanh",
+        ir="3_Wasabi_Warrior_44.wav", post="equalizer=f=1000:t=q:w=1:g=1.5",
+        cab_eq="equalizer=f=120:t=q:w=1:g=2,equalizer=f=1000:t=q:w=1:g=2,equalizer=f=3000:t=q:w=1:g=-1,"
+               "lowpass=f=5000,lowpass=f=5500"),
+    "twang": dict(
+        pre="highpass=f=80,acompressor=threshold=0.12:ratio=4:attack=3:release=100:makeup=2,"
+            "volume=3dB,asoftclip=type=tanh:threshold=0.85",
+        ir="1_Nacho_Guacamole_44.wav", post="equalizer=f=900:t=q:w=1:g=-2,equalizer=f=3500:t=q:w=1:g=3",
+        cab_eq="equalizer=f=150:t=q:w=1:g=1,equalizer=f=900:t=q:w=1:g=-2,equalizer=f=3500:t=q:w=1:g=5,"
+               "lowpass=f=8000"),
+    "crunch": dict(
+        pre="highpass=f=130,lowpass=f=5000,volume=20dB,asoftclip=type=tanh,highpass=f=90",
+        ir="5_Don_Spinacio_44.wav", post="equalizer=f=650:t=q:w=1:g=-2",
+        cab_eq="equalizer=f=110:t=q:w=1:g=3,equalizer=f=650:t=q:w=1:g=-2,"
                "equalizer=f=1800:t=q:w=1:g=3,lowpass=f=4800,lowpass=f=5200"),
-    "high": ("highpass=f=180,lowpass=f=4500,volume=28dB,asoftclip=type=tanh,highpass=f=120,volume=10dB,"
-             "asoftclip=type=atan,"
-             "equalizer=f=100:t=q:w=1:g=4,equalizer=f=500:t=q:w=1:g=-5,equalizer=f=2200:t=q:w=1:g=3,"
-             "lowpass=f=4200,lowpass=f=4600"),
+    "high": dict(
+        pre="highpass=f=180,lowpass=f=4500,volume=28dB,asoftclip=type=tanh,highpass=f=120,volume=10dB,"
+            "asoftclip=type=atan",
+        ir="12_World_Collider_44.wav", post="equalizer=f=500:t=q:w=1:g=-4",
+        cab_eq="equalizer=f=100:t=q:w=1:g=4,equalizer=f=500:t=q:w=1:g=-5,equalizer=f=2200:t=q:w=1:g=3,"
+               "lowpass=f=4200,lowpass=f=4600"),
 }
 PAN = {"L": (0.95, 0.3), "R": (0.3, 0.95), "C": (0.72, 0.69)}
 DRUMS_CHAIN = ("acompressor=threshold=0.125:ratio=3:attack=10:release=100:makeup=1.5,"
@@ -48,16 +59,23 @@ def family(bus):
     return "guitar" if bus.startswith("gtr:") else bus
 
 
-def bus_chain(bus):
+def bus_graph(bus, cab_dir=None):
+    """Filtergraph ffmpeg per un bus: ([ingressi extra], grafo con ingresso [0] e uscita [out])."""
     if bus == "drums":
-        return DRUMS_CHAIN
+        return [], "[0]%s[out]" % DRUMS_CHAIN
     if bus == "bass":
-        return "pan=mono|c0=c0," + BASS_CHAIN + ",pan=stereo|c0=c0|c1=c0"
+        return [], "[0]pan=mono|c0=c0,%s,pan=stereo|c0=c0|c1=c0[out]" % BASS_CHAIN
     _, amp, rest = bus.split(":", 2)
-    side = rest.split(":")[0]
-    l, r = PAN[side]
-    chain = "pan=mono|c0=c0," + AMPS[amp] + ",pan=stereo|c0=%g*c0|c1=%g*c0" % (l, r)
-    return chain
+    a = AMPS[amp]
+    l, r = PAN[rest.split(":")[0]]
+    pan = "pan=stereo|c0=%g*c0|c1=%g*c0" % (l, r)
+    tail = ",".join(x for x in (a["post"], "highpass=f=70", pan) if x)
+    if bus.endswith(":slap"):
+        tail += ",asplit[a][b];[b]%s[e];[a][e]amix=inputs=2:normalize=0" % SLAP
+    ir = Path(cab_dir) / a["ir"] if cab_dir else None
+    if ir and ir.is_file():
+        return [str(ir)], "[0]pan=mono|c0=c0,%s[p];[p][1]afir=dry=10:wet=10[c];[c]%s[out]" % (a["pre"], tail)
+    return [], "[0]pan=mono|c0=c0,%s,%s,%s[out]" % (a["pre"], a["cab_eq"], tail)
 
 
 def rms(x):
@@ -123,7 +141,7 @@ def _run(cmd):
         raise SongError("ffmpeg ha fallito:\n%s" % p.stderr[-2500:])
 
 
-def mix(buses, out_wav, tmp, mp3=None, stems_dir=None, loudness=-16.0):
+def mix(buses, out_wav, tmp, mp3=None, stems_dir=None, loudness=-16.0, cab_dir=None):
     """buses: {nome: array stereo}. Scrive out_wav (e mp3). Ritorna i livelli usati."""
     ffmpeg = _ffmpeg()
     tmp = Path(tmp)
@@ -140,11 +158,11 @@ def mix(buses, out_wav, tmp, mp3=None, stems_dir=None, loudness=-16.0):
         # rumore a -140 dB: evita i numeri denormali (lentissimi) nei filtri durante i silenzi
         x = x + np.random.default_rng(i).standard_normal(x.shape).astype(np.float32) * 1e-7
         write_raw(tmp / ("in%d.raw" % i), x)
-        chain = bus_chain(name)
-        if name.endswith(":slap"):
-            chain += ",asplit[a][b];[b]%s[e];[a][e]amix=inputs=2:normalize=0" % SLAP
-        _run([ffmpeg, "-y", "-v", "error"] + raw + ["-i", str(tmp / ("in%d.raw" % i)),
-              "-filter_complex", chain] + raw[:2] + [str(tmp / ("out%d.raw" % i))])
+        extra, graph = bus_graph(name, cab_dir)
+        cmd = [ffmpeg, "-y", "-v", "error"] + raw + ["-i", str(tmp / ("in%d.raw" % i))]
+        for f in extra:
+            cmd += ["-i", f]
+        _run(cmd + ["-filter_complex", graph, "-map", "[out]"] + raw[:2] + [str(tmp / ("out%d.raw" % i))])
 
     with ThreadPoolExecutor(len(names)) as ex:
         list(ex.map(lambda a: process(*a), enumerate(names)))

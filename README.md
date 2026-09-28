@@ -38,9 +38,11 @@
 
 ## ✨ Caratteristiche
 
-- 🎸 **Chitarra vera**: campioni multi-velocity di una Epiphone elettrica, con voicing barré, pennate giù/su,
-  palm mute, bicordi boogie, boom-chick. Ogni corda si comporta come una corda: una nota alla volta.
-- 🔊 **Simulazione ampli**: 5 suoni (clean, blues, twang, crunch, high gain) con saturazione e cassa;
+- 🎸 **Chitarra vera**: una Gretsch Anniversary hollowbody campionata nota per nota, con più dinamiche
+  e round robin, più i veri colpi **staccato** per palm mute e chop. Voicing barré, pennate giù/su,
+  bicordi boogie, boom-chick. Ogni corda si comporta come una corda: una nota alla volta.
+- 🔊 **Ampli e casse vere**: 5 suoni (clean, blues, twang, crunch, high gain); la cassa è una vera Marshall 4×12
+  (Greenback o V30) riprodotta con le sue *impulse response*;
   nel rock la chitarra è **doppiata L/R** come in studio; nel rockabilly c'è lo **slapback**.
 - 🥁 **Batteria acustica campionata**: Salamander Drumkit, fino a 20 round robin per pezzo,
   hi-hat aperto/chiuso, ghost note, variazioni ogni 4 battute, **rullate** a fine sezione, piatto sugli attacchi.
@@ -79,9 +81,10 @@
 | 🐍 **Python 3.8+** | tutto il programma | ovunque, facile da leggere e modificare |
 | 🔢 **numpy** | motore di campionamento, bilanciamento, riverbero | somma migliaia di note in pochi secondi, senza compilare niente |
 | 📄 **PyYAML** | legge il file canzone | YAML è leggibile e si scrive a mano senza fatica |
-| 🎬 **ffmpeg** | ampli, EQ, compressori, riverbero (`afir`), limiter, MP3, conversione FLAC | filtri audio professionali in C, velocissimi, installabile su ogni sistema |
+| 🎬 **ffmpeg** | ampli, cassa (convoluzione `afir`), EQ, compressori, riverbero, limiter, MP3, conversione FLAC | filtri audio professionali in C, velocissimi, installabile su ogni sistema |
 | 🎹 **SFZ** | formato degli strumenti | standard aperto (testo + WAV): librerie di qualità gratuite e con licenze chiare |
-| 🎸 **Emilyguitar** | campioni di chitarra | registrata in diretta (DI): con la simulazione ampli diventa clean, crunch o distorta |
+| 🎸 **Black & Green Guitars** | campioni di chitarra (Gretsch) | campionata ogni semitono, con staccato; registrata in diretta (DI), quindi l'ampli si sceglie dopo |
+| 🔈 **Jester's IR** | casse per chitarra | impulse response di Marshall 4×12 microfonate: il suono di una cassa vera, via convoluzione |
 | 🥁 **Salamander Drumkit** | campioni di batteria | kit acustico vero, tante dinamiche e round robin: niente "effetto mitraglietta" |
 
 **Perché non un soundfont General MIDI con fluidsynth?** È stata la prima versione: veloce da scrivere, ma
@@ -144,13 +147,34 @@ Senza installare niente puoi anche usare `python3 -m backingtrack` dalla cartell
 #### 3. Campioni (una volta sola)
 
 ```sh
-backingtrack setup          # chitarra + batteria (~370 MB da scaricare)
-backingtrack setup --bass   # aggiunge il contrabbasso (~265 MB)
-backingtrack doctor         # controlla che sia tutto a posto
+backingtrack setup          # chitarra + batteria + casse: ~300 MB
+backingtrack setup --bass   # aggiunge il contrabbasso: ~56 MB
+backingtrack doctor         # cosa è installato e quanto spazio occupa
 ```
 
-I campioni finiscono in `~/.local/share/backingtrack` (Linux), `~/Library/Application Support/backingtrack` (macOS)
-o `%LOCALAPPDATA%\backingtrack` (Windows). Puoi cambiare cartella con la variabile `BACKINGTRACK_HOME`.
+### 💾 Perché ~300 MB?
+
+Un suono realistico viene da **registrazioni vere**: ogni nota della chitarra e ogni colpo di batteria
+sono file audio separati, registrati a più dinamiche (piano, medio, forte) e più volte (i *round robin*,
+così due colpi di fila non sono mai identici). Il programma in sé pesa meno di 200 KB: lo spazio è tutto campioni.
+
+`setup` **non scarica le librerie intere**: legge le mappe SFZ e prende **solo i campioni che il programma usa**,
+e al massimo 2 round robin per la chitarra e 6 per la batteria. Rispetto alle librerie complete il download scende da ~1,2 GB a ~300 MB.
+
+| Pacchetto | Cosa contiene | `setup` | `setup --full` |
+|---|---|---|---|
+| `gretsch` 🎸 | Gretsch Anniversary: note normali + staccato, E2–E6 | ~175 MB | ~270 MB |
+| `drums` 🥁 | Salamander Drumkit: cassa, rullante, hi-hat, tom, ride, crash | ~120 MB (salvata ~145 MB) | ~185 MB |
+| `cabs` 🔈 | 21 impulse response di casse Marshall 4×12 | ~5 MB | ~5 MB |
+| `bass` 🎻 | contrabbasso pizzicato (solo con `--bass`) | ~56 MB | ~130 MB |
+| `epiphone` 🎸 | chitarra alternativa, Epiphone solid body (opzionale) | ~40 MB | ~100 MB |
+
+- **Vuoi il massimo?** `backingtrack setup --full` scarica tutti i round robin: più varietà, circa il doppio dello spazio.
+- **Vuoi liberare spazio?** `backingtrack remove bass` (o qualsiasi pacchetto); per cancellare tutto elimina la cartella dei campioni.
+- **Dove finiscono?** In `~/.local/share/backingtrack` (Linux), `~/Library/Application Support/backingtrack` (macOS)
+  o `%LOCALAPPDATA%\backingtrack` (Windows). Puoi cambiare cartella con la variabile `BACKINGTRACK_HOME`
+  (es. un disco esterno).
+- Si scarica **una volta sola**: poi il programma funziona offline.
 
 ---
 
@@ -365,6 +389,7 @@ backingtrack render examples/blues/*.yaml --tempo 80 --mute guitar --bass --mp3 
 | `fills` | `true` | rullata sull'ultima battuta di ogni sezione |
 | `crash` | `true` | piatto all'inizio di ogni sezione |
 | `bass` | `false` | contrabbasso (serve `setup --bass`) |
+| `guitar` | `gretsch` | chitarra: `gretsch` (hollowbody) o `epiphone` (solid body, serve `setup epiphone`) |
 | `amp` | dal groove | forza l'ampli: `clean` `blues` `twang` `crunch` `high` |
 | `double` | dal groove | chitarra doppiata a sinistra e destra |
 | `slapback` | dal groove | eco slapback rockabilly |
@@ -448,7 +473,9 @@ backingtrack render <file.yaml>... [opzioni]
     --stems              salva guitar.wav, drums.wav, bass.wav separati
     --midi-only          solo il file MIDI
     --dry-run            mostra la struttura senza generare file
-backingtrack setup [--bass] [--force]      scarica i campioni
+backingtrack setup [pacchetti] [--bass] [--full] [--force]
+                                           scarica i campioni (default: gretsch drums cabs)
+backingtrack remove <pacchetto>...         cancella campioni e libera spazio
 backingtrack grooves                       elenco dei groove
 backingtrack new <file.yaml>               crea un file canzone di partenza
 backingtrack doctor                        controlla dipendenze e campioni
@@ -572,7 +599,7 @@ backingtrack/
 │   ├── sfz.py         # lettore SFZ e WAV
 │   ├── render.py      # sampler numpy
 │   ├── mixer.py       # ampli, EQ, riverbero, loudness (ffmpeg)
-│   ├── packs.py       # download e installazione campioni
+│   ├── packs.py       # download selettivo dei campioni
 │   └── midi.py        # export MIDI
 ├── examples/          # brani di esempio (blues, rock, rockabilly)
 ├── docs/              # immagini della documentazione
@@ -587,9 +614,9 @@ backingtrack/
 ## ❓ FAQ e problemi comuni
 
 <details>
-<summary><b>"campioni 'guitar' non installati"</b></summary>
+<summary><b>"campioni '...' non installati"</b></summary>
 
-Esegui `backingtrack setup`. Con `--bass` serve anche `backingtrack setup --bass`.
+Esegui `backingtrack setup`. Con `--bass` serve anche `backingtrack setup bass`, con `guitar: epiphone` serve `backingtrack setup epiphone`.
 </details>
 
 <details>
@@ -633,7 +660,9 @@ I campioni non sono inclusi nel repository: vengono scaricati dai rispettivi aut
 
 | Libreria | Autore | Licenza |
 |---|---|---|
-| [Emilyguitar](https://github.com/sfzinstruments/karoryfer.emilyguitar) | Karoryfer Samples / D. Smolken | CC0 1.0 |
+| [Black & Green Guitars](https://github.com/sfzinstruments/karoryfer.black-and-green-guitars) | Karoryfer Samples | CC0 1.0 |
+| [Jester's Emerald](https://www.jester-dyne-productions.com/emerald-ir-pack/) e [Brutal IR Pack](https://www.jester-dyne-productions.com/brutal-ir-pack/) | Jester Dyne Productions | gratuite, anche per uso commerciale |
+| [Emilyguitar](https://github.com/sfzinstruments/karoryfer.emilyguitar) (opzionale) | Karoryfer Samples / D. Smolken | CC0 1.0 |
 | [Salamander Drumkit](https://github.com/studiorack/salamander-drumkit) | Alexander Holm | CC-BY-SA 3.0 |
 | [Double bass (Rubner 1958)](https://github.com/sfzinstruments/dsmolken.double-bass) | D. Smolken | CC0 1.0 |
 

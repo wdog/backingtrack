@@ -77,8 +77,8 @@ d.text((60*S,36*S), "Come funziona", font=fh, fill=DARK)
 boxes = [
  ("song.yaml", ["tempo, groove", "sezioni e accordi", "ripetizioni"], (90,90,90)),
  ("Arranger", ["accordi → note", "pennate, swing, fill", "umanizzazione"], (192,57,43)),
- ("Sampler", ["numpy + SFZ", "chitarra Emilyguitar", "batteria Salamander"], (214,120,20)),
- ("Mixer", ["ffmpeg: ampli, cassa", "EQ, comp, riverbero", "slapback, limiter"], (40,110,150)),
+ ("Sampler", ["numpy + SFZ", "chitarra Gretsch", "batteria Salamander"], (214,120,20)),
+ ("Mixer", ["ffmpeg: ampli, cassa IR", "EQ, comp, riverbero", "slapback, limiter"], (40,110,150)),
  ("Output", ["WAV · MP3", "MIDI per la DAW", "stems separati"], (60,130,70)),
 ]
 bw, bh, y = 300*S, 300*S, 150*S

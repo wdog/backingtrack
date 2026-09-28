@@ -55,7 +55,7 @@ $Bt = Join-Path $Scripts "backingtrack.exe"
 Ok "installato in $Venv"
 
 if ($env:BT_NO_SAMPLES -ne "1") {
-    Step "Scarico i campioni (chitarra + batteria, ~370 MB)"
+    Step "Scarico i campioni (chitarra + batteria + casse, ~300 MB)"
     if ($env:BT_BASS -eq "1") { & $Bt setup --bass } else { & $Bt setup }
 }
 

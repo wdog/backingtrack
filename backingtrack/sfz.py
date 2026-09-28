@@ -26,7 +26,7 @@ def note_number(v):
     return (int(m.group(3)) + 1) * 12 + NOTE_NAMES[m.group(1).lower()] + {"#": 1, "b": -1, "": 0}[m.group(2)]
 
 
-def _read_text(path, defines, depth=0):
+def _read_text(path, defines, root, depth=0):
     if depth > 16:
         raise SongError("SFZ: troppi #include annidati")
     text = Path(path).read_text(encoding="utf-8", errors="replace")
@@ -42,7 +42,11 @@ def _read_text(path, defines, depth=0):
         parts = re.split(r'#include\s+"([^"]+)"', line)
         for i, part in enumerate(parts):
             if i % 2:
-                out.append(_read_text(Path(path).parent / part.replace("\\", "/"), defines, depth + 1))
+                rel = part.replace("\\", "/")
+                inc = Path(root) / rel  # come da specifica: relativo all'SFZ principale
+                if not inc.is_file():
+                    inc = Path(path).parent / rel
+                out.append(_read_text(inc, defines, root, depth + 1))
             else:
                 out.append(part)
         out.append("\n")
@@ -51,7 +55,7 @@ def _read_text(path, defines, depth=0):
 
 def parse(path):
     """Ritorna (control, [opcode della region, già uniti a global/master/group])."""
-    text = _read_text(path, {})
+    text = _read_text(path, {}, Path(path).parent)
     control, scopes, regions = {}, {"global": {}, "master": {}, "group": {}}, []
     target = None
     for chunk in re.split(r"(<\w+>)", text):
@@ -207,17 +211,21 @@ class Instrument:
         rand = rng.random()
         count = self.seq.get(key, 0)
         self.seq[key] = count + 1
-        out = []
+        out, candidates = [], []
         for r in self.by_key[key]:
             if not (r.lovel <= vel <= r.hivel):
                 continue
+            if any(not (lo <= ccs.get(n, 0) <= hi) for n, (lo, hi) in r.cc.items()):
+                continue
+            candidates.append(r)
             if not (r.lorand <= rand < r.hirand or (r.hirand >= 1 and rand >= r.lorand)):
                 continue
             if r.seq_length > 1 and count % r.seq_length + 1 != r.seq_position:
                 continue
-            if any(not (lo <= ccs.get(n, 0) <= hi) for n, (lo, hi) in r.cc.items()):
-                continue
             out.append(r)
+        if not out and candidates:
+            # round robin non installato (setup leggero): uno a caso tra quelli presenti
+            out = [rng.choice(candidates)]
         return out
 
     def sample(self, region):

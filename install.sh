@@ -4,7 +4,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/wdog/backingtrack/main/install.sh | bash
 #
 # Variabili opzionali:
-#   BT_BASS=1         installa anche il contrabbasso (~265 MB)
+#   BT_BASS=1         installa anche il contrabbasso (~56 MB)
 #   BT_NO_SAMPLES=1   non scaricare i campioni adesso
 #   BT_YES=1          non chiedere conferme (installa ffmpeg se manca)
 #   BT_REF=main       branch/tag da installare
@@ -124,7 +124,7 @@ ok "comando: $BT ($("$BT" --version))"
 if [ "${BT_NO_SAMPLES:-0}" = 1 ]; then
   warn "campioni saltati: più tardi esegui  backingtrack setup"
 else
-  step "Scarico i campioni (chitarra + batteria, ~370 MB)"
+  step "Scarico i campioni (chitarra + batteria + casse, ~300 MB)"
   if [ "${BT_BASS:-0}" = 1 ]; then "$BT" setup --bass; else "$BT" setup; fi
 fi
 

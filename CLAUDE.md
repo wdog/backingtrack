@@ -41,7 +41,10 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 - `mixer.py` — ffmpeg: catena per bus in parallelo (ampli `AMPS`, EQ, comp, slapback), numpy bilancia le
   famiglie (`LEVELS`) e prepara la mandata; ffmpeg fa riverbero a convoluzione (`afir` con IR generata),
   glue compressor, gain di loudness e `alimiter`.
-- `packs.py` — pacchetti campioni (`PACKS`): download zip GitHub → estrazione → FLAC→WAV (ffmpeg).
+- `packs.py` — pacchetti campioni (`PACKS`). Repo GitHub: download **selettivo** file per file da
+  raw.githubusercontent (API tree → SFZ → `_needed_samples` → solo campioni usati, max `rr` round robin;
+  `setup --full` = senza limite). MAI usare gli zip di GitHub: applicano `.gitattributes` (`eol=crlf`) e
+  corrompono i WAV (successo con black-and-green-guitars). IR casse (`cabs`) da zip Jester (ok). FLAC→WAV 16 bit.
   Dati in `~/.local/share/backingtrack` (Linux), `~/Library/Application Support/...` (macOS),
   `%LOCALAPPDATA%\backingtrack` (Windows); override con `BACKINGTRACK_HOME`. Mappa GM→Salamander in `SALAMANDER_MAP`.
 
@@ -57,10 +60,15 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 
 ## Campioni
 
-- chitarra: Karoryfer Emilyguitar (CC0), registrata DI → serve la simulazione ampli in `mixer.AMPS`.
+- chitarra (default `gretsch`): Karoryfer Black & Green Guitars, Gretsch "green" (CC0), DI, ogni semitono;
+  `Programs/04-green_twang.sfz` + `05-green_staccato.sfz` per le note stoppate (`muted="real"`).
+  Alternativa `epiphone` = Emilyguitar (CC0), palm mute simulato. Scelta con `guitar:` nel YAML.
+- casse: Jester's Emerald (Marshall 4x12 Greenback) + Brutal (V30), IR 44.1 kHz; `AMPS[amp]["ir"]`, convoluzione
+  `afir` in `mixer.bus_graph`; senza IR si usa `cab_eq`.
 - batteria: Salamander Drumkit (CC-BY-SA 3.0), hi-hat aperto/chiuso via CC4 sul tasto 42.
 - basso: D. Smolken double bass pizz (CC0), opzionale.
-Nessun campione nel repo: si scaricano con `setup`.
+Nessun campione nel repo: si scaricano con `setup` (~300 MB default). `sfz.Instrument.select` ripiega su un round robin
+presente se quello estratto non è installato. `backingtrack remove <pack>` libera spazio.
 
 ## Vincoli e scelte
 

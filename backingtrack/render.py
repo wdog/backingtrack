@@ -73,7 +73,7 @@ def mix_voices(voices, buses, sr=SR):
         r = v["region"]
         release = 0.006 if v.get("choke") and r.off_mode == "fast" else max(r.release, 0.02)
         if v["muted"]:
-            release = 0.05
+            release = 0.04 if v["muted"] == "real" else 0.05
         length = n
         if v["end"] is not None:
             length = min(n, int((v["end"] - v["start"]) * sr) + int(release * sr))
@@ -85,8 +85,8 @@ def mix_voices(voices, buses, sr=SR):
             if rel_start < length:
                 k = length - rel_start
                 y[:, rel_start:] *= np.linspace(1, 0, k, dtype=np.float32) ** 2
-        if v["muted"]:
-            # palm mute: decadimento rapido e suono più scuro
+        if v["muted"] is True:
+            # palm mute simulato (chitarre senza campioni staccato): decadimento rapido e suono più scuro
             t = np.arange(length, dtype=np.float32) / sr
             y = y * np.exp(-t / 0.09)
             k = 12

@@ -42,7 +42,8 @@ sections:
 # arrangement: [Intro, Strofa x2, Intro]
 """
 
-COMMANDS = ("render", "setup", "grooves", "new", "doctor")
+COMMANDS = ("render", "setup", "remove", "grooves", "new", "doctor")
+GUITARS = ("gretsch", "epiphone")
 
 
 def render_song(path, args):
@@ -91,8 +92,16 @@ def render_song(path, args):
     buses = new_buses(bus_names, secs + 4)
 
     if groups["guitar"]:
-        s = Sampler(_instrument("guitar"))
-        mix_voices(s.voices(groups["guitar"], rng), buses)
+        pack = str(song.get("guitar", "gretsch"))
+        if pack not in GUITARS:
+            raise SongError("guitar: '%s' sconosciuta (usa %s)" % (pack, ", ".join(GUITARS)))
+        notes = groups["guitar"]
+        mute_sfz = packs.sfz_path(pack, "mute_sfz")
+        if mute_sfz:  # note stoppate con i veri campioni staccato
+            muted = [dict(n, muted="real") for n in notes if n["muted"]]
+            notes = [n for n in notes if not n["muted"]]
+            mix_voices(Sampler(_instrument(pack, "mute_sfz")).voices(muted, rng), buses)
+        mix_voices(Sampler(_instrument(pack)).voices(notes, rng), buses)
     if groups["drums"]:
         drum_map = packs.PACKS["drums"]["drum_map"]
 
@@ -110,7 +119,8 @@ def render_song(path, args):
     mp3 = out.with_suffix(".mp3") if args.mp3 else None
     stems = out.parent / (out.name + "_stems") if args.stems else None
     with tempfile.TemporaryDirectory(prefix="backingtrack-") as tmp:
-        mix(buses, wav, tmp, mp3=mp3, stems_dir=stems)
+        cabs = packs.pack_dir("cabs") if packs.is_installed("cabs") else None
+        mix(buses, wav, tmp, mp3=mp3, stems_dir=stems, cab_dir=cabs)
     print("   WAV   %s" % wav)
     for label, p in (("MP3", mp3), ("STEMS", stems)):
         if p:
@@ -121,17 +131,29 @@ def render_song(path, args):
 _INSTRUMENTS = {}
 
 
-def _instrument(name):
-    if name not in _INSTRUMENTS:
-        _INSTRUMENTS[name] = Instrument(packs.sfz_path(name))
-    return _INSTRUMENTS[name]
+def _instrument(name, key="sfz"):
+    if (name, key) not in _INSTRUMENTS:
+        _INSTRUMENTS[name, key] = Instrument(packs.sfz_path(name, key))
+    return _INSTRUMENTS[name, key]
 
 
 def cmd_setup(args):
-    names = ["guitar", "drums"] + (["bass"] if args.bass else [])
+    names = list(args.packs) or list(packs.DEFAULT_PACKS)
+    if args.bass and "bass" not in names:
+        names.append("bass")
+    unknown = [n for n in names if n not in packs.PACKS]
+    if unknown:
+        raise SongError("pacchetti sconosciuti: %s (disponibili: %s)" % (", ".join(unknown), ", ".join(packs.PACKS)))
     for n in names:
-        packs.install(n, force=args.force)
+        packs.install(n, force=args.force or args.full, full=args.full)
     print("\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml")
+
+
+def cmd_remove(args):
+    for n in args.packs:
+        if n not in packs.PACKS:
+            raise SongError("pacchetto sconosciuto: %s" % n)
+        packs.remove(n)
 
 
 def cmd_doctor(_args):
@@ -150,7 +172,7 @@ def cmd_doctor(_args):
             print("  ✗ %-8s mancante (pip install numpy pyyaml)" % mod)
     print("  campioni in %s" % (packs.data_dir() / "packs"))
     for name, state, title, lic in packs.status():
-        print("  %s %-8s %-10s %s [%s]" % ("✓" if state == "installato" else "·", name, state, title, lic))
+        print("  %s %-8s %-10s %s [%s]" % ("✓" if state.startswith("installato") else "·", name, state, title, lic))
     if not ok:
         sys.exit(1)
 
@@ -176,8 +198,12 @@ def build_parser():
     r.add_argument("--dry-run", action="store_true", help="mostra la struttura senza scrivere file")
 
     s = sub.add_parser("setup", help="scarica e installa i campioni")
-    s.add_argument("--bass", action="store_true", help="installa anche il contrabbasso (~265 MB)")
+    s.add_argument("packs", nargs="*", help="pacchetti (default: %s)" % " ".join(packs.DEFAULT_PACKS))
+    s.add_argument("--bass", action="store_true", help="aggiunge il contrabbasso (~45 MB)")
+    s.add_argument("--full", action="store_true", help="tutti i round robin: qualità massima, ~4 volte più grande")
     s.add_argument("--force", action="store_true", help="reinstalla")
+    rm = sub.add_parser("remove", help="cancella pacchetti di campioni")
+    rm.add_argument("packs", nargs="+")
 
     sub.add_parser("grooves", help="elenca i groove")
     n = sub.add_parser("new", help="crea un file canzone di esempio")
@@ -200,6 +226,8 @@ def main(argv=None):
                 render_song(song, args)
         elif args.command == "setup":
             cmd_setup(args)
+        elif args.command == "remove":
+            cmd_remove(args)
         elif args.command == "grooves":
             for k, g in GROOVES.items():
                 print("  %-19s %s" % (k, g["desc"]))
