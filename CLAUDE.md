@@ -112,3 +112,19 @@ Tipi evento chitarra: `D U C P B B5 R5 R6 R7` + suffisso `m` (stoppato). Aggiorn
 ## Aggiungere un ampli
 
 Nuova chiave in `mixer.AMPS` (catena ffmpeg su segnale mono DI a -20 dBFS RMS) e usarla come `amp` di un groove.
+
+## Stato e prossimi passi (29/09/2026)
+
+Stato: `main` = `gui` (commit f8d0d2c), tutto committato, nessun remote (da pubblicare su github.com/wdog/backingtrack).
+Installazione locale: pipx editable con `--system-site-packages` (il comando `backingtrack` usa i file del repo).
+
+Da fare / verificare:
+1. Drag & drop reale col mouse nella griglia battute e dalla tavolozza (verificata solo la logica simulata).
+2. Celle battute: 4 per riga anche con colonna accordi stretta (entry width_chars=3, da verificare a vista).
+3. Ascoltare i groove nuovi (rock/halftime, gallop, pop, blues/rhumba, funk, stop, country, country/shuffle).
+4. Pubblicare: `git remote add origin …`, push `main` e `gui`; poi provare `curl … install.sh | bash` e `backingtrack update`.
+5. Idee non fatte: batteria multi-microfono (Naked Drums, 1,3 GB) come pacchetto opzionale; IR di cassa aperta tipo Fender per clean/rockabilly.
+
+Preferenze dell'utente sulla GUI: niente tendine strette (Adw.ComboRow/Gtk.DropDown) né pulsanti segmentati;
+sì a pulsanti-menu con sottomenu e griglie; battute compatte a griglia col colore sezione; gli piace la barra del player.
+Aggiornare sempre README (e CLAUDE.md) quando cambia qualcosa di visibile.
