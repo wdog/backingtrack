@@ -34,7 +34,7 @@ TRI = ["dal groove", "sì", "no"]
 TRI_VAL = [None, True, False]
 
 SECTION_COLORS = ["#e8591a", "#2f9bd8", "#2ec27e", "#c061cb", "#f5c211", "#e01b8a", "#1abc9c", "#8b6fdc"]
-STYLE_EMOJI = {"rock": "🤘", "blues": "🎷", "rockabilly": "🕺", "country": "🤠"}
+STYLE_EMOJI = {"rock": "🤘", "blues": "🎷", "rockabilly": "🕺", "country": "🤠", "jazz": "🎺"}
 
 CSS = ("""
 :root { --accent-bg-color: #e8811a; --accent-fg-color: #ffffff; --accent-color: #f5a623; }
@@ -243,7 +243,7 @@ def icon_button(icon, tooltip, callback, *args):
     return b
 
 
-STYLE_NAMES = {"rock": "Rock", "blues": "Blues", "rockabilly": "Rockabilly", "country": "Country"}
+STYLE_NAMES = {"rock": "Rock", "blues": "Blues", "rockabilly": "Rockabilly", "country": "Country", "jazz": "Jazz"}
 
 
 class MenuRow(Adw.ActionRow):

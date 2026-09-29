@@ -1,0 +1,14 @@
+# Kenny Dorham, 1963. Bossa in do minore di 16 battute, con modulazione a Reb.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Blue Bossa (progressione)"
+tempo: 140
+groove: jazz/bossa
+
+sections:
+  - name: Tema
+    repeat: 4
+    chords: |
+      | Cm7 | Cm7 | Fm7 | Fm7 |
+      | Dm7b5 | G7 | Cm7 | Cm7 |
+      | Ebm7 | Ab7 | Dbmaj7 | Dbmaj7 |
+      | Dm7b5 | G7 | Cm7 | Dm7b5 G7 |

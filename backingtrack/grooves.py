@@ -5,6 +5,7 @@ Evento chitarra: (beat, tipo, velocity[, durata in beat])
   C  chop: 4 corde alte stoppate        P  power chord
   B / B5  nota di basso: tonica / quinta
   R5 R6 R7  bicordi boogie (tonica + 5a / 6a / 7a minore)
+  J  voicing jazz a 4 note (tonica, 7a, 3a, 5a/estensione)
   suffisso "m" = stoppato (palm mute)
 
 Evento batteria: (beat, nota GM, velocity). I beat in levare (.5) vengono spostati dallo swing.
@@ -66,6 +67,18 @@ FUNK_BEAT = ([(0, KICK, 110), (0.75, KICK, 85), (2.5, KICK, 95), (1, SNARE, 112)
               (1.75, SNARE, 35), (3.25, SNARE, 30), (3.5, OHH, 70)] +
              [(i / 4, HH, 85 if i % 2 == 0 else 45) for i in range(16) if i != 14])
 FUNK_TURN = [(3, SNARE, 112), (3.25, SNARE, 60), (3.5, SNARE, 80), (3.75, SNARE, 95), (3, KICK, 90)]
+# jazz: ride "ding ding-da", charleston sul pedale (2 e 4), cassa piuma
+JAZZ_RIDE = [(0, RIDE, 95), (1, RIDE, 100), (1 + T2, RIDE, 65), (2, RIDE, 92), (3, RIDE, 100), (3 + T2, RIDE, 65)]
+JAZZ_BEAT = JAZZ_RIDE + [(1, PEDAL, 75), (3, PEDAL, 75)] + [(b, KICK, 38) for b in range(4)]
+JAZZ_TURN = [(2 + T2, SNARE, 55), (3 + T2, SNARE, 80), (3 + T2, KICK, 70)]
+JAZZ_FILL = [(2, SNARE, 70), (2 + T2, SNARE, 60), (3, SNARE, 85), (3 + T1, MT, 80), (3 + T2, LT, 95), (3, KICK, 70)]
+JAZZ_BALLAD = ([(b, SNARE, 30) for b in range(4)] + [(b + T2, SNARE, 18) for b in range(4)] +
+               [(0, RIDE, 60), (2, RIDE, 60), (1, PEDAL, 55), (3, PEDAL, 55), (0, KICK, 35)])
+JAZZ_BALLAD_TURN = [(3, SNARE, 40), (3 + T2, SNARE, 50)]
+BOSSA_BEAT = ([(0, KICK, 85), (1.5, KICK, 70), (2, KICK, 85), (3.5, KICK, 70),
+               (0, STICK, 80), (1.5, STICK, 75), (3, STICK, 80)] + hat8(55, 40))
+BOSSA_TURN = [(2.5, STICK, 75), (3, STICK, 80), (3.5, KICK, 75)]
+BOSSA_FILL = [(3, STICK, 85), (3.5, LT, 75), (3.75, LT, 85), (3, KICK, 80)]
 STOP_BEAT = [(0, KICK, 118), (0, SNARE, 90), (0, CRASH, 90), (1, HH, 45), (2, HH, 45), (3, HH, 45)]
 COUNTRY_BEAT = ([(0, KICK, 95), (2, KICK, 90), (1, SNARE, 100), (3, SNARE, 100)] +
                 [(i / 2, SNARE, 30) for i in (1, 3, 5, 7)] + hat8(70, 45, PEDAL))
@@ -172,6 +185,31 @@ GROOVES = {
         guitar=[(0, "B", 100), (1, "C", 95), (1.5, "Um", 55), (2, "B5", 98), (3, "C", 95), (3.5, "Um", 55)],
         drums=SHUFFLE_BEAT, turn=SHUFFLE_TURN, fill=SHUFFLE_FILL),
 }
+
+
+GROOVES.update({
+    "jazz": dict(
+        desc="Jazz swing: comping a semiminime alla Freddie Green, ride e walking bass",
+        amp="clean", double=False, swing=1, bass_style="walk",
+        guitar=[(b, "J", 88 if b % 2 == 0 else 80, 0.55) for b in range(4)],
+        drums=JAZZ_BEAT, turn=JAZZ_TURN, fill=JAZZ_FILL),
+    "jazz/charleston": dict(
+        desc="Jazz swing: comping Charleston (1 e levare del 2), accordi corti",
+        amp="clean", double=False, swing=1, bass_style="walk",
+        guitar=[(0, "J", 90, 0.4), (1.5, "J", 82, 0.4)],
+        drums=JAZZ_BEAT, turn=JAZZ_TURN, fill=JAZZ_FILL),
+    "jazz/ballad": dict(
+        desc="Jazz ballad: accordi lunghi e morbidi, spazzole, basso in due",
+        amp="clean", double=False, swing=1, bass_style="slow",
+        guitar=[(0, "J", 80, 1.9), (2, "J", 68, 1.9)],
+        drums=JAZZ_BALLAD, turn=JAZZ_BALLAD_TURN, fill=JAZZ_BALLAD_TURN),
+    "jazz/bossa": dict(
+        desc="Bossa nova: basso alternato col pollice e accordi sincopati, cross-stick",
+        amp="clean", double=False, swing=0, bass_style="rootfifth",
+        guitar=[(0, "B", 88), (1, "J", 70, 0.45), (1.5, "J", 72, 0.45), (2, "B5", 84),
+                (2.5, "J", 70, 0.45), (3.5, "J", 74, 0.45)],
+        drums=BOSSA_BEAT, turn=BOSSA_TURN, fill=BOSSA_FILL),
+})
 
 
 def get_groove(name):

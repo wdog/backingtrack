@@ -5,7 +5,7 @@ Guida per Claude Code su questo repository.
 ## Progetto
 
 `backingtrack`: CLI Python che genera backing track (chitarra ritmica + batteria, contrabbasso opzionale)
-da un file YAML con tempo, groove, sezioni ripetibili e accordi. Stili: rock, blues, rockabilly.
+da un file YAML con tempo, groove, sezioni ripetibili e accordi. Stili: rock, blues, rockabilly, country, jazz.
 Lingua di UI, messaggi di errore, commenti e documentazione: **italiano**.
 
 ## Comandi
@@ -117,7 +117,7 @@ presente se quello estratto non è installato. `backingtrack remove <pack>` libe
 ## Aggiungere un groove
 
 Nuova voce in `GROOVES` con `desc, amp, double, swing, bass_style, guitar, drums, turn, fill`.
-Tipi evento chitarra: `D U C P B B5 R5 R6 R7` + suffisso `m` (stoppato). Aggiornare la tabella groove nel README.
+Tipi evento chitarra: `D U C P B B5 R5 R6 R7 J` (J = voicing jazz a 4 note, `Chord.jazz`) + suffisso `m` (stoppato). Aggiornare la tabella groove nel README.
 
 ## Aggiungere un ampli
 

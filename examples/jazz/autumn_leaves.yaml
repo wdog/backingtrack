@@ -1,0 +1,22 @@
+# Joseph Kosma, 1945. Standard in sol minore, AABC di 32 battute.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Autumn Leaves (progressione)"
+tempo: 130
+groove: jazz
+
+sections:
+  - name: A
+    repeat: 2
+    chords: |
+      | Cm7 | F7 | Bbmaj7 | Ebmaj7 |
+      | Am7b5 | D7 | Gm6 | Gm6 |
+  - name: B
+    chords: |
+      | Am7b5 | D7 | Gm6 | Gm6 |
+      | Cm7 | F7 | Bbmaj7 | Ebmaj7 |
+  - name: C
+    chords: |
+      | Am7b5 | D7 | Gm7 Gb7 | Fm7 E7 |
+      | Ebmaj7 | Am7b5 D7 | Gm6 | Gm6 |
+
+arrangement: [A x2, B, C, A x2, B, C]

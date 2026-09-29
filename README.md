@@ -51,7 +51,7 @@
   hi-hat aperto/chiuso, ghost note, variazioni ogni 4 battute, **rullate** a fine sezione, piatto sugli attacchi.
 - 🎻 **Contrabbasso opzionale** (pizzicato) con walking, root-fifth o ottavi.
 - 🔁 **Sezioni ripetibili**: `repeat: 2` o un `arrangement` tipo `[Intro, Strofa x2, Rit, Strofa, Rit x2]`.
-- 🎚️ **19 groove** tra rock, blues, rockabilly e country (half-time, galoppo, rhumba, funk, stop-time, boom-chick…), anche diversi sezione per sezione.
+- 🎚️ **23 groove** tra rock, blues, rockabilly, country e jazz (half-time, galoppo, rhumba, funk, stop-time, boom-chick…), anche diversi sezione per sezione.
 - 🧑‍🎤 **Suona umano**: micro-timing, velocity variabile, velocità della pennata legata alla dinamica, swing regolabile.
 - 🎛️ **Mix automatico**: EQ, compressione, riverbero a convoluzione, bilanciamento, limiter e loudness costante.
 - 🖥️ **Editor grafico** (GTK 4): sezioni colorate, griglia delle battute con **drag & drop** degli accordi,
@@ -673,6 +673,10 @@ Errori comuni, con il messaggio che ricevi:
 | 🕺 `rockabilly/strum` | twang | accordi pieni sul battere, chop su 2 e 4, slapback · slapback, swing 0.6 | swing rockabilly |
 | 🤠 `country` | twang | boom-chick dritto, basso alternato e spazzolata sul 2 e 4 | spazzolata sul 2 e 4, hi-hat a pedale |
 | 🤠 `country/shuffle` | twang | boom-chick in swing, stile Texas / honky-tonk · swing 0.7 | shuffle con hi-hat terzinato |
+| 🎺 `jazz` | clean | comping a semiminime alla Freddie Green, voicing jazz a 4 note · swing 1 | ride "ding ding-da", charleston su 2 e 4 |
+| 🎺 `jazz/charleston` | clean | comping Charleston (1 e levare del 2), accordi corti · swing 1 | ride jazz |
+| 🎺 `jazz/ballad` | clean | accordi lunghi e morbidi, basso in due · swing 1 | spazzole (rullante leggero), ride sul 1 e 3 |
+| 🎺 `jazz/bossa` | clean | bossa nova: basso alternato col pollice e accordi sincopati | cross-stick, cassa bossa, hi-hat leggero |
 
 `backingtrack grooves` mostra l'elenco aggiornato.
 
@@ -818,6 +822,22 @@ backingtrack render examples/rockabilly/*.yaml --mp3     # tutto il rockabilly
 | [`train_kept_a_rollin`](examples/rockabilly/train_kept_a_rollin.yaml) | Train Kept A-Rollin' *(in stile)* | 180 | `rockabilly/boogie` |
 | [`tutti_frutti`](examples/rockabilly/tutti_frutti.yaml) | Tutti Frutti | 180 | `rockabilly/boogie` |
 | [`whole_lotta_shakin`](examples/rockabilly/whole_lotta_shakin.yaml) | Whole Lotta Shakin' Goin' On | 150 | `rockabilly/boogie` |
+
+</details>
+
+<details>
+<summary><b>🎺 Jazz</b> — 8 brani</summary>
+
+| File | Brano | BPM | Groove |
+|---|---|---|---|
+| [`all_of_me`](examples/jazz/all_of_me.yaml) | All of Me | 140 | `jazz/charleston` |
+| [`autumn_leaves`](examples/jazz/autumn_leaves.yaml) | Autumn Leaves | 130 | `jazz` |
+| [`blue_bossa`](examples/jazz/blue_bossa.yaml) | Blue Bossa | 140 | `jazz/bossa` |
+| [`fly_me_to_the_moon`](examples/jazz/fly_me_to_the_moon.yaml) | Fly Me to the Moon | 120 | `jazz` |
+| [`jazz_blues_F`](examples/jazz/jazz_blues_F.yaml) | Jazz blues in F | 150 | `jazz` |
+| [`rhythm_changes_Bb`](examples/jazz/rhythm_changes_Bb.yaml) | Rhythm changes in Bb | 180 | `jazz` |
+| [`so_what`](examples/jazz/so_what.yaml) | So What | 136 | `jazz/charleston` |
+| [`take_the_a_train`](examples/jazz/take_the_a_train.yaml) | Take the A Train | 160 | `jazz` |
 
 </details>
 

@@ -98,6 +98,25 @@ class Chord:
     def top(self, n=4):
         return self.full()[-n:]
 
+    def jazz(self):
+        """Voicing jazz a 4 note su corde non adiacenti: tonica, settima (o sesta/ottava), terza, quinta
+        o estensione (9, 13). Tonica sulla 6a: corde 6-4-3-2; sulla 5a: corde 5-3-2-1."""
+        r, rs = self.low_root(), self.root_string()
+        if self.third is None:
+            return self.power()
+        seventh = self.seventh if self.seventh is not None else (9 if self.third == 4 else 12)
+        top = self.fifth + 12
+        if self.ext == 21:
+            top = 21
+        elif self.ext is not None:
+            top = self.ext + 12 if self.ext + 12 > self.third + 12 else self.ext + 24
+        notes = [r, r + seventh, r + self.third + 12, r + top]
+        strings = [rs, rs - 2, rs - 3, rs - 4]
+        if self.bass != self.root:  # slash: il basso al posto della tonica
+            b = r - (self.root - self.bass) % 12
+            notes[0] = b if b >= 40 else b + 12
+        return list(zip(notes, strings))
+
     def power(self):
         r = self.low_root()
         return self._strung([r, r + (self.fifth or 7), r + 12])

@@ -68,6 +68,8 @@ class Arranger:
             notes, muted = chord.top(4), True
         elif base == "P":
             notes = chord.power()
+        elif base == "J":
+            notes = chord.jazz()
         elif base in ("B", "B5"):
             notes = chord.bass_note("5" if base == "B5" else "R")
         elif base in ("R5", "R6", "R7"):

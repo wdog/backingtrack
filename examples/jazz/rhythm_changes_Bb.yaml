@@ -1,0 +1,22 @@
+# Rhythm changes in sib: gli accordi di "I Got Rhythm" (Gershwin, 1930), base di Oleo, Anthropology…
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Rhythm changes in Bb"
+tempo: 180
+groove: jazz
+
+sections:
+  - name: A
+    repeat: 2
+    chords: |
+      | Bbmaj7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 |
+      | Fm7 Bb7 | Ebmaj7 Ebm7 | Dm7 G7 | Cm7 F7 |
+  - name: Bridge
+    chords: |
+      | D7 | D7 | G7 | G7 |
+      | C7 | C7 | F7 | F7 |
+  - name: A finale
+    chords: |
+      | Bbmaj7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 |
+      | Fm7 Bb7 | Ebmaj7 Ebm7 | Cm7 F7 | Bb6 |
+
+arrangement: [A x2, Bridge, A finale, A x2, Bridge, A finale]
