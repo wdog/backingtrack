@@ -41,7 +41,7 @@ class Sampler:
             if cc_for:
                 key, cc = cc_for(key)
             for r in self.ins.select(key, n["vel"], rng, cc):
-                data = self._pitched_sample(r, key - r.center + r.tune)
+                data = self._pitched_sample(r, key - r.center + r.tune + self.ins.tune_correction(r))
                 if data is None:
                     continue
                 gain = 10 ** (r.volume / 20) * r.vel_gain(n["vel"]) ** self.vel_exp * n.get("gain", 1.0)

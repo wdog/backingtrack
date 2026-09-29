@@ -4,7 +4,11 @@ Supporta: <control>/<global>/<master>/<group>/<region>, #define/#include, defaul
 key/lokey/hikey/pitch_keycenter (numeri o nomi), lovel/hivel, lorand/hirand, seq_length/seq_position,
 locc/hicc, trigger, volume/group_volume, amp_veltrack, amp_velcurve_N, tune/transpose,
 offset/end, ampeg_release, group/off_by/off_mode, loop_mode.
+
+Intonazione automatica (strumenti intonati): ogni campione viene misurato una volta e corretto
+di quanto è calante/crescente rispetto al suo pitch_keycenter; le misure restano in un JSON accanto all'SFZ.
 """
+import json
 import re
 import struct
 from pathlib import Path
@@ -169,15 +173,54 @@ def read_wav(path):
     return x.reshape(-1, ch).T.copy(), sr
 
 
+def pitch_offset_cents(data, sr, key, max_cents=50):
+    """Scarto in cent della parte stabile del campione rispetto alla nota `key`; None se non misurabile.
+
+    Autocorrelazione nella finestra dopo l'attacco, cercando il periodo solo entro ±1 semitono
+    da quello atteso (niente errori d'ottava). Scarti oltre max_cents non sono stonature ma altro: ignorati.
+    """
+    x = data.mean(axis=0) if data.ndim > 1 else data
+    t0, t1 = int(0.25 * sr), int(0.85 * sr)
+    if len(x) < t1:
+        t0, t1 = int(0.03 * sr), len(x)
+    x = x[t0:t1].astype(np.float64)
+    expected = 440 * 2 ** ((key - 69) / 12)
+    period = sr / expected
+    if len(x) < period * 8:
+        return None
+    x -= x.mean()
+    n = len(x)
+    spec = np.fft.rfft(x * np.hanning(n), 2 * n)
+    ac = np.fft.irfft(np.abs(spec) ** 2)[:n]
+    lo, hi = max(2, int(period / 1.06)), min(n - 2, int(period * 1.06) + 1)
+    if hi <= lo or ac[0] <= 0:
+        return None
+    lag = lo + int(np.argmax(ac[lo:hi]))
+    if ac[lag] < 0.5 * ac[0]:  # periodicità debole: misura inaffidabile
+        return None
+    a, b, c = ac[lag - 1], ac[lag], ac[lag + 1]
+    den = a - 2 * b + c
+    lag = lag + (0.5 * (a - c) / den if den else 0)
+    cents = 1200 * np.log2(sr / lag / expected)
+    return float(cents) if abs(cents) <= max_cents else None
+
+
 class Instrument:
-    def __init__(self, sfz_file):
+    def __init__(self, sfz_file, autotune=False, root=None, cc=None):
+        """root: cartella del pacchetto, dove cercare per nome i campioni con percorsi non risolvibili;
+        cc: valori predefiniti dei controller (es. {100: 127} per il suono microfonato di Shinyguitar)."""
         sfz_file = Path(sfz_file)
+        self.autotune = autotune
+        self._tuning_file = sfz_file.parent / ".backingtrack-tuning.json"
+        self._tuning, self._tuning_dirty = None, False
+        self._base = sfz_file.parent
         control, ops_list = parse(sfz_file)
         default_path = control.get("default_path", "").replace("\\", "/")
         self.cc_defaults = {int(k[6:]): int(float(v)) for k, v in control.items() if k.startswith("set_cc")}
+        self.cc_defaults.update(cc or {})
         base = sfz_file.parent
         index = {}
-        for p in base.rglob("*.wav"):
+        for p in Path(root or base).rglob("*.wav"):
             index.setdefault(p.name.lower(), p)
         self.regions = []
         for i, ops in enumerate(ops_list):
@@ -227,6 +270,35 @@ class Instrument:
             # round robin non installato (setup leggero): uno a caso tra quelli presenti
             out = [rng.choice(candidates)]
         return out
+
+    def tune_correction(self, region):
+        """Semitoni da aggiungere per riportare il campione all'intonazione giusta (0 se autotune spento)."""
+        if not self.autotune:
+            return 0.0
+        if self._tuning is None:
+            try:
+                self._tuning = json.loads(self._tuning_file.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                self._tuning = {}
+        try:
+            rel = region.sample.relative_to(self._base.parent).as_posix()
+        except ValueError:
+            rel = str(region.sample)
+        k = "%s@%d" % (rel, region.center)
+        if k not in self._tuning:
+            data, sr = self.sample(region)
+            cents = pitch_offset_cents(data, sr, region.center) if data is not None else None
+            self._tuning[k] = round(cents, 1) if cents is not None else 0.0
+            self._tuning_dirty = True
+        return -self._tuning[k] / 100
+
+    def save_tuning(self):
+        if self._tuning_dirty:
+            try:
+                self._tuning_file.write_text(json.dumps(self._tuning, indent=0, sort_keys=True), encoding="utf-8")
+                self._tuning_dirty = False
+            except OSError:
+                pass
 
     def sample(self, region):
         key = region.sample

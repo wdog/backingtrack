@@ -33,7 +33,8 @@ QUALITY_CHOICES = [
     ("m7b5", "semidiminuito"), ("aug", "aumentato"),
 ]
 AMPS = ["clean", "blues", "twang", "crunch", "high"]
-GUITARS = ["gretsch", "epiphone"]
+GUITARS = ["gretsch", "epiphone", "archtop", "archtop_mic"]
+BASSES = [False, True, "ebass", "sneakybass"]  # valori di `bass:` (true = contrabbasso)
 FLAT_KEYS = {"F", "Bb", "Eb", "Ab", "Db", "Gb"}
 
 # modelli: (nome, [battute con gradi]) — gradi: I bIII IV V bVI bVII ii iii vi, suffissi dopo ":"

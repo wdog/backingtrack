@@ -11,7 +11,7 @@ from backingtrack.arranger import PPQ, Arranger
 from backingtrack.errors import SongError
 from backingtrack.grooves import GROOVES
 from backingtrack.midi import write_midi
-from backingtrack.sfz import Instrument, note_number, read_wav
+from backingtrack.sfz import Instrument, note_number, pitch_offset_cents, read_wav
 from backingtrack.song import build_timeline, load_song, parse_bars
 from backingtrack.theory import Chord
 
@@ -159,6 +159,35 @@ class TestSfz(unittest.TestCase):
             self.assertEqual(seq, ["rr1.wav", "rr2.wav", "rr1.wav", "rr2.wav"])
             self.assertEqual(ins.select(52, 100, rng)[0].center, 51)
             self.assertEqual(ins.select(60, 100, rng), [])
+
+    @staticmethod
+    def _pluck(freq, sr=44100, secs=1.2):
+        """Nota pizzicata sintetica: armoniche che decadono."""
+        t = np.arange(int(sr * secs)) / sr
+        return sum(np.sin(2 * np.pi * freq * h * t) / h for h in range(1, 6)) * np.exp(-t * 2)
+
+    def test_pitch_offset(self):
+        a2 = 110.0
+        for cents in (-30, 0, 12, 25):
+            x = self._pluck(a2 * 2 ** (cents / 1200))
+            self.assertAlmostEqual(pitch_offset_cents(x[None, :], 44100, 45), cents, delta=1.5)
+        self.assertIsNone(pitch_offset_cents(self._pluck(a2 * 2 ** (70 / 1200))[None, :], 44100, 45))
+        noise = np.random.default_rng(1).standard_normal(44100)
+        self.assertIsNone(pitch_offset_cents(noise[None, :], 44100, 45))
+
+    def test_autotune_correction(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            self._wav(d / "a.wav", (self._pluck(110 * 2 ** (20 / 1200)) * 0.5)[None, :].astype(np.float32))
+            (d / "i.sfz").write_text("<region> sample=a.wav key=45\n")
+            ins = Instrument(d / "i.sfz", autotune=True)
+            r = ins.regions[0]
+            self.assertAlmostEqual(ins.tune_correction(r), -0.20, delta=0.015)
+            ins.save_tuning()
+            again = Instrument(d / "i.sfz", autotune=True)  # la misura resta in cache
+            self.assertTrue((d / ".backingtrack-tuning.json").is_file())
+            self.assertAlmostEqual(again.tune_correction(again.regions[0]), ins.tune_correction(r))
+            self.assertEqual(Instrument(d / "i.sfz").tune_correction(r), 0.0)
 
 
 if __name__ == "__main__":

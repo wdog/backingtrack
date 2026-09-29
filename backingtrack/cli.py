@@ -26,7 +26,7 @@ transpose: 0          # semitoni (+2 = un tono sopra)
 count_in: true        # una battuta di bacchette prima di partire
 ending: true          # accordo finale con piatto
 fills: true           # rullata sull'ultima battuta di ogni sezione
-bass: false           # contrabbasso (serve: backingtrack setup --bass)
+bass: false           # true = contrabbasso, oppure ebass / sneakybass (serve: backingtrack setup <nome>)
 
 sections:
   - name: Intro
@@ -44,7 +44,7 @@ sections:
 """
 
 COMMANDS = ("render", "setup", "remove", "update", "grooves", "new", "doctor", "gui")
-GUITARS = ("gretsch", "epiphone")
+GUITARS = tuple(packs.GUITAR_PACKS)
 
 
 def render_song(path, args):
@@ -123,8 +123,11 @@ def render(song, out, tempo=None, groove=None, bass=False, mute=None, mp3=False,
         s = Sampler(_instrument("drums"), vel_exp=0.55)
         mix_voices(s.voices(groups["drums"], rng, cc_for), buses)
     if groups["bass"]:
-        s = Sampler(_instrument("bass"))
+        s = Sampler(_instrument(packs.bass_pack(song.get("bass")) or "bass"))
         mix_voices(s.voices(groups["bass"], rng), buses)
+
+    for ins in _INSTRUMENTS.values():
+        ins.save_tuning()
 
     wav = out.with_suffix(".wav")
     mp3 = out.with_suffix(".mp3") if mp3 else None
@@ -146,7 +149,9 @@ _INSTRUMENTS = {}
 
 def _instrument(name, key="sfz"):
     if (name, key) not in _INSTRUMENTS:
-        _INSTRUMENTS[name, key] = Instrument(packs.sfz_path(name, key))
+        # chitarre e basso: i campioni hanno scarti d'intonazione fissi fino a ~30 cent, che negli accordi battono
+        _INSTRUMENTS[name, key] = Instrument(packs.sfz_path(name, key), autotune=name != "drums",
+                                             root=packs.pack_dir(name), cc=packs.PACKS[name].get("cc"))
     return _INSTRUMENTS[name, key]
 
 

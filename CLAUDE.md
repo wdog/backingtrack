@@ -40,14 +40,18 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 - `songfile.py` — modello dell'editor, senza GTK: `SONG_DEFAULTS`, `from_song_dict`/`to_song_dict`/`to_yaml`
   (solo valori non di default, `chords` come blocco `|`), `check_bar`/`describe_bar` (messaggi e lettura
   "Em 2 tempi · D 1 · C 1"), `TEMPLATES` a gradi (I, IV, V:7, vi:m…) → `template_bars(nome, tonalità)`.
-- `gui.py` — Adw.Application: schede Brano / Sezioni (3 colonne: elenco | accordi | impostazioni+modelli;
-  `Adw.OverlaySplitView` con `pin_sidebar`, si chiude solo < 600sp; colonne impilate < 820sp) / Arrangiamento / YAML;
+- `gui.py` — Adw.Application: schede Brano (+ ordine sezioni) / Sezioni (3 colonne: elenco | accordi | impostazioni+modelli;
+  `Adw.OverlaySplitView` con `pin_sidebar`, si chiude solo < 600sp; colonne impilate < 820sp) / YAML.
+  Solo le impostazioni base in vista: il resto passa da `self.advanced(widget)` ed è mostrato dall'azione stateful
+  `app.advanced` (pulsanti "Avanzate", ricordata in `data_dir()/gui.json`). Spiegazioni nei tooltip, non nei sottotitoli.
+  Genera e ascolta: `Alt+G` (anche `Ctrl+R`).
   barra menu File, Sezione, Brano, Riproduzione, Aiuto. Render in un thread con `cli.render(song_dict, out)`.
   Widget: `MenuRow` (pulsante-menu con sottomenu: `GrooveRow`, `ChoiceRow`, modelli), `GridPicker`/`PickerRow`
   (griglie note/tipi), `BarCell` (griglia battute; drag & drop con payload stringa 'chord:X' / 'bar:N', tasto destro),
   tavolozza accordi. Tutti espongono `selected` + get/set_selected come Adw.ComboRow (niente Gtk.DropDown/ComboRow).
   Player: `Player` (Gtk.MediaFile, forma d'onda PNG da ffmpeg `showwavespic`, linee sezioni) + `ChordStrip`
-  (ScrolledWindow orizzontale, battute larghe quanto il testo, autoscroll salvo scroll manuale), dati da `song_bars()`.
+  (ScrolledWindow orizzontale, battute larghe quanto il testo, numero battuta in piccolo, autoscroll salvo scroll manuale),
+  dati da `song_bars()` (`num` = battuta 1…, None per conteggio/finale); sotto il tempo "Battuta N / tot · sezione".
   Scorciatoie Spazio/B/S via `EventControllerKey` in CAPTURE, ignorate se il focus è un `Gtk.Editable`.
   Bozza automatica in `data_dir()/bozza.json`, proposta al riavvio. Colori sezione `SECTION_COLORS`, accento #e8811a.
 - `sfz.py` — parser SFZ minimale + `read_wav` (RIFF proprio: PCM 8/16/24/32 e float) + `Instrument.select`.
@@ -93,7 +97,13 @@ presente se quello estratto non è installato. `backingtrack remove <pack>` libe
 - `Gtk.MediaFile` ha `is_prepared()`, non `get_prepared()`; il seek prima di `is_prepared()` viene ignorato.
 - Nei test automatici la finestra non riceve frame: le animazioni (Revealer, OverlaySplitView) restano a metà.
   Il player usa Revealer senza transizione; per le schermate impostare `gtk-enable-animations` a False.
+- Esempi nel menu: `pyproject` installa `examples/` come `backingtrack/examples` (package-dir); `EXAMPLES` cerca
+  prima nel pacchetto, poi nel repo.
+- Il CSS ha uno stile proprio per pulsanti, menu (`.picker`), spinbutton, liste e switch (selettori `window …`),
+  perché il tema di sistema li rende squadrati. `.danger` = pulsante distruttivo morbido.
 - Adw.ToggleGroup non ha stile con questo tema e all'utente non piaceva: usare menu (`ChoiceRow`).
+- Il CSS dell'app è registrato a `STYLE_PROVIDER_PRIORITY_USER + 1`: il `~/.config/gtk-4.0/gtk.css` dell'utente
+  (tema tipo Arc) altrimenti ridipinge di blu `suggested-action`, slider e bordi. Selettori specifici (`.player button.play-btn`).
 
 ## Vincoli e scelte
 

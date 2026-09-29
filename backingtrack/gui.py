@@ -41,11 +41,6 @@ CSS = ("""
 @define-color accent_bg_color #e8811a;
 @define-color accent_fg_color #ffffff;
 @define-color accent_color #f5a623;
-button.suggested-action { background-color: #e8811a; color: white; }
-button.suggested-action:hover { background-color: #f0922e; }
-button.suggested-action:disabled { background-color: alpha(#e8811a, 0.35); }
-.navigation-sidebar > row:selected { background-color: alpha(#e8811a, 0.30); }
-switch:checked { background-color: #e8811a; }
 viewswitcher button:checked, stackswitcher button:checked { color: #f5a623; }
 entry:focus-within { outline-color: alpha(#f5a623, 0.7); }
 .emoji { font-size: 1.25em; min-width: 1.6em; }
@@ -53,17 +48,37 @@ entry:focus-within { outline-color: alpha(#f5a623, 0.7); }
 .status-ok { color: @success_color; }
 .status-bad { color: @warning_color; }
 .big-emoji { font-size: 3.5em; }
-.render-btn { font-weight: bold; }
+button.render-btn { font-weight: 800; letter-spacing: 0.02em; color: white; border: none; border-radius: 999px;
+                    padding: 5px 8px 5px 16px; min-height: 30px;
+                    background: linear-gradient(135deg, #f7b03c 0%, #e8811a 55%, #d9591a 100%);
+                    box-shadow: 0 2px 10px alpha(#e8811a, 0.45), inset 0 1px alpha(white, 0.35); }
+button.render-btn:hover { background: linear-gradient(135deg, #ffc257 0%, #f0922e 55%, #e4662a 100%);
+                          box-shadow: 0 3px 14px alpha(#e8811a, 0.65), inset 0 1px alpha(white, 0.45); }
+button.render-btn:active { background: linear-gradient(135deg, #e8811a, #c94f12); box-shadow: inset 0 2px 4px alpha(black, 0.3); }
+button.render-btn:disabled { background: alpha(#e8811a, 0.30); color: alpha(white, 0.6); box-shadow: none; }
+button.render-btn image { -gtk-icon-size: 18px; }
+.keycap { font-size: 0.72em; font-weight: 700; padding: 1px 7px; border-radius: 999px;
+          background: alpha(black, 0.22); color: alpha(white, 0.9); }
+.adv-toggle { font-size: 0.9em; }
+togglebutton.adv-toggle:checked, button.adv-toggle:checked { background: alpha(#e8811a, 0.25); color: #f5a623; }
+viewswitcher button:checked { color: #f5a623; box-shadow: inset 0 -3px #e8811a; }
 .bar-num { font-size: 0.8em; opacity: 0.6; font-feature-settings: "tnum"; }
 .bar-entry { font-weight: bold; font-size: 1.1em; }
 .bar-reading { font-size: 0.8em; opacity: 0.75; }
 .yaml-view { font-family: monospace; padding: 12px; }
 .summary { padding: 4px 12px; }
-.player { padding: 10px 16px; background: alpha(#e8811a, 0.08); border-top: 1px solid alpha(#e8811a, 0.35); }
-.play-btn { min-width: 52px; min-height: 52px; -gtk-icon-size: 24px; }
-.player-title { font-weight: bold; }
-.player-time { font-feature-settings: "tnum"; opacity: 0.7; font-size: 0.9em; }
-.player scale highlight { background: #e8811a; }
+.player { padding: 12px 16px 6px 16px; background: linear-gradient(to bottom, alpha(#e8811a, 0.10), alpha(#e8811a, 0.03));
+          border-top: 1px solid alpha(#e8811a, 0.35); }
+.player button.play-btn { min-width: 48px; min-height: 48px; -gtk-icon-size: 22px; padding: 0;
+                          background: #e8811a; color: white; border: none; outline: none;
+                          box-shadow: 0 2px 6px alpha(black, 0.3); }
+.player button.play-btn:hover { background: #f0922e; }
+.player .transport button.circular { min-width: 34px; min-height: 34px; }
+.player-title { font-weight: bold; font-size: 1.05em; }
+.player-time { font-feature-settings: "tnum"; font-size: 1.35em; font-weight: 300; }
+.player-total { font-feature-settings: "tnum"; opacity: 0.55; font-size: 0.9em; }
+.player-pos { font-feature-settings: "tnum"; font-size: 0.8em; opacity: 0.75; }
+.player scale trough highlight { background: #e8811a; }
 .player scale slider { background: #f5a623; }
 .picker { font-weight: 600; }
 .bar-grid { margin-top: 4px; }
@@ -85,19 +100,116 @@ toggle-group > separator { background: transparent; min-width: 0; }
 .grid-choice { min-width: 44px; font-weight: 600; }
 .wave { border-radius: 8px; background: alpha(currentColor, 0.06); }
 .builder { padding: 12px; }
+
+/* ---- controlli: stile proprio, indipendente dal tema di sistema (Arc & co. li fanno piatti e squadrati).
+   Solo dentro .bt-main (il contenuto della finestra): i dialoghi (salva, conferme) restano quelli di sistema. */
+.bt-main button, .bt-main menubutton > button, .bt-main spinbutton > button {
+    border: none; border-radius: 8px; box-shadow: none; background-image: none; text-shadow: none;
+    background-color: alpha(currentColor, 0.08); padding: 4px 12px; min-height: 26px;
+    transition: background-color 120ms ease, box-shadow 120ms ease; }
+.bt-main button:hover, .bt-main menubutton > button:hover { background-color: alpha(currentColor, 0.14); }
+.bt-main button:active, .bt-main button:checked, .bt-main menubutton > button:checked {
+    background-color: alpha(currentColor, 0.20); }
+.bt-main button:disabled { opacity: 0.45; }
+.bt-main button.flat, .bt-main menubutton.flat > button, .bt-main button.image-button.flat,
+.bt-main headerbar button:not(.render-btn), .bt-main spinbutton > button {
+    background-color: transparent; }
+.bt-main button.flat:hover, .bt-main headerbar button:not(.render-btn):hover, .bt-main spinbutton > button:hover {
+    background-color: alpha(currentColor, 0.10); }
+.bt-main button.image-button { padding: 4px 7px; }
+.bt-main button.circular { border-radius: 999px; padding: 4px; min-width: 30px; min-height: 30px; }
+.bt-main button.suggested-action, .bt-main menubutton.suggested-action > button {
+    color: white; font-weight: 600;
+    background-image: linear-gradient(to bottom, #f0922e, #e0741a);
+    box-shadow: 0 1px 3px alpha(black, 0.25), inset 0 1px alpha(white, 0.25); }
+.bt-main button.suggested-action:hover { background-image: linear-gradient(to bottom, #f8a13f, #e8811a); }
+.bt-main button.suggested-action:active { background-image: linear-gradient(to bottom, #d86d15, #c9600f); }
+.bt-main button.danger, .bt-main button.destructive-action {
+    background-color: alpha(#e5484d, 0.14); color: #ff8a8a; background-image: none; }
+.bt-main button.danger:hover, .bt-main button.destructive-action:hover { background-color: alpha(#e5484d, 0.30); color: white; }
+.bt-main button.pill { border-radius: 999px; padding: 10px 26px; }
+
+/* menu a scelta (groove, ampli, note…) */
+.bt-main menubutton.picker > button, .bt-main button.picker {
+    background-color: alpha(currentColor, 0.07); border-radius: 8px; padding: 4px 10px;
+    box-shadow: inset 0 0 0 1px alpha(currentColor, 0.08); }
+.bt-main menubutton.picker > button:hover { background-color: alpha(currentColor, 0.13); }
+.bt-main menubutton.picker > button:checked { background-color: alpha(#e8811a, 0.25);
+                                            box-shadow: inset 0 0 0 1px alpha(#e8811a, 0.6); }
+
+/* campi di testo e numeri */
+.bt-main spinbutton, .bt-main entry {
+    border: none; border-radius: 8px; box-shadow: inset 0 0 0 1px alpha(currentColor, 0.10);
+    background-color: alpha(currentColor, 0.05); background-image: none; min-height: 30px; }
+.bt-main spinbutton:focus-within, .bt-main entry:focus-within {
+    box-shadow: inset 0 0 0 2px alpha(#f5a623, 0.75); outline: none; }
+.bt-main spinbutton > text { padding: 0 8px; background: transparent; box-shadow: none; }
+.bt-main row spinbutton { background-color: transparent; }
+.bt-main entry > text { background: transparent; }
+
+/* liste di impostazioni a schede arrotondate */
+.bt-main list.boxed-list, .bt-main .boxed-list {
+    border: none; border-radius: 12px; background-color: alpha(currentColor, 0.035);
+    box-shadow: 0 0 0 1px alpha(currentColor, 0.07), 0 2px 6px alpha(black, 0.12); }
+.bt-main list.boxed-list > row { border-color: alpha(currentColor, 0.06); background-color: transparent; }
+.bt-main list.boxed-list > row:first-child { border-top-left-radius: 12px; border-top-right-radius: 12px; }
+.bt-main list.boxed-list > row:last-child { border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
+.bt-main list.boxed-list > row.activatable:hover { background-color: alpha(currentColor, 0.04); }
+.bt-main switch { border: none; border-radius: 999px; background-color: alpha(currentColor, 0.18); }
+.bt-main switch > slider { border: none; border-radius: 999px; background: white; box-shadow: 0 1px 2px alpha(black, 0.3); }
+.bt-main switch:checked { background-color: #e8811a; }
+
+/* barra laterale delle sezioni */
+.navigation-sidebar > row { border-radius: 10px; margin: 2px 6px; }
+.navigation-sidebar > row:hover { background-color: alpha(currentColor, 0.05); }
+.navigation-sidebar > row:selected { background-color: alpha(#e8811a, 0.22);
+                                     box-shadow: inset 3px 0 #e8811a; }
+.side-tools { padding-top: 6px; border-top: 1px solid alpha(currentColor, 0.08); }
+.card.builder { border: none; border-radius: 12px; background-color: alpha(currentColor, 0.035);
+                box-shadow: 0 0 0 1px alpha(currentColor, 0.07), 0 2px 6px alpha(black, 0.12); }
+paned > separator { background: alpha(currentColor, 0.06); min-width: 1px; }
+
+/* dialoghi (conferme, errori): il tema di sistema non ha gli stili libadwaita, qui padding e pulsanti */
+dialog.alert sheet { border-radius: 16px; border: none; box-shadow: 0 8px 32px alpha(black, 0.45), 0 0 0 1px alpha(currentColor, 0.08); }
+dialog.alert .message-area { padding: 28px 30px 22px 30px; border-spacing: 10px; }
+dialog.alert .message-area label.heading { font-size: 1.25em; font-weight: 800; }
+dialog.alert .message-area label.body { opacity: 0.85; }
+dialog.alert .response-area { padding: 4px 18px 18px 18px; border-spacing: 10px; border: none; }
+dialog.alert .response-area > button { border: none; border-radius: 10px; min-height: 36px; padding: 6px 18px;
+    background-image: none; box-shadow: none; background-color: alpha(currentColor, 0.09); font-weight: 600; margin: 0; }
+dialog.alert .response-area > button:hover { background-color: alpha(currentColor, 0.15); }
+dialog.alert .response-area > button.suggested-action { background-color: #e8811a; color: white; }
+dialog.alert .response-area > button.suggested-action:hover { background-color: #f0922e; }
+dialog.alert .response-area > button.destructive-action { background-color: alpha(#e5484d, 0.16); color: #ff8a8a; }
+dialog.alert .response-area > button.destructive-action:hover { background-color: alpha(#e5484d, 0.32); color: white; }
+dialog.alert separator { background: transparent; min-width: 0; min-height: 0; }
 """ + "".join(
     ".sec-%d.bar-cell { border-left-color: %s; background: alpha(%s, 0.10); } .sec-%d.dot { color: %s; }\n"
     % (i, c, c, i, c) for i, c in enumerate(SECTION_COLORS))).encode()
 
 # --------------------------------------------------------------------------- widget di supporto
 
-def spin_row(title, lo, hi, step, digits=0, subtitle=None):
+def spin_row(title, lo, hi, step, digits=0, tip=None):
+    """Riga numerica; la spiegazione va nel tooltip, così la pagina resta compatta."""
     row = Adw.SpinRow.new_with_range(lo, hi, step)
     row.set_title(title)
     row.set_digits(digits)
-    if subtitle:
-        row.set_subtitle(subtitle)
+    if tip:
+        row.set_tooltip_text(tip)
     return row
+
+
+def tip(row, text):
+    row.set_tooltip_text(text)
+    return row
+
+
+def group(title, rows, description=None):
+    """PreferencesGroup con le righe (widget, emoji)."""
+    g = Adw.PreferencesGroup(title=title, description=description)
+    for w, e in rows:
+        g.add(deco(w, e))
+    return g
 
 
 def deco(row, emoji):
@@ -425,26 +537,31 @@ def hex_rgb(h):
 
 
 def song_bars(song, sections):
-    """Battute nel tempo, per la striscia accordi del player: [{start, dur, segs, section, color, first}]."""
+    """Battute nel tempo, per la striscia accordi del player: [{start, dur, segs, section, color, first, num}].
+
+    `num` è il numero della battuta nel brano (1…), None per conteggio e finale.
+    """
     order, timeline = build_timeline(song)
     bar = 240 / float(song.get("tempo", 120))
     names = [s["name"] for s in sections]
     bars, t = [], 0.0
     if song.get("count_in", True):
-        bars.append(dict(start=0.0, dur=bar, segs=[(0, 4, "1 · 2 · 3 · 4")], section="conteggio", color=None, first=True))
+        bars.append(dict(start=0.0, dur=bar, segs=[(0, 4, "1 · 2 · 3 · 4")], section="conteggio", color=None, first=True,
+                         num=None))
         t = bar
     first_chord = None
-    for b in timeline:
+    for n, b in enumerate(timeline, 1):
         segs = [(s0, d, c.name if c else "N.C.") for s0, d, c in b["segs"]]
         first_chord = first_chord or next((c.name for _, _, c in b["segs"] if c), None)
         name = b["sec"]["name"]
-        bars.append(dict(start=t, dur=bar, segs=segs, section=name, first=b["first"],
+        bars.append(dict(start=t, dur=bar, segs=segs, section=name, first=b["first"], num=n,
                          color=names.index(name) % len(SECTION_COLORS) if name in names else None))
         t += bar
     if song.get("ending", True) and first_chord:
         end = song.get("ending_chord")
         end = Chord(str(end), int(song.get("transpose", 0))).name if end else first_chord
-        bars.append(dict(start=t, dur=bar * 2, segs=[(0, 4, end)], section="finale", color=None, first=True))
+        bars.append(dict(start=t, dur=bar * 2, segs=[(0, 4, end)], section="finale", color=None, first=True,
+                         num=None))
     return bars
 
 
@@ -457,6 +574,10 @@ class ChordStrip(Gtk.ScrolledWindow):
     BAR_MIN = 96      # larghezza minima di una battuta
     FONT = "Sans Bold 13"
     FONT_CUR = "Sans Bold 14"
+    FONT_NUM = "Sans 7"
+    FONT_SEC = "Sans Bold 8"
+    TOP = 16          # spazio sopra per il nome della sezione
+    BOTTOM = 10       # spazio sotto per la barra di scorrimento (sovrapposta)
 
     def __init__(self, player):
         super().__init__(hscrollbar_policy=Gtk.PolicyType.AUTOMATIC, vscrollbar_policy=Gtk.PolicyType.NEVER,
@@ -466,10 +587,10 @@ class ChordStrip(Gtk.ScrolledWindow):
         self.cur = -1
         self._manual_until = 0
         self.area = Gtk.DrawingArea()
-        self.area.set_content_height(66)
+        self.area.set_content_height(80)
         self.area.set_draw_func(self._draw)
         self.set_child(self.area)
-        self.set_min_content_height(76)
+        self.set_min_content_height(80)
         click = Gtk.GestureClick()
         click.connect("pressed", self._click)
         self.area.add_controller(click)
@@ -496,7 +617,7 @@ class ChordStrip(Gtk.ScrolledWindow):
             need = self.BAR_MIN
             for _s0, d, name in b["segs"]:
                 need = max(need, (self._text_width(name, self.FONT_CUR) + 18) * 4 / max(d, 0.25))
-            need = max(need, self._text_width(b["section"], "Sans Bold 8") + 16 if b["first"] else 0)
+            need = max(need, self._text_width(b["section"], self.FONT_SEC) + 16 if b["first"] else 0)
             self.xs.append(x)
             self.ws.append(need)
             x += need + 6
@@ -525,13 +646,18 @@ class ChordStrip(Gtk.ScrolledWindow):
                 adj.set_value(max(0, min(target, adj.get_upper() - adj.get_page_size())))
         self.area.queue_draw()
 
-    def _text(self, cr, text, font, x, y, w, rgba):
+    @staticmethod
+    def _layout(cr, text, font):
         layout = PangoCairo.create_layout(cr)
         layout.set_font_description(Pango.FontDescription.from_string(font))
         layout.set_text(text, -1)
-        _ink, logical = layout.get_pixel_extents()
+        return layout, layout.get_pixel_extents()[1]
+
+    def _text(self, cr, text, font, x, y, w, rgba):
+        """Testo centrato orizzontalmente in [x, x+w] e verticalmente attorno a y."""
+        layout, logical = self._layout(cr, text, font)
         cr.set_source_rgba(*rgba)
-        cr.move_to(x + max(0, (w - logical.width) / 2), y)
+        cr.move_to(x + max(0, (w - logical.width) / 2), y - logical.height / 2)
         PangoCairo.show_layout(cr, layout)
 
     def _draw(self, _area, cr, _w, h):
@@ -542,40 +668,54 @@ class ChordStrip(Gtk.ScrolledWindow):
         m = self.player.media
         t = m.get_timestamp() / 1e6 if m else 0
         cur = self.current(t)
-        top = 16
+        top, bh = self.TOP, h - self.TOP - self.BOTTOM
         for i, b in enumerate(self.bars):
             x, bwi = self.xs[i], self.ws[i]
+            col = hex_rgb(SECTION_COLORS[b["color"]]) if b["color"] is not None else ink
+            # riquadro
             if i == cur:
-                cr.set_source_rgba(0.91, 0.51, 0.10, 0.38)
+                cr.set_source_rgba(0.91, 0.51, 0.10, 0.40)
             else:
-                cr.set_source_rgba(*ink, 0.05 if i < cur else 0.10)
-            self._round(cr, x, top, bwi, h - top - 2, 7)
+                cr.set_source_rgba(*ink, 0.04 if i < cur else 0.09)
+            self._round(cr, x, top, bwi, bh, 7)
             cr.fill()
+            if i == cur:
+                cr.set_source_rgba(0.96, 0.65, 0.14, 0.9)
+                cr.set_line_width(1.5)
+                self._round(cr, x + 0.75, top + 0.75, bwi - 1.5, bh - 1.5, 6.5)
+                cr.stroke()
             if b["color"] is not None:
-                cr.set_source_rgba(*hex_rgb(SECTION_COLORS[b["color"]]), 0.95)
-                cr.rectangle(x + 4, top, bwi - 8, 3)
+                cr.set_source_rgba(*col, 0.95 if i >= cur else 0.5)
+                cr.rectangle(x + 6, top, bwi - 12, 3)
                 cr.fill()
+            # nome sezione sopra la prima battuta
             if b["first"]:
-                col = hex_rgb(SECTION_COLORS[b["color"]]) if b["color"] is not None else ink
-                layout = PangoCairo.create_layout(cr)
-                layout.set_font_description(Pango.FontDescription.from_string("Sans Bold 8"))
-                layout.set_text(b["section"], -1)
+                layout, _lg = self._layout(cr, b["section"], self.FONT_SEC)
                 cr.set_source_rgba(*col, 0.95)
-                cr.move_to(x + 4, 1)
+                cr.move_to(x + 4, 0)
                 PangoCairo.show_layout(cr, layout)
+            # numero di battuta in piccolo, in alto a sinistra
+            if b["num"] is not None:
+                layout, _lg = self._layout(cr, str(b["num"]), self.FONT_NUM)
+                cr.set_source_rgba(*ink, 0.75 if i == cur else 0.4)
+                cr.move_to(x + 6, top + 4)
+                PangoCairo.show_layout(cr, layout)
+            # accordi
+            mid = top + bh / 2 + 3
             for s0, d, name in b["segs"]:
                 sx = x + s0 / 4 * bwi
                 sw = d / 4 * bwi
                 if s0 > 0:
-                    cr.set_source_rgba(*ink, 0.25)
-                    cr.rectangle(sx, top + 10, 1, h - top - 20)
+                    cr.set_source_rgba(*ink, 0.22)
+                    cr.rectangle(sx, top + 12, 1, bh - 22)
                     cr.fill()
                 font = self.FONT_CUR if i == cur else self.FONT
-                self._text(cr, name, font, sx, top + (h - top) / 2 - 11, sw, (*ink, 1.0 if i >= cur else 0.45))
+                self._text(cr, name, font, sx, mid, sw, (*ink, 1.0 if i >= cur else 0.4))
+            # avanzamento nella battuta corrente
             if i == cur and b["dur"]:
                 frac = max(0, min(1, (t - b["start"]) / b["dur"]))
                 cr.set_source_rgba(0.96, 0.65, 0.14, 1)
-                cr.rectangle(x + 4, h - 6, (bwi - 8) * frac, 3)
+                self._round(cr, x + 6, top + bh - 6, max(3, (bwi - 12) * frac), 3, 1.5)
                 cr.fill()
 
     @staticmethod
@@ -608,7 +748,9 @@ class Player(Gtk.Revealer):
         self.media = None
         outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         outer.add_css_class("player")
-        box = Gtk.Box(spacing=14)
+        box = Gtk.Box(spacing=16)
+        transport = Gtk.Box(spacing=6, valign=Gtk.Align.CENTER)
+        transport.add_css_class("transport")
 
         self.btn_restart = self._button("media-skip-backward-symbolic", "Da capo (B)", self.restart)
         self.btn_play = self._button("media-playback-start-symbolic", "Play / pausa (Spazio)", self.toggle)
@@ -616,15 +758,25 @@ class Player(Gtk.Revealer):
         self.btn_play.add_css_class("suggested-action")
         self.btn_stop = self._button("media-playback-stop-symbolic", "Stop (S)", self.stop)
         for b in (self.btn_restart, self.btn_play, self.btn_stop):
-            box.append(b)
+            transport.append(b)
+        box.append(transport)
 
-        info = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.CENTER)
-        self.title = Gtk.Label(xalign=0, ellipsize=3, max_width_chars=26, width_chars=10)
+        info = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.CENTER, spacing=1)
+        self.title = Gtk.Label(xalign=0, ellipsize=3, max_width_chars=26, width_chars=14)
         self.title.add_css_class("player-title")
-        self.time = Gtk.Label(xalign=0, label="0:00 / 0:00")
+        times = Gtk.Box(spacing=6)
+        self.time = Gtk.Label(xalign=0, label="0:00")
         self.time.add_css_class("player-time")
+        self.total = Gtk.Label(xalign=0, valign=Gtk.Align.BASELINE, label="/ 0:00")
+        self.total.add_css_class("player-total")
+        self.time.set_valign(Gtk.Align.BASELINE)
+        times.append(self.time)
+        times.append(self.total)
+        self.pos = Gtk.Label(xalign=0, ellipsize=3, max_width_chars=26)
+        self.pos.add_css_class("player-pos")
         info.append(self.title)
-        info.append(self.time)
+        info.append(times)
+        info.append(self.pos)
         box.append(info)
 
         # forma d'onda + avanzamento disegnato sopra
@@ -632,7 +784,7 @@ class Player(Gtk.Revealer):
         self.progress = Gtk.DrawingArea(hexpand=True)
         self.progress.set_draw_func(self._draw)
         overlay = Gtk.Overlay(hexpand=True)
-        overlay.set_size_request(80, 56)
+        overlay.set_size_request(80, 64)
         overlay.add_css_class("wave")
         overlay.set_child(self.wave)
         overlay.add_overlay(self.progress)
@@ -676,16 +828,31 @@ class Player(Gtk.Revealer):
         self.media.connect("notify::timestamp", self._tick)
         self.media.connect("notify::duration", self._tick)
         self.media.connect("notify::playing", self._update_icon)
-        self.title.set_label("♪ " + title)
+        self.title.set_label(title)
         self.wave.set_filename(str(wave_png) if wave_png else None)
         self.set_reveal_child(True)
         self.media.play()
 
     def _tick(self, *_a):
         m = self.media
-        self.time.set_label("%s / %s" % (fmt_time(m.get_timestamp()), fmt_time(m.get_duration())))
+        self.time.set_label(fmt_time(m.get_timestamp()))
+        self.total.set_label("/ " + fmt_time(m.get_duration()))
         self.progress.queue_draw()
         self.strip.update()
+        self._update_pos()
+
+    def _update_pos(self):
+        """Battuta e sezione correnti sotto il tempo: "Battuta 7 / 64 · Strofa"."""
+        bars = self.strip.bars
+        if not bars or not self.media:
+            self.pos.set_label("")
+            return
+        b = bars[self.strip.current(self.media.get_timestamp() / 1e6)]
+        total = max((x["num"] for x in bars if x["num"]), default=0)
+        if b["num"] is None:
+            self.pos.set_label(b["section"].capitalize())
+        else:
+            self.pos.set_label("Battuta %d / %d · %s" % (b["num"], total, b["section"]))
 
     def _update_icon(self, *_a):
         playing = self.media is not None and self.media.get_playing()
@@ -702,11 +869,23 @@ class Player(Gtk.Revealer):
         cr.rectangle(0, 0, x, h)
         cr.fill()
         dur = m.get_duration() / 1e6 if m and m.get_duration() else 0
-        for b in self.strip.bars if dur else ():
-            if b["first"] and b["color"] is not None:
-                cr.set_source_rgba(*hex_rgb(SECTION_COLORS[b["color"]]), 0.9)
-                cr.rectangle(b["start"] / dur * w - 1, 0, 2, h)
-                cr.fill()
+        marks = [b for b in self.strip.bars if b["first"] and b["color"] is not None] if dur else []
+        for j, b in enumerate(marks):
+            bx = b["start"] / dur * w
+            col = hex_rgb(SECTION_COLORS[b["color"]])
+            cr.set_source_rgba(*col, 0.9)
+            cr.rectangle(bx - 1, 0, 2, h)
+            cr.fill()
+            # nome della sezione accanto al segno, solo se c'è spazio fino al prossimo
+            nx = marks[j + 1]["start"] / dur * w if j + 1 < len(marks) else w
+            layout = PangoCairo.create_layout(cr)
+            layout.set_font_description(Pango.FontDescription.from_string("Sans Bold 7"))
+            layout.set_text(b["section"], -1)
+            lw = layout.get_pixel_extents()[1].width
+            if lw + 8 < nx - bx:
+                cr.set_source_rgba(*col, 1)
+                cr.move_to(bx + 4, 2)
+                PangoCairo.show_layout(cr, layout)
         cr.set_source_rgba(1, 1, 1, 0.9)
         cr.rectangle(x - 1, 0, 2, h)
         cr.fill()
@@ -755,10 +934,9 @@ class MainWindow(Adw.ApplicationWindow):
         self.toasts = Adw.ToastOverlay()
         self.stack = Adw.ViewStack()
         self.toasts.set_child(self.stack)
+        self.advanced_widgets = []  # impostazioni nascoste finché non si attiva "Avanzate"
         self.stack.add_titled_with_icon(self._build_song_page(), "song", "Brano", "document-properties-symbolic")
         self.stack.add_titled_with_icon(self._build_sections_page(), "sections", "Sezioni", "view-list-symbolic")
-        self.stack.add_titled_with_icon(self._build_arrangement_page(), "arr", "Arrangiamento",
-                                        "media-playlist-repeat-symbolic")
         self.stack.add_titled_with_icon(self._build_yaml_page(), "yaml", "YAML", "text-x-generic-symbolic")
 
         header = Adw.HeaderBar()
@@ -769,19 +947,29 @@ class MainWindow(Adw.ApplicationWindow):
         header.pack_start(logo)
         header.pack_start(icon_button("document-open-symbolic", "Apri (Ctrl+O)", self.action_open))
         header.pack_start(icon_button("document-save-symbolic", "Salva (Ctrl+S)", self.action_save))
-        self.render_btn = Gtk.Button(tooltip_text="Genera l'audio e ascoltalo (Ctrl+R)")
-        self.render_btn.set_child(Adw.ButtonContent(icon_name="media-playback-start-symbolic", label="Genera e ascolta"))
-        self.render_btn.add_css_class("suggested-action")
+        # pulsante principale: icona (o rotellina mentre lavora) + testo + scorciatoia
+        self.render_btn = Gtk.Button(tooltip_text="Genera l'audio e ascoltalo (Alt+G)", valign=Gtk.Align.CENTER)
         self.render_btn.add_css_class("render-btn")
-        self.render_btn.connect("clicked", lambda _b: self.action_render())
+        inner = Gtk.Box(spacing=8)
         self.spinner = Gtk.Spinner()
+        icon = Gtk.Image.new_from_icon_name("media-playback-start-symbolic")
+        self.spinner.bind_property("spinning", self.spinner, "visible", GObject.BindingFlags.SYNC_CREATE)
+        self.spinner.bind_property("spinning", icon, "visible",
+                                   GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN)
+        self.render_label = Gtk.Label(label="Genera e ascolta")
+        keycap = Gtk.Label(label="Alt+G")
+        keycap.add_css_class("keycap")
+        for w in (self.spinner, icon, self.render_label, keycap):
+            inner.append(w)
+        self.render_btn.set_child(inner)
+        self.render_btn.connect("clicked", lambda _b: self.action_render())
         header.pack_end(self.render_btn)
-        header.pack_end(self.spinner)
 
         self.banner = Adw.Banner(button_label="Installa")
         self.banner.connect("button-clicked", lambda _b: self.install_packs())
 
         view = Adw.ToolbarView()
+        view.add_css_class("bt-main")
         view.add_top_bar(Gtk.PopoverMenuBar.new_from_model(build_menu()))
         view.add_top_bar(header)
         view.add_top_bar(self.banner)
@@ -795,15 +983,18 @@ class MainWindow(Adw.ApplicationWindow):
         bp = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 820sp"))
         bp.add_setter(self.editor_box, "orientation", Gtk.Orientation.VERTICAL)
         bp.add_setter(switcher, "policy", Adw.ViewSwitcherPolicy.NARROW)
-        bp.add_setter(self.render_btn.get_child(), "label", "Genera")
+        bp.add_setter(self.render_label, "label", "Genera")
+        bp.add_setter(keycap, "visible", False)
         self.add_breakpoint(bp)
         bp_small = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 600sp"))
         bp_small.add_setter(self.split, "collapsed", True)
         bp_small.add_setter(self.editor_box, "orientation", Gtk.Orientation.VERTICAL)
         bp_small.add_setter(switcher, "policy", Adw.ViewSwitcherPolicy.NARROW)
-        bp_small.add_setter(self.render_btn.get_child(), "label", "Genera")
+        bp_small.add_setter(self.render_label, "label", "Genera")
+        bp_small.add_setter(keycap, "visible", False)
         self.add_breakpoint(bp_small)
 
+        self.set_advanced(load_prefs().get("advanced", False))
         self.check_packs()
         if path:
             self.load_file(path)
@@ -812,74 +1003,103 @@ class MainWindow(Adw.ApplicationWindow):
             GLib.idle_add(self.offer_draft)
 
     # ------------------------------------------------------------------ pagina Brano
+    def advanced_toggle(self):
+        """Pulsante "Avanzate": mostra/nasconde le impostazioni di dettaglio (stato condiviso tra le pagine)."""
+        b = Gtk.ToggleButton(action_name="app.advanced", valign=Gtk.Align.CENTER,
+                             tooltip_text="Mostra le impostazioni di dettaglio")
+        b.set_child(Adw.ButtonContent(icon_name="emblem-system-symbolic", label="Avanzate"))
+        b.add_css_class("flat")
+        b.add_css_class("adv-toggle")
+        return b
+
+    def advanced(self, widget):
+        self.advanced_widgets.append(widget)
+        return widget
+
+    def set_advanced(self, on):
+        for w in self.advanced_widgets:
+            w.set_visible(on)
+        act = self.get_application().lookup_action("advanced") if self.get_application() else None
+        if act and act.get_state().get_boolean() != on:
+            act.set_state(GLib.Variant.new_boolean(on))
+
     def _build_song_page(self):
         page = Adw.PreferencesPage()
-        g = Adw.PreferencesGroup(title="🎵 Brano")
         self.w_title = Adw.EntryRow(title="Titolo")
-        self.w_tempo = spin_row("Tempo", 30, 320, 1, subtitle="battiti al minuto (BPM)")
+        self.w_tempo = spin_row("Tempo (BPM)", 30, 320, 1, tip="battiti al minuto")
         self.w_groove = GrooveRow("Groove")
-        self.w_transpose = spin_row("Trasposizione", -12, 12, 1, subtitle="semitoni: -1 per accordatura mezzo tono sotto")
-        self.w_swing = Adw.ExpanderRow(title="Swing personalizzato", subtitle="se spento, lo decide il groove")
-        self.w_swing.set_show_enable_switch(True)
-        self.w_swing_val = spin_row("Swing", 0, 1, 0.05, 2, subtitle=SWING_HINT)
-        self.w_swing.add_row(self.w_swing_val)
-        for w, e in ((self.w_title, "✏️"), (self.w_tempo, "⏱️"), (self.w_groove, "🥁"), (self.w_transpose, "🎹"),
-                     (self.w_swing, "🌀")):
-            g.add(deco(w, e))
+        self.w_groove.set_subtitle_lines(1)
+        self.w_bass = ChoiceRow("Basso", [("no", "senza basso"), ("contrabbasso", "Rubner 1958 pizzicato"),
+                                          ("elettrico", "Black & Blue, a dita"),
+                                          ("contrabbasso soft", "Sneakybass, pizzicato leggero")])
+        g = group("🎵 Brano", ((self.w_title, "✏️"), (self.w_tempo, "⏱️"), (self.w_groove, "🥁"), (self.w_bass, "🎻")))
+        g.set_header_suffix(self.advanced_toggle())
         page.add(g)
 
-        g = Adw.PreferencesGroup(title="🔊 Suono")
+        # ordine delle sezioni (ex scheda Arrangiamento)
+        self.arr_group = Adw.PreferencesGroup(title="🔁 Ordine delle sezioni")
+        self.arr_group.set_tooltip_text("Lista vuota = le sezioni suonano nell'ordine della pagina Sezioni, "
+                                        "ognuna con le sue ripetizioni. 'x 0' = ripetizioni della sezione.")
+        add = Gtk.Button(icon_name="list-add-symbolic", tooltip_text="Aggiungi al fondo", valign=Gtk.Align.CENTER)
+        add.add_css_class("flat")
+        add.connect("clicked", lambda _b: self.add_arrangement())
+        self.arr_group.set_header_suffix(add)
+        page.add(self.arr_group)
+        self.arr_rows = []
+
         self.w_guitar = ChoiceRow("Chitarra", [("Gretsch", "Anniversary hollowbody, twang e calore"),
-                                               ("Epiphone", "solid body (serve: backingtrack setup epiphone)")])
-        self.w_amp = ChoiceRow("Ampli", [("auto", "quello del groove"), ("clean", "pulito"),
-                                         ("blues", "leggermente sporco, caldo"), ("twang", "brillante, anni '50"),
-                                         ("crunch", "distorsione media"), ("high", "distorsione pesante")],
-                               "auto = quello del groove")
-        self.w_double = ChoiceRow("Chitarra doppiata L/R", [("auto", "decide il groove"), ("sì", "due chitarre ai lati"),
-                                                            ("no", "una chitarra al centro")], "due chitarre ai lati")
-        self.w_slap = ChoiceRow("Slapback", [("auto", "decide il groove"), ("sì", "eco corta anni '50"),
-                                             ("no", "niente eco")], "eco corta anni '50")
-        self.w_bass = Adw.SwitchRow(title="Contrabbasso", subtitle="richiede il pacchetto 'bass'")
-        for w, e in ((self.w_guitar, "🎸"), (self.w_amp, "📢"), (self.w_double, "👯"), (self.w_slap, "📣"),
-                     (self.w_bass, "🎻")):
-            g.add(deco(w, e))
-        page.add(g)
+                                               ("Epiphone", "solid body"),
+                                               ("Archtop", "Shinyguitar, pickup magnetico"),
+                                               ("Archtop mic", "Shinyguitar microfonata, suono acustico")])
+        self.w_amp = tip(ChoiceRow("Ampli", [("auto", "quello del groove"), ("clean", "pulito"),
+                                             ("blues", "leggermente sporco, caldo"), ("twang", "brillante, anni '50"),
+                                             ("crunch", "distorsione media"), ("high", "distorsione pesante")]),
+                         "auto = quello del groove")
+        self.w_double = tip(ChoiceRow("Chitarra doppiata L/R", [("auto", "decide il groove"),
+                                                                ("sì", "due chitarre ai lati"),
+                                                                ("no", "una chitarra al centro")]),
+                            "due chitarre ai lati")
+        self.w_slap = tip(ChoiceRow("Slapback", [("auto", "decide il groove"), ("sì", "eco corta anni '50"),
+                                                 ("no", "niente eco")]), "eco corta anni '50")
+        page.add(self.advanced(group("🔊 Suono", ((self.w_guitar, "🎸"), (self.w_amp, "📢"),
+                                                  (self.w_double, "👯"), (self.w_slap, "📣")))))
 
-        g = Adw.PreferencesGroup(title="🧱 Struttura")
-        self.w_count = Adw.SwitchRow(title="Conteggio iniziale", subtitle="una battuta di bacchette")
-        self.w_ending = Adw.SwitchRow(title="Finale", subtitle="accordo lungo con piatto")
+        self.w_count = tip(Adw.SwitchRow(title="Conteggio iniziale"), "una battuta di bacchette")
+        self.w_ending = tip(Adw.SwitchRow(title="Finale"), "accordo lungo con piatto")
         self.w_end_chord = Adw.EntryRow(title="Accordo finale (vuoto = primo accordo)")
-        self.w_fills = Adw.SwitchRow(title="Rullate", subtitle="sull'ultima battuta di ogni sezione")
-        self.w_crash = Adw.SwitchRow(title="Piatto sugli attacchi", subtitle="all'inizio di ogni sezione")
-        for w, e in ((self.w_count, "🥢"), (self.w_ending, "🏁"), (self.w_end_chord, "🎯"), (self.w_fills, "🥁"),
-                     (self.w_crash, "💥")):
-            g.add(deco(w, e))
-        page.add(g)
+        self.w_fills = tip(Adw.SwitchRow(title="Rullate"), "sull'ultima battuta di ogni sezione")
+        self.w_crash = tip(Adw.SwitchRow(title="Piatto sugli attacchi"), "all'inizio di ogni sezione")
+        page.add(self.advanced(group("🧱 Struttura", ((self.w_count, "🥢"), (self.w_ending, "🏁"),
+                                                      (self.w_end_chord, "🎯"), (self.w_fills, "🥁"),
+                                                      (self.w_crash, "💥")))))
 
-        g = Adw.PreferencesGroup(title="🧑‍🎤 Esecuzione")
+        self.w_transpose = spin_row("Trasposizione", -12, 12, 1, tip="semitoni: -1 per accordatura mezzo tono sotto")
+        self.w_swing = Adw.ExpanderRow(title="Swing personalizzato")
+        self.w_swing.set_tooltip_text("se spento, lo decide il groove")
+        self.w_swing.set_show_enable_switch(True)
+        self.w_swing_val = spin_row("Swing", 0, 1, 0.05, 2)
+        self.w_swing_val.set_subtitle(SWING_HINT)
+        self.w_swing.add_row(self.w_swing_val)
         self.w_humanize = spin_row("Umanizzazione", 0, 2, 0.1, 1, "0 = a tempo perfetto, 2 = molto sciolto")
-        self.w_strum = spin_row("Velocità pennata", 0, 40, 1, 0, "millisecondi tra una corda e l'altra")
+        self.w_strum = spin_row("Velocità pennata (ms)", 0, 40, 1, 0, "millisecondi tra una corda e l'altra")
         self.w_seed = spin_row("Variazione", 1, 9999, 1, 0, "cambia per altre dinamiche e round robin")
-        for w, e in ((self.w_humanize, "🫀"), (self.w_strum, "🖐️"), (self.w_seed, "🎲")):
-            g.add(deco(w, e))
-        page.add(g)
+        page.add(self.advanced(group("🧑‍🎤 Esecuzione", ((self.w_transpose, "🎹"), (self.w_swing, "🌀"),
+                                                        (self.w_humanize, "🫀"), (self.w_strum, "🖐️"),
+                                                        (self.w_seed, "🎲")))))
 
-        g = Adw.PreferencesGroup(title="💾 Output")
         self.w_outdir = Adw.EntryRow(title="Cartella di output")
         self.w_outdir.set_text("out")
         self.w_mp3 = Adw.SwitchRow(title="Crea anche l'MP3")
-        self.w_stems = Adw.SwitchRow(title="Salva le tracce separate (stems)")
-        for w, e in ((self.w_outdir, "📁"), (self.w_mp3, "🎧"), (self.w_stems, "🎚️")):
-            g.add(deco(w, e))
-        page.add(g)
+        self.w_stems = Adw.SwitchRow(title="Tracce separate (stems)")
+        page.add(self.advanced(group("💾 Output", ((self.w_outdir, "📁"), (self.w_mp3, "🎧"), (self.w_stems, "🎚️")))))
 
         for w in (self.w_title, self.w_end_chord):
             w.connect("changed", self._song_changed)
         for w in (self.w_tempo, self.w_transpose, self.w_swing_val, self.w_humanize, self.w_strum, self.w_seed):
             w.connect("notify::value", self._song_changed)
-        for w in (self.w_groove, self.w_guitar, self.w_amp, self.w_double, self.w_slap):
+        for w in (self.w_groove, self.w_guitar, self.w_amp, self.w_double, self.w_slap, self.w_bass):
             w.connect("notify::selected", self._song_changed)
-        for w in (self.w_bass, self.w_count, self.w_ending, self.w_fills, self.w_crash):
+        for w in (self.w_count, self.w_ending, self.w_fills, self.w_crash):
             w.connect("notify::active", self._song_changed)
         self.w_swing.connect("notify::enable-expansion", self._song_changed)
         return page
@@ -899,7 +1119,7 @@ class MainWindow(Adw.ApplicationWindow):
         s["amp"] = sf.AMPS[a - 1] if a else None
         s["double"] = TRI_VAL[self.w_double.get_selected()]
         s["slapback"] = TRI_VAL[self.w_slap.get_selected()]
-        s["bass"] = self.w_bass.get_active()
+        s["bass"] = sf.BASSES[self.w_bass.get_selected()]
         s["count_in"] = self.w_count.get_active()
         s["ending"] = self.w_ending.get_active()
         s["ending_chord"] = self.w_end_chord.get_text().strip() or None
@@ -922,38 +1142,42 @@ class MainWindow(Adw.ApplicationWindow):
         self.sec_list.connect("row-selected", self._section_selected)
         sc = Gtk.ScrolledWindow(vexpand=True, child=self.sec_list)
         side.append(sc)
-        bar = Gtk.Box(spacing=2, margin_start=6, margin_end=6, margin_top=6)
-        bar.append(labeled_button("list-add-symbolic", "Nuova", "Nuova sezione (Ctrl+T)", self.add_section))
-        bar.append(labeled_button("edit-copy-symbolic", "Duplica", "Duplica sezione (Ctrl+D)", self.duplicate_section))
-        side.append(bar)
-        bar = Gtk.Box(spacing=2, margin_start=6, margin_end=6, margin_bottom=6)
+        bar = Gtk.Box(spacing=2, margin_start=8, margin_end=8, margin_top=6, margin_bottom=8)
+        bar.add_css_class("side-tools")
+        add = labeled_button("list-add-symbolic", "Nuova", "Nuova sezione (Ctrl+T)", self.add_section)
+        add.remove_css_class("flat")
+        add.add_css_class("suggested-action")
+        bar.append(add)
+        bar.append(icon_button("edit-copy-symbolic", "Duplica sezione (Ctrl+D)", self.duplicate_section))
         bar.append(icon_button("go-up-symbolic", "Sposta su", self.move_section, -1))
         bar.append(icon_button("go-down-symbolic", "Sposta giù", self.move_section, 1))
         bar.append(Gtk.Box(hexpand=True))
-        delete = labeled_button("user-trash-symbolic", "Elimina", "Elimina sezione", self.delete_section)
-        delete.add_css_class("error")
+        delete = icon_button("user-trash-symbolic", "Elimina sezione", self.delete_section)
+        delete.add_css_class("danger")
         bar.append(delete)
         side.append(bar)
         self.split.set_sidebar(side)
 
         page = Adw.PreferencesPage()
-        g = Adw.PreferencesGroup(title="🧩 Sezione")
         self.s_name = Adw.EntryRow(title="Nome")
-        self.s_repeat = spin_row("Ripetizioni", 1, 64, 1, subtitle="quante volte suonare questa sezione")
+        self.s_repeat = spin_row("Ripetizioni", 1, 64, 1, tip="quante volte suonare questa sezione")
         self.s_groove = GrooveRow("Groove", inherit=True, song_groove=lambda: self.song.get("groove"))
+        self.s_groove.set_subtitle_lines(1)
+        g = group("🧩 Sezione", ((self.s_name, "🏷️"), (self.s_repeat, "🔁"), (self.s_groove, "🥁")))
+        g.set_header_suffix(self.advanced_toggle())
+        page.add(g)
         self.s_volume = spin_row("Dinamica", 0.2, 1.5, 0.05, 2, "1 = normale, 0.8 = più piano")
         self.s_swing = Adw.ExpanderRow(title="Swing della sezione")
         self.s_swing.set_show_enable_switch(True)
-        self.s_swing_val = spin_row("Swing", 0, 1, 0.05, 2, subtitle=SWING_HINT)
+        self.s_swing_val = spin_row("Swing", 0, 1, 0.05, 2)
+        self.s_swing_val.set_subtitle(SWING_HINT)
         self.s_swing.add_row(self.s_swing_val)
-        self.s_fill = ChoiceRow("Rullata finale", [("auto", "come il brano"), ("sì", "rullata a fine sezione"),
-                                                   ("no", "niente rullata")], "auto = come il brano")
+        self.s_fill = tip(ChoiceRow("Rullata finale", [("auto", "come il brano"), ("sì", "rullata a fine sezione"),
+                                                       ("no", "niente rullata")]), "auto = come il brano")
         self.s_guitar = Adw.SwitchRow(title="Chitarra")
         self.s_drums = Adw.SwitchRow(title="Batteria")
-        for w, e in ((self.s_name, "🏷️"), (self.s_repeat, "🔁"), (self.s_groove, "🥁"), (self.s_volume, "🔉"),
-                     (self.s_swing, "🌀"), (self.s_fill, "🥁"), (self.s_guitar, "🎸"), (self.s_drums, "🪘")):
-            g.add(deco(w, e))
-        page.add(g)
+        page.add(self.advanced(group("🎛️ Dettagli", ((self.s_volume, "🔉"), (self.s_swing, "🌀"), (self.s_fill, "🥁"),
+                                                      (self.s_guitar, "🎸"), (self.s_drums, "🪘")))))
 
         chords = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10, margin_start=18, margin_end=18,
                          margin_top=14, margin_bottom=18)
@@ -963,15 +1187,20 @@ class MainWindow(Adw.ApplicationWindow):
         head.append(title)
         self.bars_info = Gtk.Label(xalign=1, hexpand=True)
         self.bars_info.add_css_class("dim-label")
+        hint = Gtk.Label(wrap=True, xalign=0, max_width_chars=44, margin_start=6, margin_end=6,
+                         margin_top=6, margin_bottom=6,
+                         label="Una casella = una battuta di 4 tempi.\n"
+                               "Più accordi si dividono i tempi in parti uguali.\n"
+                               "'.' prolunga l'accordo prima: 'Em . D C' = Em 2 tempi, D 1, C 1.\n"
+                               "'%' ripete la battuta precedente, 'N.C.' = pausa.\n"
+                               "Invio = battuta successiva · trascina ⠿ per spostare.")
+        help_btn = Gtk.MenuButton(icon_name="help-about-symbolic", valign=Gtk.Align.CENTER,
+                                  tooltip_text="Come si scrivono le battute", popover=Gtk.Popover(child=hint))
+        help_btn.add_css_class("flat")
+        help_btn.add_css_class("circular")
+        head.insert_child_after(help_btn, title)
         head.append(self.bars_info)
         chords.append(head)
-        hint = Gtk.Label(wrap=True, xalign=0,
-                         label="Una casella = una battuta di 4 tempi. Più accordi si dividono i tempi in parti uguali; "
-                               "'.' prolunga l'accordo prima: 'Em . D C' = Em 2 tempi, D 1, C 1. "
-                               "'%' ripete la battuta precedente, 'N.C.' = pausa. Invio = battuta successiva.")
-        hint.add_css_class("dim-label")
-        hint.add_css_class("caption")
-        chords.append(hint)
         tools = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         tools.add_css_class("card")
         tools.add_css_class("builder")
@@ -1010,18 +1239,18 @@ class MainWindow(Adw.ApplicationWindow):
         builder.append(add_in)
         tools.append(builder)
         quick = Gtk.Box(spacing=6)
-        dup = labeled_button("edit-copy-symbolic", "Duplica battuta", "Duplica la battuta selezionata (Ctrl+Shift+D)",
-                             self.duplicate_focused_bar)
+        dup = icon_button("edit-copy-symbolic", "Duplica la battuta selezionata (Ctrl+Shift+D)",
+                          self.duplicate_focused_bar)
         dup.remove_css_class("flat")
         quick.append(dup)
-        for label, tok, tip in (("+ %", "%", "ripeti la battuta precedente"), ("+ N.C.", "N.C.", "battuta senza chitarra"),
+        for label, tok, hint_text in (("+ %", "%", "ripeti la battuta precedente"), ("+ N.C.", "N.C.", "battuta senza chitarra"),
                                 ("+ vuota", "", "battuta da riempire")):
-            b = Gtk.Button(label=label, tooltip_text=tip)
+            b = Gtk.Button(label=label, tooltip_text=hint_text)
             b.connect("clicked", lambda _b, t=tok: self.add_bar(t))
             quick.append(b)
         quick.append(Gtk.Box(hexpand=True))
-        clear = Gtk.Button(label="Svuota")
-        clear.add_css_class("destructive-action")
+        clear = Gtk.Button(label="Svuota", tooltip_text="Toglie tutte le battute della sezione")
+        clear.add_css_class("danger")
         clear.connect("clicked", lambda _b: self.set_bars([]))
         quick.append(clear)
         tools.append(quick)
@@ -1042,18 +1271,22 @@ class MainWindow(Adw.ApplicationWindow):
         chords.append(self.flow)
         self.c_preview.set_label(self.built_chord())
 
-        g = Adw.PreferencesGroup(title="✨ Modelli di giro", description="Riempie la sezione con un giro classico.")
+        g = Adw.PreferencesGroup(title="✨ Modelli di giro")
+        g.set_tooltip_text("Riempie la sezione con un giro classico")
         self.t_name = deco(MenuRow("Modello", list(sf.TEMPLATES), TEMPLATE_GROUPS, button_label=lambda n: n,
                                    item_label=lambda n: n), "📜")
         self.t_key_sub = lambda *_: self.t_name.set_tooltip_text("| " + " | ".join(
             sf.template_bars(list(sf.TEMPLATES)[self.t_name.get_selected()], sf.KEYS[self.t_key.get_selected()])) + " |")
+        self.t_name.label.set_max_width_chars(16)
+        self.t_name.label.set_width_chars(10)
         self.t_name.connect("notify::selected", self.t_key_sub)
         self.t_key = deco(PickerRow("Tonalità", GridPicker(sf.KEYS, note_rows(sf.KEYS))), "🔑")
         self.t_key.set_selected(sf.KEYS.index("A"))
         self.t_key.connect("notify::selected", self.t_key_sub)
         self.t_key_sub()
-        buttons = Gtk.Box(spacing=6, halign=Gtk.Align.END, margin_top=8)
+        buttons = Gtk.Box(spacing=6, halign=Gtk.Align.END, margin_top=10)
         rep = Gtk.Button(label="Sostituisci accordi")
+        rep.add_css_class("suggested-action")
         rep.connect("clicked", lambda _b: self.apply_template(replace=True))
         app = Gtk.Button(label="Aggiungi in coda")
         app.connect("clicked", lambda _b: self.apply_template(replace=False))
@@ -1129,7 +1362,8 @@ class MainWindow(Adw.ApplicationWindow):
             dot.add_css_class("dot")
             dot.add_css_class("sec-%d" % (i % len(SECTION_COLORS)))
             row.add_prefix(dot)
-            row.emoji = Gtk.Label(label=style_emoji(sec["groove"] or self.song["groove"]))
+            row.emoji = Gtk.Label(label=style_emoji(sec["groove"] or self.song["groove"]),
+                                  tooltip_text=sec["groove"] or "groove del brano")
             row.emoji.add_css_class("emoji")
             row.add_suffix(row.emoji)
             self.sec_list.append(row)
@@ -1144,7 +1378,7 @@ class MainWindow(Adw.ApplicationWindow):
 
     def _section_subtitle(self, sec):
         bad = sum(1 for j, b in enumerate(sec["bars"]) if sf.check_bar(b, j == 0))
-        parts = ["x%d" % sec["repeat"], "%d battute" % len(sec["bars"]), sec["groove"] or "groove del brano"]
+        parts = ["×%d" % sec["repeat"], "%d batt." % len(sec["bars"])]
         if bad:
             parts.append("⚠ %d da correggere" % bad)
         return GLib.markup_escape_text(" · ".join(parts))
@@ -1410,31 +1644,13 @@ class MainWindow(Adw.ApplicationWindow):
         self.set_bars(bars if replace else self.section["bars"] + bars)
 
     # ------------------------------------------------------------------ pagina Arrangiamento
-    def _build_arrangement_page(self):
-        page = Adw.PreferencesPage()
-        self.arr_group = Adw.PreferencesGroup(
-            title="Ordine delle sezioni",
-            description="Se la lista è vuota, le sezioni suonano nell'ordine della pagina Sezioni, "
-                        "ognuna con le sue ripetizioni. 'x' = 0 usa le ripetizioni della sezione.")
-        add = Gtk.Button(icon_name="list-add-symbolic", tooltip_text="Aggiungi al fondo")
-        add.add_css_class("flat")
-        add.connect("clicked", lambda _b: self.add_arrangement())
-        self.arr_group.set_header_suffix(add)
-        page.add(self.arr_group)
-        g = Adw.PreferencesGroup(title="Riepilogo")
-        self.summary_row = Adw.ActionRow(title="Durata")
-        g.add(self.summary_row)
-        page.add(g)
-        self.arr_rows = []
-        return page
-
     def rebuild_arrangement(self):
         for row in self.arr_rows:
             self.arr_group.remove(row)
         self.arr_rows = []
         names = [s["name"] for s in self.song["sections"]]
         if not self.song["arrangement"]:
-            row = Adw.ActionRow(title="Ordine automatico",
+            row = Adw.ActionRow(title="Automatico", subtitle_lines=2,
                                 subtitle=GLib.markup_escape_text(
                                     " → ".join("%s x%d" % (s["name"], s["repeat"]) for s in self.song["sections"])))
             self.arr_group.add(row)
@@ -1535,7 +1751,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.w_amp.set_selected(sf.AMPS.index(s["amp"]) + 1 if s["amp"] in sf.AMPS else 0)
         self.w_double.set_selected(TRI_VAL.index(s["double"]) if s["double"] in TRI_VAL else 0)
         self.w_slap.set_selected(TRI_VAL.index(s["slapback"]) if s["slapback"] in TRI_VAL else 0)
-        self.w_bass.set_active(bool(s["bass"]))
+        self.w_bass.set_selected(sf.BASSES.index(s["bass"]) if s["bass"] in sf.BASSES else (1 if s["bass"] else 0))
         self.w_count.set_active(bool(s["count_in"]))
         self.w_ending.set_active(bool(s["ending"]))
         self.w_end_chord.set_text(s["ending_chord"] or "")
@@ -1574,14 +1790,14 @@ class MainWindow(Adw.ApplicationWindow):
             self.status.set_markup("<b>⚠ %d da correggere:</b> %s" % (
                 len(errors), GLib.markup_escape_text(errors[0])))
             self.status.set_tooltip_text("\n".join(errors))
-            self.summary_row.set_subtitle("—")
+            self.arr_group.set_description(None)
         else:
             try:
                 order, timeline = build_timeline(sf.to_song_dict(self.song))
                 bars = len(timeline) + (1 if self.song["count_in"] else 0) + (2 if self.song["ending"] else 0)
                 secs = bars * 4 * 60 / self.song["tempo"]
                 info = "%d battute · %d:%02d" % (len(timeline), secs // 60, secs % 60)
-                self.summary_row.set_subtitle(info)
+                self.arr_group.set_description(info)
                 self.status.set_markup("✓ Pronto · " + info + (" · non salvato (puoi generare lo stesso)"
                                                                 if self.dirty else ""))
                 self.status.set_tooltip_text(None)
@@ -1688,7 +1904,7 @@ class MainWindow(Adw.ApplicationWindow):
     def action_open(self):
         def pick():
             dlg = Gtk.FileDialog(title="Apri canzone", filters=self._filters())
-            examples = Path(__file__).resolve().parent.parent / "examples"
+            examples = EXAMPLES
             if examples.is_dir():
                 dlg.set_initial_folder(Gio.File.new_for_path(str(examples)))
 
@@ -1754,8 +1970,12 @@ class MainWindow(Adw.ApplicationWindow):
     # ------------------------------------------------------------------ campioni
     def required_packs(self):
         need = [self.song.get("guitar") or "gretsch", "drums", "cabs"]
-        if self.song.get("bass"):
-            need.append("bass")
+        try:
+            bass = packs.bass_pack(self.song.get("bass"))
+        except SongError:
+            bass = None
+        if bass:
+            need.append(bass)
         return [p for p in need if not packs.is_installed(p)]
 
     def check_packs(self):
@@ -1869,7 +2089,7 @@ class MainWindow(Adw.ApplicationWindow):
 
     def _ready(self):
         if self.player.media is None:
-            self.toast("Niente da suonare: premi Genera e ascolta (Ctrl+R)")
+            self.toast("Niente da suonare: premi Genera e ascolta (Alt+G)")
             return False
         return True
 
@@ -1892,8 +2112,32 @@ class MainWindow(Adw.ApplicationWindow):
                 self, None, None)
 
 
-EXAMPLES = Path(__file__).resolve().parent.parent / "examples"
+# installato: dentro il pacchetto; da sorgente: la cartella examples/ del repo
+EXAMPLES = next((d for d in (Path(__file__).resolve().parent / "examples",
+                             Path(__file__).resolve().parent.parent / "examples") if d.is_dir()),
+                Path(__file__).resolve().parent / "examples")
 DRAFT = packs.data_dir() / "bozza.json"
+PREFS = packs.data_dir() / "gui.json"
+
+
+def load_prefs():
+    """Preferenze dell'editor (per ora: impostazioni avanzate visibili sì/no)."""
+    import json
+    try:
+        return json.loads(PREFS.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def save_prefs(**kw):
+    import json
+    prefs = load_prefs()
+    prefs.update(kw)
+    try:
+        PREFS.parent.mkdir(parents=True, exist_ok=True)
+        PREFS.write_text(json.dumps(prefs), encoding="utf-8")
+    except OSError:
+        pass
 
 
 def build_menu():
@@ -1947,6 +2191,7 @@ def build_menu():
 
     song_menu = Gio.Menu()
     song_menu.append("Genera e ascolta", "app.render")
+    song_menu.append("Impostazioni avanzate", "app.advanced")
     song_menu.append("Apri cartella output", "app.open-output")
     song_menu.append("Installa campioni mancanti", "app.install")
     menubar.append_submenu("_Brano", song_menu)
@@ -1991,13 +2236,14 @@ class App(Adw.Application):
         Gtk.Window.set_default_icon_name(APP_ID)
         provider = Gtk.CssProvider()
         provider.load_from_data(CSS)
+        # sopra il gtk.css dell'utente: temi come Arc ridipingono di blu suggested-action e gli slider
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), provider,
-                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+                                                  Gtk.STYLE_PROVIDER_PRIORITY_USER + 1)
         win = MainWindow(self, self.path)
         for name, accel, fn in (("new", "<Control>n", win.action_new), ("open", "<Control>o", win.action_open),
                                 ("save", "<Control>s", win.action_save),
                                 ("save-as", "<Control><Shift>s", win.action_save_as),
-                                ("render", "<Control>r", win.action_render),
+                                ("render", "<Alt>g", win.action_render),
                                 ("section-new", "<Control>t", win.add_section),
                                 ("section-dup", "<Control>d", win.duplicate_section),
                                 ("bar-new", "<Control>b", lambda: win.add_bar("")),
@@ -2007,6 +2253,16 @@ class App(Adw.Application):
             act.connect("activate", lambda _a, _p, f=fn: f())
             self.add_action(act)
             self.set_accels_for_action("app." + name, [accel])
+        self.set_accels_for_action("app.render", ["<Alt>g", "<Control>r"])
+        adv = Gio.SimpleAction.new_stateful("advanced", None, GLib.Variant.new_boolean(False))
+
+        def on_adv(a, value):
+            a.set_state(value)
+            win.set_advanced(value.get_boolean())
+            save_prefs(advanced=value.get_boolean())
+        adv.connect("change-state", on_adv)
+        self.add_action(adv)
+        win.set_advanced(load_prefs().get("advanced", False))
         for name, fn in (("open-output", win.open_output_dir), ("install", win.install_packs),
                          ("section-del", win.delete_section), ("play-toggle", win.play_toggle),
                          ("play-restart", win.play_restart), ("play-stop", win.play_stop), ("section-up", lambda: win.move_section(-1)),

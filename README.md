@@ -187,6 +187,10 @@ e al massimo 2 round robin per la chitarra e 6 per la batteria. Rispetto alle li
 | `cabs` 🔈 | 21 impulse response di casse Marshall 4×12 | ~5 MB | ~5 MB |
 | `bass` 🎻 | contrabbasso pizzicato (solo con `--bass`) | ~56 MB | ~130 MB |
 | `epiphone` 🎸 | chitarra alternativa, Epiphone solid body (opzionale) | ~40 MB | ~100 MB |
+| `archtop` 🎸 | chitarra archtop Shinyguitar, pickup magnetico (opzionale) | ~106 MB | ~212 MB |
+| `archtop_mic` 🎸 | la stessa archtop microfonata, suono acustico (opzionale) | ~106 MB | ~212 MB |
+| `ebass` 🎸 | basso elettrico Black & Blue 'darkblack', a dita (opzionale) | ~80 MB | ~160 MB |
+| `sneakybass` 🎻 | contrabbasso Sneakybass, pizzicato leggero (opzionale) | ~63 MB | ~124 MB |
 
 - **Vuoi il massimo?** `backingtrack setup --full` scarica tutti i round robin: più varietà, circa il doppio dello spazio.
 - **Vuoi liberare spazio?** `backingtrack remove bass` (o qualsiasi pacchetto); per cancellare tutto elimina la cartella dei campioni.
@@ -321,47 +325,49 @@ backingtrack gui mio_brano.yaml  # apri un brano
 
 <p align="center"><img src="docs/gui-sezioni.jpg" alt="editor: pagina Sezioni" width="900"></p>
 
-La finestra ha quattro schede.
+La finestra ha tre schede e mostra solo l'essenziale: il pulsante **⚙ Avanzate** (o Brano ▸ Impostazioni avanzate)
+apre le impostazioni di dettaglio, e la scelta viene ricordata. Le spiegazioni stanno nei tooltip: passa col mouse
+su una voce per leggerle.
 
-**🎵 Brano**: tempo, groove, trasposizione, swing, chitarra e ampli, contrabbasso, conteggio, finale, rullate,
-umanizzazione e cartella di output. Ogni scelta ha il suo menu a tendina e non si può inserire un valore fuori scala.
+**🎵 Brano**: titolo, tempo, groove, contrabbasso e l'**ordine delle sezioni** (con ripetizioni e durata totale;
+lista vuota = ordine della pagina Sezioni). Tra le avanzate: chitarra e ampli, doppiatura, slapback, conteggio,
+finale, rullate, trasposizione, swing, umanizzazione e output. Ogni scelta ha il suo menu e non si può inserire un
+valore fuori scala.
 
 <p align="center"><img src="docs/gui-brano.jpg" alt="editor: pagina Brano" width="700"></p>
 
 **🧩 Sezioni**: il cuore dell'editor, su tre colonne affiancate.
 - **a sinistra** l'elenco delle sezioni, ognuna col suo colore e l'emoji dello stile (🤘 rock, 🎷 blues, 🕺 rockabilly,
-  🤠 country), con i pulsanti **Nuova**, **Duplica**, **Elimina** e le frecce per riordinarle;
+  🤠 country), con **Nuova** e i pulsanti per duplicare, riordinare ed eliminare;
 - **al centro gli accordi**:
   - scegli **tonica** e **basso** da una griglia di note (naturali, diesis, bemolle) e il **tipo** da una griglia
-    (m, 7, maj7, sus4…), poi **Nuova battuta** o **Aggiungi alla battuta**;
+    (m, 7, maj7, sus4…), poi **Nuova battuta** o **Aggiungi alla battuta**; il pulsante ⓘ ricorda come si
+    scrivono le battute;
   - la **🎨 tavolozza** mostra l'accordo costruito e quelli già usati nel brano: **trascinali su una battuta**
     per metterli lì, o cliccali per aggiungere una battuta;
   - le battute sono una **griglia compatta** (4 per riga) col bordo nel colore della sezione. Trascina la maniglia
     `⠿` per **spostare una battuta**, usa il **tasto destro** per duplicarla, inserirne una prima/dopo, svuotarla o
     eliminarla, e il `＋` in fondo per aggiungerne (ci puoi trascinare sopra un accordo). Passando col mouse leggi
     la battuta (*Em 2 tempi · D 1 · C 1*); se c'è un errore la cella diventa rossa e spiega cosa correggere;
-- **a destra** le impostazioni della sezione (ripetizioni, groove, dinamica, swing, rullata, strumenti) e i
+- **a destra** le impostazioni della sezione (nome, ripetizioni, groove; tra le avanzate dinamica, swing, rullata,
+  strumenti) e i
   **modelli di giro**: 12-bar blues, 8-bar, blues minore, I-IV-V, anni '50, pop-rock… in qualsiasi tonalità.
 
 Il **groove** si sceglie da un menu diviso per stile (🤘 Rock ▸, 🎷 Blues ▸, 🕺 Rockabilly ▸, 🤠 Country ▸) con la
 descrizione di ogni voce; le altre scelte (chitarra, ampli, rullata…) sono menu a tendina compatti.
 Con la finestra stretta le colonne si impilano (accordi in alto).
 
-**🔁 Arrangiamento**: l'ordine delle sezioni con le ripetizioni, e la durata totale.
-
-<p align="center"><img src="docs/gui-arrangiamento.jpg" alt="editor: arrangiamento" width="700"></p>
-
 **📄 YAML**: il file che verrà salvato, sempre aggiornato, da copiare con un clic.
 
 In basso la **barra di stato** dice se il brano è pronto (✓ verde, con battute e durata) o cosa correggere (⚠).
-**Genera e ascolta** crea l'audio **anche se non hai salvato** e lo suona subito nel player integrato.
+**Genera e ascolta** (`Alt+G`) crea l'audio **anche se non hai salvato** e lo suona subito nel player integrato.
 
 ### 🎧 Il player
 
-- pulsanti grandi **da capo**, **play/pausa**, **stop**, titolo e tempo;
-- la **forma d'onda** del brano con una linea colorata dove inizia ogni sezione: clicca o trascina per spostarti;
+- pulsanti grandi **da capo**, **play/pausa**, **stop**, titolo, tempo e **battuta corrente** (*Battuta 6 / 64 · Strofa*);
+- la **forma d'onda** del brano con una linea colorata e il nome dove inizia ogni sezione: clicca o trascina per spostarti;
 - la **striscia degli accordi**: tutte le battute del brano in fila, ognuna larga quanto serve per leggere ogni
-  accordo, divise in proporzione ai tempi. La battuta che suona è evidenziata e si riempie mentre avanza, la striscia
+  accordo, divise in proporzione ai tempi, col numero di battuta in piccolo. La battuta che suona è evidenziata e si riempie mentre avanza, la striscia
   scorre da sola (puoi scorrerla anche a mano) e un clic su una battuta salta lì. C'è anche il conteggio iniziale e il finale;
 - volume e pulsante per aprire la cartella dei file generati.
 
@@ -377,7 +383,7 @@ si chiude male o scegli "Non salvare" per sbaglio, alla riapertura ti propone di
 |---|---|
 | `Ctrl+N` / `Ctrl+O` | nuovo / apri |
 | `Ctrl+S` / `Ctrl+Shift+S` | salva / salva con nome |
-| `Ctrl+R` | genera e ascolta |
+| `Alt+G` (o `Ctrl+R`) | genera e ascolta |
 | `Ctrl+T` / `Ctrl+D` | nuova sezione / duplica sezione |
 | `Ctrl+B` / `Ctrl+Shift+D` | nuova battuta / duplica battuta |
 | `Invio` (in una battuta) | passa alla battuta successiva (la crea se serve) |
@@ -387,7 +393,7 @@ si chiude male o scegli "Non salvare" per sbaglio, alla riapertura ti propone di
 | `Ctrl+Q` | esci |
 
 Spazio, B e S funzionano quando **non** stai scrivendo in un campo: così puoi digitare `Bb` o `Dsus4` senza problemi.
-Il menu **File ▸ Apri esempio** carica al volo uno dei brani inclusi.
+Il menu **File ▸ Apri esempio** carica al volo uno dei brani inclusi (gli esempi sono installati col programma).
 
 ---
 
@@ -583,8 +589,8 @@ backingtrack render examples/blues/*.yaml --tempo 80 --mute guitar --bass --mp3 
 | `ending_chord` | primo accordo | accordo del finale |
 | `fills` | `true` | rullata sull'ultima battuta di ogni sezione |
 | `crash` | `true` | piatto all'inizio di ogni sezione |
-| `bass` | `false` | contrabbasso (serve `setup --bass`) |
-| `guitar` | `gretsch` | chitarra: `gretsch` (hollowbody) o `epiphone` (solid body, serve `setup epiphone`) |
+| `bass` | `false` | `true` = contrabbasso, oppure `ebass` (elettrico) o `sneakybass` (serve `setup <nome>`) |
+| `guitar` | `gretsch` | chitarra: `gretsch` (hollowbody), `epiphone` (solid body), `archtop`, `archtop_mic` (servono `setup <nome>`) |
 | `amp` | dal groove | forza l'ampli: `clean` `blues` `twang` `crunch` `high` |
 | `double` | dal groove | chitarra doppiata a sinistra e destra |
 | `slapback` | dal groove | eco slapback rockabilly |
