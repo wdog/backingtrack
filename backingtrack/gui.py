@@ -458,7 +458,7 @@ class BarCell(Gtk.Box):
     Si possono trascinare accordi dalla tavolozza sopra la cella. Tasto destro = menu.
     """
 
-    def __init__(self, editor, index, text, color):
+    def __init__(self, editor, index, text, color, digits=1):
         super().__init__(spacing=4)
         self.editor, self.index = editor, index
         self.add_css_class("bar-cell")
@@ -468,7 +468,8 @@ class BarCell(Gtk.Box):
         handle.set_cursor(Gdk.Cursor.new_from_name("grab"))
         drag_source(handle, lambda: "bar:%d" % index, self)
         self.append(handle)
-        num = Gtk.Label(label=str(index + 1), valign=Gtk.Align.START)
+        # allineato alla larghezza del numero più grande (99 battute -> " 1"), con spazi larghi quanto una cifra
+        num = Gtk.Label(label=str(index + 1).rjust(digits, "\u2007"), valign=Gtk.Align.START)
         num.add_css_class("bar-num")
         self.append(num)
         self.entry = Gtk.Entry(text=text, width_chars=3, max_width_chars=14, hexpand=True, has_frame=False,
@@ -1506,7 +1507,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.bars_info.set_label("%s · %d battut%s × %d" % (sec["name"] or "—", n, "a" if n == 1 else "e", sec["repeat"]))
         color = self.sel % len(SECTION_COLORS)
         for i, text in enumerate(sec["bars"]):
-            card = BarCell(self, i, text, color)
+            card = BarCell(self, i, text, color, len(str(n)))
             self.cards.append(card)
             self.flow.append(card)
         plus = Gtk.Button(label="＋", tooltip_text="Nuova battuta (Ctrl+B) — puoi anche trascinarci un accordo")
