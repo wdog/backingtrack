@@ -11,7 +11,7 @@
   <img alt="Python" src="https://img.shields.io/badge/python-3.8%2B-3776AB?logo=python&logoColor=white">
   <img alt="Platform" src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-555">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
-  <img alt="Styles" src="https://img.shields.io/badge/stili-rock%20%7C%20blues%20%7C%20rockabilly-F5A623">
+  <img alt="Styles" src="https://img.shields.io/badge/stili-rock%20%7C%20blues%20%7C%20rockabilly%20%7C%20country-F5A623">
   <img alt="Examples" src="https://img.shields.io/badge/esempi-67%20brani-C0392B">
 </p>
 
@@ -51,11 +51,12 @@
   hi-hat aperto/chiuso, ghost note, variazioni ogni 4 battute, **rullate** a fine sezione, piatto sugli attacchi.
 - 🎻 **Contrabbasso opzionale** (pizzicato) con walking, root-fifth o ottavi.
 - 🔁 **Sezioni ripetibili**: `repeat: 2` o un `arrangement` tipo `[Intro, Strofa x2, Rit, Strofa, Rit x2]`.
-- 🎚️ **11 groove** tra rock, blues e rockabilly, anche diversi sezione per sezione.
+- 🎚️ **19 groove** tra rock, blues, rockabilly e country (half-time, galoppo, rhumba, funk, stop-time, boom-chick…), anche diversi sezione per sezione.
 - 🧑‍🎤 **Suona umano**: micro-timing, velocity variabile, velocità della pennata legata alla dinamica, swing regolabile.
 - 🎛️ **Mix automatico**: EQ, compressione, riverbero a convoluzione, bilanciamento, limiter e loudness costante.
-- 🖥️ **Editor grafico** (GTK 4): sezioni colorate, costruttore di accordi con menu a tendina, modelli di giro
-  in ogni tonalità, validazione mentre scrivi, player integrato con scorciatoie, bozza automatica.
+- 🖥️ **Editor grafico** (GTK 4): sezioni colorate, griglia delle battute con **drag & drop** degli accordi,
+  modelli di giro in ogni tonalità, validazione mentre scrivi, **player con forma d'onda e striscia degli accordi**
+  che scorre con la musica, bozza automatica.
 - 📤 **Output**: WAV, MP3, **MIDI** (per la tua DAW) e **stems** separati.
 - 🎯 **Per esercitarsi**: `--mute guitar` per la sola batteria, `--tempo 80` per rallentare, `--transpose -1` per accordature ribassate.
 - ⚡ **Veloce**: 2 minuti di brano in circa 5 secondi.
@@ -328,16 +329,23 @@ umanizzazione e cartella di output. Ogni scelta ha il suo menu a tendina e non s
 <p align="center"><img src="docs/gui-brano.jpg" alt="editor: pagina Brano" width="700"></p>
 
 **🧩 Sezioni**: il cuore dell'editor, su tre colonne affiancate.
-- **a sinistra** l'elenco delle sezioni, ognuna col suo colore e l'emoji dello stile (🤘 rock, 🎷 blues, 🕺 rockabilly),
-  con i pulsanti **Nuova**, **Duplica**, **Elimina** e le frecce per riordinarle;
-- **al centro gli accordi**: scegli tonica, tipo e basso dai menu a tendina e premi **Nuova battuta** o
-  **Aggiungi alla battuta**. Ogni battuta è una scheda con **Duplica** e **Rimuovi**; sotto l'accordo c'è la sua
-  *lettura* (per esempio *Em 2 tempi · D 1 · C 1*). Se scrivi un accordo sbagliato la scheda diventa rossa e spiega
-  cosa correggere;
+- **a sinistra** l'elenco delle sezioni, ognuna col suo colore e l'emoji dello stile (🤘 rock, 🎷 blues, 🕺 rockabilly,
+  🤠 country), con i pulsanti **Nuova**, **Duplica**, **Elimina** e le frecce per riordinarle;
+- **al centro gli accordi**:
+  - scegli **tonica** e **basso** da una griglia di note (naturali, diesis, bemolle) e il **tipo** da una griglia
+    (m, 7, maj7, sus4…), poi **Nuova battuta** o **Aggiungi alla battuta**;
+  - la **🎨 tavolozza** mostra l'accordo costruito e quelli già usati nel brano: **trascinali su una battuta**
+    per metterli lì, o cliccali per aggiungere una battuta;
+  - le battute sono una **griglia compatta** (4 per riga) col bordo nel colore della sezione. Trascina la maniglia
+    `⠿` per **spostare una battuta**, usa il **tasto destro** per duplicarla, inserirne una prima/dopo, svuotarla o
+    eliminarla, e il `＋` in fondo per aggiungerne (ci puoi trascinare sopra un accordo). Passando col mouse leggi
+    la battuta (*Em 2 tempi · D 1 · C 1*); se c'è un errore la cella diventa rossa e spiega cosa correggere;
 - **a destra** le impostazioni della sezione (ripetizioni, groove, dinamica, swing, rullata, strumenti) e i
   **modelli di giro**: 12-bar blues, 8-bar, blues minore, I-IV-V, anni '50, pop-rock… in qualsiasi tonalità.
 
-Con la finestra stretta le colonne si impilano (accordi in alto) e l'elenco delle sezioni diventa un pannello a scomparsa.
+Il **groove** si sceglie da un menu diviso per stile (🤘 Rock ▸, 🎷 Blues ▸, 🕺 Rockabilly ▸, 🤠 Country ▸) con la
+descrizione di ogni voce; le altre scelte (chitarra, ampli, rullata…) sono menu a tendina compatti.
+Con la finestra stretta le colonne si impilano (accordi in alto).
 
 **🔁 Arrangiamento**: l'ordine delle sezioni con le ripetizioni, e la durata totale.
 
@@ -347,6 +355,15 @@ Con la finestra stretta le colonne si impilano (accordi in alto) e l'elenco dell
 
 In basso la **barra di stato** dice se il brano è pronto (✓ verde, con battute e durata) o cosa correggere (⚠).
 **Genera e ascolta** crea l'audio **anche se non hai salvato** e lo suona subito nel player integrato.
+
+### 🎧 Il player
+
+- pulsanti grandi **da capo**, **play/pausa**, **stop**, titolo e tempo;
+- la **forma d'onda** del brano con una linea colorata dove inizia ogni sezione: clicca o trascina per spostarti;
+- la **striscia degli accordi**: tutte le battute del brano in fila, ognuna larga quanto serve per leggere ogni
+  accordo, divise in proporzione ai tempi. La battuta che suona è evidenziata e si riempie mentre avanza, la striscia
+  scorre da sola (puoi scorrerla anche a mano) e un clic su una battuta salta lì. C'è anche il conteggio iniziale e il finale;
+- volume e pulsante per aprire la cartella dei file generati.
 
 ### 💾 Salvataggio e bozza automatica
 
@@ -602,7 +619,7 @@ Prendiamo `Em . D C`. Sono 4 simboli, quindi ognuno vale 1 tempo:
 | simbolo | `Em` | `.` | `D` | `C` |
 | suona | **Em** | Em (continua) | **D** | **C** |
 
-Quindi: **Em per 2 tempi, D per 1, C per 1**. L'editor grafico lo scrive sotto ogni battuta: *Em 2 tempi · D 1 · C 1*.
+Quindi: **Em per 2 tempi, D per 1, C per 1**. Nell'editor grafico basta passare col mouse sulla battuta: *Em 2 tempi · D 1 · C 1*, e nella striscia del player Em occupa metà casella.
 
 | Scrittura | Significato |
 |---|---|
@@ -631,17 +648,25 @@ Errori comuni, con il messaggio che ricevi:
 
 | Groove | Ampli | Chitarra | Batteria |
 |---|---|---|---|
-| `rock` | high | power chord a ottavi con palm mute, ampli distorto, chitarre doppiate · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
-| `rock/strum` | crunch | accordi aperti D . D U . U D U, crunch, chitarre doppiate · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
-| `rock/drive` | crunch | pennate giù a ottavi, accordi pieni (punk/drive) · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
-| `rock/ballad` | clean | accordi lunghi e pennate leggere, batteria half-time | half-time, rullante sul 3 |
-| `blues` | blues | shuffle boogie 5-6 (stile Jimmy Reed) · swing 1 | shuffle con hi-hat terzinato |
-| `blues/7` | blues | shuffle boogie 5-6-b7-6 · swing 1 | shuffle con hi-hat terzinato |
-| `blues/strum` | blues | accordi pieni in shuffle (D . D U . U D U) · swing 1 | shuffle con hi-hat terzinato |
-| `blues/slow` | blues | pennate sulle terzine, ride | ride sulle terzine, 12/8 |
-| `rockabilly` | twang | boom-chick (basso/accordo) + train beat, slapback · slapback, swing 0.5 | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
-| `rockabilly/boogie` | twang | boogie 5-6 swing veloce, slapback · slapback, swing 0.6 | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
-| `rockabilly/strum` | twang | accordi pieni sul battere, chop su 2 e 4, slapback · slapback, swing 0.6 | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
+| 🤘 `rock` | high | power chord a ottavi con palm mute, ampli distorto, chitarre doppiate · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
+| 🤘 `rock/strum` | crunch | accordi aperti D . D U . U D U, crunch, chitarre doppiate · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
+| 🤘 `rock/drive` | crunch | pennate giù a ottavi, accordi pieni (punk/drive) · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
+| 🤘 `rock/ballad` | clean | accordi lunghi e pennate leggere, batteria half-time | half-time, rullante sul 3 |
+| 🤘 `rock/halftime` | high | half-time pesante, power chord lunghi e rullante sul 3 · doppiata L/R | half-time pesante, rullante sul 3 |
+| 🤘 `rock/gallop` | high | galoppo (ottavo + due sedicesimi) in palm mute, stile heavy metal classico · doppiata L/R | cassa al galoppo, rullante 2-4 |
+| 🤘 `rock/pop` | crunch | pennate a sedicesimi D D DU DU, crunch leggero · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
+| 🎷 `blues` | blues | shuffle boogie 5-6 (stile Jimmy Reed) · swing 1 | shuffle con hi-hat terzinato |
+| 🎷 `blues/7` | blues | shuffle boogie 5-6-b7-6 · swing 1 | shuffle con hi-hat terzinato |
+| 🎷 `blues/strum` | blues | accordi pieni in shuffle (D . D U . U D U) · swing 1 | shuffle con hi-hat terzinato |
+| 🎷 `blues/slow` | blues | pennate sulle terzine, ride | ride sulle terzine, 12/8 |
+| 🎷 `blues/rhumba` | blues | boogie dritto con ritmo latino e side-stick | ritmo latino con side-stick |
+| 🎷 `blues/funk` | clean | chop a sedicesimi (chicken scratch) su accordi di nona | funk a sedicesimi con ghost note |
+| 🎷 `blues/stop` | blues | un colpo secco sul primo tempo, poi silenzio (per le strofe cantate) · swing 1 | un colpo sul primo tempo |
+| 🕺 `rockabilly` | twang | boom-chick (basso/accordo) + train beat, slapback · slapback, swing 0.5 | train beat: rullante a ottavi con accenti |
+| 🕺 `rockabilly/boogie` | twang | boogie 5-6 swing veloce, slapback · slapback, swing 0.6 | swing rockabilly |
+| 🕺 `rockabilly/strum` | twang | accordi pieni sul battere, chop su 2 e 4, slapback · slapback, swing 0.6 | swing rockabilly |
+| 🤠 `country` | twang | boom-chick dritto, basso alternato e spazzolata sul 2 e 4 | spazzolata sul 2 e 4, hi-hat a pedale |
+| 🤠 `country/shuffle` | twang | boom-chick in swing, stile Texas / honky-tonk · swing 0.7 | shuffle con hi-hat terzinato |
 
 `backingtrack grooves` mostra l'elenco aggiornato.
 

@@ -448,20 +448,62 @@ def song_bars(song, sections):
     return bars
 
 
-class ChordStrip(Gtk.DrawingArea):
-    """Battute con accordi che scorrono con la musica; la corrente è evidenziata. Clic = salta lì."""
+class ChordStrip(Gtk.ScrolledWindow):
+    """Tutte le battute del brano in fila, ognuna larga quanto serve per leggere i suoi accordi.
+
+    Scorre da sola seguendo la battuta in riproduzione (evidenziata); si può scorrere a mano.
+    Clic su una battuta = salta lì.
+    """
+    BAR_MIN = 96      # larghezza minima di una battuta
+    FONT = "Sans Bold 13"
+    FONT_CUR = "Sans Bold 14"
 
     def __init__(self, player):
-        super().__init__(hexpand=True)
+        super().__init__(hscrollbar_policy=Gtk.PolicyType.AUTOMATIC, vscrollbar_policy=Gtk.PolicyType.NEVER,
+                         hexpand=True)
         self.player = player
-        self.bars = []
-        self.set_size_request(-1, 64)
-        self.set_draw_func(self._draw)
+        self.bars, self.xs, self.ws = [], [], []
+        self.cur = -1
+        self._manual_until = 0
+        self.area = Gtk.DrawingArea()
+        self.area.set_content_height(66)
+        self.area.set_draw_func(self._draw)
+        self.set_child(self.area)
+        self.set_min_content_height(76)
         click = Gtk.GestureClick()
         click.connect("pressed", self._click)
-        self.add_controller(click)
-        self.set_tooltip_text("Clicca una battuta per saltare lì")
-        self._view = (0, 1, 1)
+        self.area.add_controller(click)
+        self.area.set_tooltip_text("Clicca una battuta per saltare lì · scorri per vedere tutto il brano")
+        # se l'utente scorre a mano, per qualche secondo non riprendo il controllo
+        scroll = Gtk.EventControllerScroll(flags=Gtk.EventControllerScrollFlags.BOTH_AXES)
+        scroll.connect("scroll", self._user_scroll)
+        self.add_controller(scroll)
+
+    def _user_scroll(self, *_a):
+        self._manual_until = GLib.get_monotonic_time() + 4_000_000
+        return False
+
+    def _text_width(self, text, font):
+        layout = self.area.create_pango_layout(text)
+        layout.set_font_description(Pango.FontDescription.from_string(font))
+        return layout.get_pixel_extents()[1].width
+
+    def set_bars(self, bars):
+        """Calcola larghezze e posizioni: ogni segmento (accordo) deve contenere il suo nome."""
+        self.bars, self.xs, self.ws = bars or [], [], []
+        x = 4
+        for b in self.bars:
+            need = self.BAR_MIN
+            for _s0, d, name in b["segs"]:
+                need = max(need, (self._text_width(name, self.FONT_CUR) + 18) * 4 / max(d, 0.25))
+            need = max(need, self._text_width(b["section"], "Sans Bold 8") + 16 if b["first"] else 0)
+            self.xs.append(x)
+            self.ws.append(need)
+            x += need + 6
+        self.area.set_content_width(int(x + 4))
+        self.cur = -1
+        self.get_hadjustment().set_value(0)
+        self.area.queue_draw()
 
     def current(self, t):
         for i, b in enumerate(self.bars):
@@ -469,19 +511,30 @@ class ChordStrip(Gtk.DrawingArea):
                 return i
         return len(self.bars) - 1 if self.bars and t >= self.bars[-1]["start"] else 0
 
+    def update(self):
+        m = self.player.media
+        if not self.bars or not m:
+            return
+        cur = self.current(m.get_timestamp() / 1e6)
+        if cur != self.cur:
+            self.cur = cur
+            if GLib.get_monotonic_time() > self._manual_until:
+                adj = self.get_hadjustment()
+                # battuta corrente a circa un quarto da sinistra: si vede cosa arriva
+                target = self.xs[cur] - adj.get_page_size() * 0.25
+                adj.set_value(max(0, min(target, adj.get_upper() - adj.get_page_size())))
+        self.area.queue_draw()
+
     def _text(self, cr, text, font, x, y, w, rgba):
         layout = PangoCairo.create_layout(cr)
         layout.set_font_description(Pango.FontDescription.from_string(font))
         layout.set_text(text, -1)
-        layout.set_ellipsize(Pango.EllipsizeMode.END)
-        layout.set_width(int(max(1, w) * Pango.SCALE))
         _ink, logical = layout.get_pixel_extents()
         cr.set_source_rgba(*rgba)
         cr.move_to(x + max(0, (w - logical.width) / 2), y)
         PangoCairo.show_layout(cr, layout)
-        return logical.height
 
-    def _draw(self, _area, cr, w, h):
+    def _draw(self, _area, cr, _w, h):
         if not self.bars:
             return
         fg = self.get_color()
@@ -489,15 +542,9 @@ class ChordStrip(Gtk.DrawingArea):
         m = self.player.media
         t = m.get_timestamp() / 1e6 if m else 0
         cur = self.current(t)
-        n = max(3, min(len(self.bars), int(w // 120)))
-        start = max(0, min(cur - 1, len(self.bars) - n))
-        bw = w / n
-        self._view = (start, bw, n)
         top = 16
-        for i in range(start, min(len(self.bars), start + n)):
-            b = self.bars[i]
-            x = (i - start) * bw + 3
-            bwi = bw - 6
+        for i, b in enumerate(self.bars):
+            x, bwi = self.xs[i], self.ws[i]
             if i == cur:
                 cr.set_source_rgba(0.91, 0.51, 0.10, 0.38)
             else:
@@ -510,7 +557,12 @@ class ChordStrip(Gtk.DrawingArea):
                 cr.fill()
             if b["first"]:
                 col = hex_rgb(SECTION_COLORS[b["color"]]) if b["color"] is not None else ink
-                self._text(cr, b["section"], "Sans Bold 8", x, 1, bwi, (*col, 0.95))
+                layout = PangoCairo.create_layout(cr)
+                layout.set_font_description(Pango.FontDescription.from_string("Sans Bold 8"))
+                layout.set_text(b["section"], -1)
+                cr.set_source_rgba(*col, 0.95)
+                cr.move_to(x + 4, 1)
+                PangoCairo.show_layout(cr, layout)
             for s0, d, name in b["segs"]:
                 sx = x + s0 / 4 * bwi
                 sw = d / 4 * bwi
@@ -518,9 +570,8 @@ class ChordStrip(Gtk.DrawingArea):
                     cr.set_source_rgba(*ink, 0.25)
                     cr.rectangle(sx, top + 10, 1, h - top - 20)
                     cr.fill()
-                font = "Sans Bold 14" if i == cur else "Sans Bold 12"
-                alpha = 1.0 if i >= cur else 0.45
-                self._text(cr, name, font, sx + 2, top + (h - top) / 2 - 11, sw - 4, (*ink, alpha))
+                font = self.FONT_CUR if i == cur else self.FONT
+                self._text(cr, name, font, sx, top + (h - top) / 2 - 11, sw, (*ink, 1.0 if i >= cur else 0.45))
             if i == cur and b["dur"]:
                 frac = max(0, min(1, (t - b["start"]) / b["dur"]))
                 cr.set_source_rgba(0.96, 0.65, 0.14, 1)
@@ -538,19 +589,21 @@ class ChordStrip(Gtk.DrawingArea):
         cr.close_path()
 
     def _click(self, _g, _n, x, _y):
-        start, bw, n = self._view
-        i = start + int(x // bw)
         m = self.player.media
-        if m and 0 <= i < len(self.bars):
-            m.seek(int(self.bars[i]["start"] * 1e6))
-            self.queue_draw()
+        for i, (bx, bw) in enumerate(zip(self.xs, self.ws)):
+            if bx <= x <= bx + bw and m:
+                m.seek(int(self.bars[i]["start"] * 1e6))
+                self._manual_until = 0
+                self.area.queue_draw()
+                return
 
 
 class Player(Gtk.Revealer):
     """Barra di riproduzione: pulsanti grandi, forma d'onda cliccabile, tempo, volume."""
 
     def __init__(self, win):
-        super().__init__(transition_type=Gtk.RevealerTransitionType.SLIDE_UP, reveal_child=False)
+        # niente animazione: se la finestra non riceve frame (non in primo piano) resterebbe a metà
+        super().__init__(transition_type=Gtk.RevealerTransitionType.NONE, reveal_child=False)
         self.win = win
         self.media = None
         outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -566,7 +619,7 @@ class Player(Gtk.Revealer):
             box.append(b)
 
         info = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.CENTER)
-        self.title = Gtk.Label(xalign=0, ellipsize=3, max_width_chars=26, width_chars=18)
+        self.title = Gtk.Label(xalign=0, ellipsize=3, max_width_chars=26, width_chars=10)
         self.title.add_css_class("player-title")
         self.time = Gtk.Label(xalign=0, label="0:00 / 0:00")
         self.time.add_css_class("player-time")
@@ -579,7 +632,7 @@ class Player(Gtk.Revealer):
         self.progress = Gtk.DrawingArea(hexpand=True)
         self.progress.set_draw_func(self._draw)
         overlay = Gtk.Overlay(hexpand=True)
-        overlay.set_size_request(200, 56)
+        overlay.set_size_request(80, 56)
         overlay.add_css_class("wave")
         overlay.set_child(self.wave)
         overlay.add_overlay(self.progress)
@@ -597,7 +650,7 @@ class Player(Gtk.Revealer):
         vol.append(Gtk.Image.new_from_icon_name("audio-volume-high-symbolic"))
         self.volume = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 0, 1, 0.05)
         self.volume.set_value(1)
-        self.volume.set_size_request(90, -1)
+        self.volume.set_size_request(60, -1)
         self.volume.connect("value-changed", lambda sc: self.media and self.media.set_volume(sc.get_value()))
         vol.append(self.volume)
         box.append(vol)
@@ -615,7 +668,7 @@ class Player(Gtk.Revealer):
         return b
 
     def load(self, wav, title, wave_png=None, bars=None):
-        self.strip.bars = bars or []
+        self.strip.set_bars(bars or [])
         if self.media:
             self.media.pause()
         self.media = Gtk.MediaFile.new_for_filename(str(wav))
@@ -632,7 +685,7 @@ class Player(Gtk.Revealer):
         m = self.media
         self.time.set_label("%s / %s" % (fmt_time(m.get_timestamp()), fmt_time(m.get_duration())))
         self.progress.queue_draw()
-        self.strip.queue_draw()
+        self.strip.update()
 
     def _update_icon(self, *_a):
         playing = self.media is not None and self.media.get_playing()
@@ -740,11 +793,16 @@ class MainWindow(Adw.ApplicationWindow):
         keys.connect("key-pressed", self._on_key)
         self.add_controller(keys)
         bp = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 820sp"))
-        bp.add_setter(self.split, "collapsed", True)
         bp.add_setter(self.editor_box, "orientation", Gtk.Orientation.VERTICAL)
         bp.add_setter(switcher, "policy", Adw.ViewSwitcherPolicy.NARROW)
         bp.add_setter(self.render_btn.get_child(), "label", "Genera")
         self.add_breakpoint(bp)
+        bp_small = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 600sp"))
+        bp_small.add_setter(self.split, "collapsed", True)
+        bp_small.add_setter(self.editor_box, "orientation", Gtk.Orientation.VERTICAL)
+        bp_small.add_setter(switcher, "policy", Adw.ViewSwitcherPolicy.NARROW)
+        bp_small.add_setter(self.render_btn.get_child(), "label", "Genera")
+        self.add_breakpoint(bp_small)
 
         self.check_packs()
         if path:
@@ -856,7 +914,8 @@ class MainWindow(Adw.ApplicationWindow):
 
     # ------------------------------------------------------------------ pagina Sezioni
     def _build_sections_page(self):
-        self.split = Adw.OverlaySplitView(min_sidebar_width=220, max_sidebar_width=300, sidebar_width_fraction=0.28)
+        self.split = Adw.OverlaySplitView(min_sidebar_width=180, max_sidebar_width=280, sidebar_width_fraction=0.24,
+                                          pin_sidebar=True)  # resta visibile dopo un restringimento
         side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.sec_list = Gtk.ListBox()
         self.sec_list.add_css_class("navigation-sidebar")
@@ -1030,8 +1089,10 @@ class MainWindow(Adw.ApplicationWindow):
                                   tooltip_text="Mostra l'elenco delle sezioni")
         toggle.set_child(Adw.ButtonContent(icon_name="sidebar-show-symbolic", label="Sezioni"))
         self.split.bind_property("collapsed", toggle, "visible", GObject.BindingFlags.SYNC_CREATE)
-        toggle.bind_property("active", self.split, "show-sidebar",
-                             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+        # la fonte è il pannello (visibile all'avvio): il pulsante ne segue lo stato e lo comanda
+        self.split.set_show_sidebar(True)
+        self.split.bind_property("show-sidebar", toggle, "active",
+                                 GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
         content.append(toggle)
         self.sec_stack.set_vexpand(True)
         content.append(self.sec_stack)

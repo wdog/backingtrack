@@ -40,9 +40,14 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 - `songfile.py` — modello dell'editor, senza GTK: `SONG_DEFAULTS`, `from_song_dict`/`to_song_dict`/`to_yaml`
   (solo valori non di default, `chords` come blocco `|`), `check_bar`/`describe_bar` (messaggi e lettura
   "Em 2 tempi · D 1 · C 1"), `TEMPLATES` a gradi (I, IV, V:7, vi:m…) → `template_bars(nome, tonalità)`.
-- `gui.py` — Adw.Application: schede Brano / Sezioni (3 colonne: elenco | accordi | impostazioni+modelli,
-  `Adw.OverlaySplitView` + `Adw.Breakpoint` < 820sp) / Arrangiamento / YAML; barra menu File, Sezione, Brano,
-  Riproduzione, Aiuto. Render in un thread con `cli.render(song_dict, out)`, player `Gtk.MediaFile`.
+- `gui.py` — Adw.Application: schede Brano / Sezioni (3 colonne: elenco | accordi | impostazioni+modelli;
+  `Adw.OverlaySplitView` con `pin_sidebar`, si chiude solo < 600sp; colonne impilate < 820sp) / Arrangiamento / YAML;
+  barra menu File, Sezione, Brano, Riproduzione, Aiuto. Render in un thread con `cli.render(song_dict, out)`.
+  Widget: `MenuRow` (pulsante-menu con sottomenu: `GrooveRow`, `ChoiceRow`, modelli), `GridPicker`/`PickerRow`
+  (griglie note/tipi), `BarCell` (griglia battute; drag & drop con payload stringa 'chord:X' / 'bar:N', tasto destro),
+  tavolozza accordi. Tutti espongono `selected` + get/set_selected come Adw.ComboRow (niente Gtk.DropDown/ComboRow).
+  Player: `Player` (Gtk.MediaFile, forma d'onda PNG da ffmpeg `showwavespic`, linee sezioni) + `ChordStrip`
+  (ScrolledWindow orizzontale, battute larghe quanto il testo, autoscroll salvo scroll manuale), dati da `song_bars()`.
   Scorciatoie Spazio/B/S via `EventControllerKey` in CAPTURE, ignorate se il focus è un `Gtk.Editable`.
   Bozza automatica in `data_dir()/bozza.json`, proposta al riavvio. Colori sezione `SECTION_COLORS`, accento #e8811a.
 - `sfz.py` — parser SFZ minimale + `read_wav` (RIFF proprio: PCM 8/16/24/32 e float) + `Instrument.select`.
@@ -85,7 +90,10 @@ presente se quello estratto non è installato. `backingtrack remove <pack>` libe
 - PyGObject viene dal sistema: pipx/venv vanno creati con `--system-site-packages` (installer, `update` e README lo fanno).
 - Test manuali headless-ish: app di prova che cattura la finestra con `Gtk.WidgetPaintable` + `render_texture`
   (le immagini del README in `docs/gui-*.jpg` sono fatte così, finestra forzata 1280×820 con `set_size_request`).
-- `Gtk.DropDown.new_from_strings` non accetta kwargs; `Gtk.MediaFile` ha `is_prepared()`, non `get_prepared()`.
+- `Gtk.MediaFile` ha `is_prepared()`, non `get_prepared()`; il seek prima di `is_prepared()` viene ignorato.
+- Nei test automatici la finestra non riceve frame: le animazioni (Revealer, OverlaySplitView) restano a metà.
+  Il player usa Revealer senza transizione; per le schermate impostare `gtk-enable-animations` a False.
+- Adw.ToggleGroup non ha stile con questo tema e all'utente non piaceva: usare menu (`ChoiceRow`).
 
 ## Vincoli e scelte
 
