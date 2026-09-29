@@ -117,7 +117,9 @@ presente se quello estratto non è installato. `backingtrack remove <pack>` libe
 ## Aggiungere un groove
 
 Nuova voce in `GROOVES` con `desc, amp, double, swing, bass_style, guitar, drums, turn, fill`.
-Tipi evento chitarra: `D U C P B B5 R5 R6 R7 J` (J = voicing jazz a 4 note, `Chord.jazz`) + suffisso `m` (stoppato). Aggiornare la tabella groove nel README.
+Tipi evento chitarra: `D U C P B B5 R5 R6 R7 J` (J = voicing jazz a 4 note, `Chord.jazz`).
+  Voicing di D/U/C: `Chord.voicing(barre|open|jazz|triad)`, default del groove (`voicing=`), il brano lo cambia con
+  `voicing:`; forme aperte in `theory.OPEN_SHAPES` (open ripiega sul barré) + suffisso `m` (stoppato). Aggiornare la tabella groove nel README.
 
 ## Aggiungere un ampli
 

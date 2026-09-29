@@ -1059,10 +1059,17 @@ class MainWindow(Adw.ApplicationWindow):
                                                                 ("sì", "due chitarre ai lati"),
                                                                 ("no", "una chitarra al centro")]),
                             "due chitarre ai lati")
+        self.w_voicing = tip(ChoiceRow("Voicing accordi", [("auto", "quello del groove"),
+                                                          ("barré", "forma di MI/LA, 5-6 corde"),
+                                                          ("aperti", "prima posizione, corde a vuoto"),
+                                                          ("jazz", "4 note: tonica, 7a, 3a, 5a"),
+                                                          ("triadi", "3 corde alte, suono leggero")]),
+                             "come suonare gli accordi pieni (pennate giù/su)")
         self.w_slap = tip(ChoiceRow("Slapback", [("auto", "decide il groove"), ("sì", "eco corta anni '50"),
                                                  ("no", "niente eco")]), "eco corta anni '50")
         page.add(self.advanced(group("🔊 Suono", ((self.w_guitar, "🎸"), (self.w_amp, "📢"),
-                                                  (self.w_double, "👯"), (self.w_slap, "📣")))))
+                                                  (self.w_double, "👯"), (self.w_slap, "📣"),
+                                                  (self.w_voicing, "🖐️")))))
 
         self.w_count = tip(Adw.SwitchRow(title="Conteggio iniziale"), "una battuta di bacchette")
         self.w_ending = tip(Adw.SwitchRow(title="Finale"), "accordo lungo con piatto")
@@ -1097,7 +1104,7 @@ class MainWindow(Adw.ApplicationWindow):
             w.connect("changed", self._song_changed)
         for w in (self.w_tempo, self.w_transpose, self.w_swing_val, self.w_humanize, self.w_strum, self.w_seed):
             w.connect("notify::value", self._song_changed)
-        for w in (self.w_groove, self.w_guitar, self.w_amp, self.w_double, self.w_slap, self.w_bass):
+        for w in (self.w_groove, self.w_guitar, self.w_amp, self.w_double, self.w_slap, self.w_bass, self.w_voicing):
             w.connect("notify::selected", self._song_changed)
         for w in (self.w_count, self.w_ending, self.w_fills, self.w_crash):
             w.connect("notify::active", self._song_changed)
@@ -1120,6 +1127,7 @@ class MainWindow(Adw.ApplicationWindow):
         s["double"] = TRI_VAL[self.w_double.get_selected()]
         s["slapback"] = TRI_VAL[self.w_slap.get_selected()]
         s["bass"] = sf.BASSES[self.w_bass.get_selected()]
+        s["voicing"] = [None, "barre", "open", "jazz", "triad"][self.w_voicing.get_selected()]
         s["count_in"] = self.w_count.get_active()
         s["ending"] = self.w_ending.get_active()
         s["ending_chord"] = self.w_end_chord.get_text().strip() or None
@@ -1751,6 +1759,8 @@ class MainWindow(Adw.ApplicationWindow):
         self.w_amp.set_selected(sf.AMPS.index(s["amp"]) + 1 if s["amp"] in sf.AMPS else 0)
         self.w_double.set_selected(TRI_VAL.index(s["double"]) if s["double"] in TRI_VAL else 0)
         self.w_slap.set_selected(TRI_VAL.index(s["slapback"]) if s["slapback"] in TRI_VAL else 0)
+        self.w_voicing.set_selected([None, "barre", "open", "jazz", "triad"].index(s.get("voicing"))
+                                    if s.get("voicing") in ("barre", "open", "jazz", "triad") else 0)
         self.w_bass.set_selected(sf.BASSES.index(s["bass"]) if s["bass"] in sf.BASSES else (1 if s["bass"] else 0))
         self.w_count.set_active(bool(s["count_in"]))
         self.w_ending.set_active(bool(s["ending"]))

@@ -1,0 +1,13 @@
+# Esercizio: ii-V-I maggiore e minore in do, in ballad, per studiare i voicing.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "ii-V-I in C (ballad)"
+tempo: 66
+groove: jazz/ballad
+
+sections:
+  - name: Maggiore
+    repeat: 2
+    chords: "| Dm7 | G7 | Cmaj7 | Cmaj7 |"
+  - name: Minore
+    repeat: 2
+    chords: "| Dm7b5 | G7 | Cm6 | Cm6 |"

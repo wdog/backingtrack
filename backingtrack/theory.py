@@ -40,6 +40,20 @@ for _names, _q in [
         QUALITIES[_n] = _q
 
 
+OPEN_STRINGS = [40, 45, 50, 55, 59, 64]  # corde 6..1: MI LA RE SOL SI mi
+# forme aperte (tasti corda 6..1, x = muta), cercate per (tonica, qualità, basso) dopo la trasposizione
+OPEN_SHAPES = {
+    "C": "x32010", "A": "x02220", "G": "320003", "E": "022100", "D": "xx0232",
+    "Am": "x02210", "Em": "022000", "Dm": "xx0231",
+    "E7": "020100", "A7": "x02020", "D7": "xx0212", "G7": "320001", "C7": "x32310", "B7": "x21202",
+    "Cmaj7": "x32000", "Fmaj7": "xx3210", "Amaj7": "x02120", "Dmaj7": "xx0222", "Gmaj7": "320002",
+    "Am7": "x02010", "Em7": "020000", "Dm7": "xx0211",
+    "Asus4": "x02230", "Dsus4": "xx0233", "Esus4": "022200", "Asus2": "x02200", "Dsus2": "xx0230",
+    "Cadd9": "x32030", "A6": "x02222", "E6": "022120", "C6": "x32210", "G6": "320000",
+    "G/B": "x20003", "C/G": "332010", "D/F#": "2x0232", "C/E": "032010", "Am/G": "302210",
+}
+
+
 class Chord:
     """Accordo con voicing a corde: ogni metodo ritorna [(pitch, corda)] dal grave all'acuto.
 
@@ -117,6 +131,43 @@ class Chord:
             notes[0] = b if b >= 40 else b + 12
         return list(zip(notes, strings))
 
+    def _key(self):
+        return self.root, (self.third, self.fifth, self.seventh, self.ext), self.bass
+
+    def open(self):
+        """Forma aperta in prima posizione (C x32010, G 320003…), o None se l'accordo non ne ha una."""
+        shape = _OPEN_BY_KEY.get(self._key())
+        if shape is None:
+            return None
+        return [(OPEN_STRINGS[i] + int(f), 6 - i) for i, f in enumerate(shape) if f != "x"]
+
+    def triad(self):
+        """Triade stretta sulle corde 3-2-1, nella posizione più vicina al do centrale."""
+        tones = {(self.root + iv) % 12 for iv in (0, self.third if self.third is not None else 7, self.fifth)}
+        best = None
+        for low in range(55, 67):
+            if low % 12 not in tones:
+                continue
+            notes = [low]
+            while len(notes) < 3:
+                n = notes[-1] + 1
+                while n % 12 not in tones or n % 12 in {x % 12 for x in notes}:
+                    n += 1
+                notes.append(n)
+            if notes[2] <= 76 and (best is None or abs(notes[0] - 60) < abs(best[0] - 60)):
+                best = notes
+        return list(zip(best, (3, 2, 1)))
+
+    def voicing(self, kind="barre"):
+        """Accordo pieno nel voicing scelto: barre | open | jazz | triad (open ripiega sul barré)."""
+        if kind == "open":
+            return self.open() or self.full()
+        if kind == "jazz":
+            return self.jazz()
+        if kind == "triad":
+            return self.triad()
+        return self.full()
+
     def power(self):
         r = self.low_root()
         return self._strung([r, r + (self.fifth or 7), r + 12])
@@ -130,3 +181,7 @@ class Chord:
     def dyad(self, interval):
         r, rs = self.low_root(), self.root_string()
         return [(r, rs), (r + interval, rs - 1)]
+
+
+VOICINGS = ("barre", "open", "jazz", "triad")
+_OPEN_BY_KEY = {Chord(name)._key(): shape for name, shape in OPEN_SHAPES.items()}

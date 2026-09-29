@@ -1,0 +1,14 @@
+# Herbie Hancock, 1964. Jazz modale/funk di 16 battute: Fm7, Db7, Dm7.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Cantaloupe Island (progressione)"
+tempo: 112
+groove: jazz/bossa
+
+sections:
+  - name: Giro
+    repeat: 4
+    chords: |
+      | Fm7 | Fm7 | Fm7 | Fm7 |
+      | Db7 | Db7 | Db7 | Db7 |
+      | Dm7 | Dm7 | Dm7 | Dm7 |
+      | Fm7 | Fm7 | Fm7 | Fm7 |

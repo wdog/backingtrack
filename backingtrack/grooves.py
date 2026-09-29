@@ -86,6 +86,7 @@ COUNTRY_BEAT = ([(0, KICK, 95), (2, KICK, 90), (1, SNARE, 100), (3, SNARE, 100)]
 STRUM_DDU = [(0, "D", 110), (1, "D", 95), (1.5, "U", 75), (2.5, "U", 80), (3, "D", 95), (3.5, "U", 75)]
 
 # amp: clean | blues | twang | crunch | high     double: chitarra doppiata L/R
+# voicing (accordi D/U/C): barre (default) | open | jazz | triad — il brano può cambiarlo con voicing:
 GROOVES = {
     "rock": dict(
         desc="Rock: power chord a ottavi con palm mute, ampli distorto, chitarre doppiate",
@@ -93,6 +94,7 @@ GROOVES = {
         guitar=[(0, "P", 118, 0.5)] + [(i / 2, "Pm", 88 if i % 2 else 102) for i in range(1, 8)],
         drums=ROCK_BEAT, turn=ROCK_TURN, fill=ROCK_FILL),
     "rock/strum": dict(
+        voicing="open",
         desc="Rock: accordi aperti D . D U . U D U, crunch, chitarre doppiate",
         amp="crunch", double=True, swing=0, bass_style="eighths",
         guitar=STRUM_DDU, drums=ROCK_BEAT, turn=ROCK_TURN, fill=ROCK_FILL),
@@ -102,6 +104,7 @@ GROOVES = {
         guitar=[(i / 2, "D", 105 if i % 2 == 0 else 88) for i in range(8)],
         drums=ROCK_BEAT, turn=ROCK_TURN, fill=ROCK_FILL),
     "rock/ballad": dict(
+        voicing="open",
         desc="Rock ballad: accordi lunghi e pennate leggere, batteria half-time",
         amp="clean", double=False, swing=0, bass_style="slow",
         guitar=[(0, "D", 105), (1.5, "U", 60), (2, "D", 85), (2.5, "U", 65), (3.5, "U", 60)],
@@ -118,6 +121,7 @@ GROOVES = {
                 for b in range(4) for d in (0, 0.5, 0.75)],
         drums=GALLOP_BEAT, turn=ROCK_TURN, fill=ROCK_FILL),
     "rock/pop": dict(
+        voicing="open",
         desc="Pop-rock: pennate a sedicesimi D D DU DU, crunch leggero",
         amp="crunch", double=True, swing=0, bass_style="eighths",
         guitar=[(0, "D", 105), (0.5, "D", 78), (1, "D", 95), (1.5, "U", 70), (1.75, "U", 58), (2, "D", 98),
@@ -175,11 +179,13 @@ GROOVES = {
                 (2, "D", 98), (2.5, "Um", 55), (3, "C", 105), (3.5, "Um", 55)],
         drums=BILLY_BEAT, turn=SHUFFLE_TURN, fill=SHUFFLE_FILL),
     "country": dict(
+        voicing="open",
         desc="Country: boom-chick dritto, basso alternato e spazzolata sul 2 e 4",
         amp="twang", double=False, swing=0, bass_style="rootfifth",
         guitar=[(0, "B", 100), (1, "C", 95), (2, "B5", 98), (3, "C", 95), (3.5, "Um", 55)],
         drums=COUNTRY_BEAT, turn=TRAIN_TURN, fill=SHUFFLE_FILL),
     "country/shuffle": dict(
+        voicing="open",
         desc="Country shuffle: boom-chick in swing, stile Texas / honky-tonk",
         amp="twang", double=False, swing=0.7, bass_style="walk",
         guitar=[(0, "B", 100), (1, "C", 95), (1.5, "Um", 55), (2, "B5", 98), (3, "C", 95), (3.5, "Um", 55)],
@@ -189,21 +195,25 @@ GROOVES = {
 
 GROOVES.update({
     "jazz": dict(
+        voicing="jazz",
         desc="Jazz swing: comping a semiminime alla Freddie Green, ride e walking bass",
         amp="clean", double=False, swing=1, bass_style="walk",
         guitar=[(b, "J", 88 if b % 2 == 0 else 80, 0.55) for b in range(4)],
         drums=JAZZ_BEAT, turn=JAZZ_TURN, fill=JAZZ_FILL),
     "jazz/charleston": dict(
+        voicing="jazz",
         desc="Jazz swing: comping Charleston (1 e levare del 2), accordi corti",
         amp="clean", double=False, swing=1, bass_style="walk",
         guitar=[(0, "J", 90, 0.4), (1.5, "J", 82, 0.4)],
         drums=JAZZ_BEAT, turn=JAZZ_TURN, fill=JAZZ_FILL),
     "jazz/ballad": dict(
+        voicing="jazz",
         desc="Jazz ballad: accordi lunghi e morbidi, spazzole, basso in due",
         amp="clean", double=False, swing=1, bass_style="slow",
         guitar=[(0, "J", 80, 1.9), (2, "J", 68, 1.9)],
         drums=JAZZ_BALLAD, turn=JAZZ_BALLAD_TURN, fill=JAZZ_BALLAD_TURN),
     "jazz/bossa": dict(
+        voicing="jazz",
         desc="Bossa nova: basso alternato col pollice e accordi sincopati, cross-stick",
         amp="clean", double=False, swing=0, bass_style="rootfifth",
         guitar=[(0, "B", 88), (1, "J", 70, 0.45), (1.5, "J", 72, 0.45), (2, "B5", 84),

@@ -1,0 +1,20 @@
+# Dolly Parton, 1973. La minore con i modale, pennata veloce.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Jolene (progressione)"
+tempo: 112
+groove: rock/strum
+voicing: open
+
+sections:
+  - name: Ritornello
+    repeat: 2
+    chords: |
+      | Am | C | G | Am |
+      | G | Em | Am | Am |
+  - name: Strofa
+    repeat: 2
+    chords: |
+      | Am | C | G | Am |
+      | G | Em | Am | Am |
+
+arrangement: [Ritornello x2, Strofa x2, Ritornello x2, Strofa x2, Ritornello x2]

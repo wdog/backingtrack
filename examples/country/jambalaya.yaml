@@ -1,0 +1,12 @@
+# Hank Williams, 1952. Due accordi in do, boom-chick.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Jambalaya (progressione)"
+tempo: 120
+groove: country
+
+sections:
+  - name: Strofa
+    repeat: 4
+    chords: |
+      | C | C | G7 | G7 |
+      | G7 | G7 | C | C |

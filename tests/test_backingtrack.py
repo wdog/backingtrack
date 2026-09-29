@@ -33,6 +33,21 @@ class TestChords(unittest.TestCase):
         self.assertEqual(len(a), 5)
         self.assertEqual(Chord("E5").power(), [(40, 6), (47, 5), (52, 4)])
 
+    def test_voicings(self):
+        self.assertEqual([p for p, _ in Chord("C").open()], [48, 52, 55, 60, 64])  # x32010
+        self.assertEqual([p for p, _ in Chord("A", -2).open()], [43, 47, 50, 55, 59, 67])  # G aperto
+        self.assertIsNone(Chord("Bb").open())
+        self.assertEqual(Chord("Bb").voicing("open"), Chord("Bb").full())
+        for sym in ("C", "F#m", "Bb7", "Ebmaj7", "Am7b5"):
+            c = Chord(sym)
+            tri = c.triad()
+            self.assertEqual([s for _, s in tri], [3, 2, 1])
+            self.assertTrue(all(55 <= p <= 76 for p, _ in tri))
+            self.assertEqual(len({s for _, s in c.jazz()}), 4)
+            for kind in ("barre", "open", "jazz", "triad"):
+                strings = [s for _, s in c.voicing(kind)]
+                self.assertEqual(len(strings), len(set(strings)), (sym, kind))
+
     def test_unknown(self):
         with self.assertRaises(SongError):
             Chord("H7")

@@ -1,0 +1,10 @@
+# Old Crow Medicine Show, 2004 (da un abbozzo di Bob Dylan). I-V-vi-IV in sol.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Wagon Wheel (progressione)"
+tempo: 150
+groove: country
+
+sections:
+  - name: Giro
+    repeat: 8
+    chords: "| G | D | Em | C | G | D | C | C |"

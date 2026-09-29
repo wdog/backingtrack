@@ -5,7 +5,7 @@ from collections import namedtuple
 from .errors import SongError
 from .grooves import CRASH, HH, KICK, PEDAL, RIDE, STICK, get_groove
 from .song import chord_at
-from .theory import Chord
+from .theory import VOICINGS, Chord
 
 PPQ = 480
 
@@ -56,16 +56,16 @@ class Arranger:
         return beat
 
     # chitarra ---------------------------------------------------------------
-    def strum(self, part, bus, kind, chord, t0, t1, vel, mute_len):
+    def strum(self, part, bus, kind, chord, t0, t1, vel, mute_len, voicing="barre"):
         muted = kind.endswith("m")
         base = kind[:-1] if muted else kind
         up = False
         if base == "D":
-            notes = chord.full()
+            notes = chord.voicing(voicing)
         elif base == "U":
-            notes, up = chord.top(4), True
+            notes, up = chord.voicing(voicing)[-4:], True
         elif base == "C":
-            notes, muted = chord.top(4), True
+            notes, muted = chord.voicing(voicing)[-4:], True
         elif base == "P":
             notes = chord.power()
         elif base == "J":
@@ -141,6 +141,9 @@ class Arranger:
             g = get_groove(sec["groove"])
             swing = float(sec["swing"] if sec["swing"] is not None else song.get("swing", g["swing"]))
             amp = amp_override or g["amp"]
+            voicing = song.get("voicing") or g.get("voicing", "barre")
+            if voicing not in VOICINGS:
+                raise SongError("voicing '%s' sconosciuto (usa %s)" % (voicing, ", ".join(VOICINGS)))
             double = song.get("double", g.get("double", False))
             slap = song.get("slapback", g.get("slap", False))
             takes = [("guitar", guitar_bus(amp, "L", slap)), ("guitar2", guitar_bus(amp, "R", slap))] \
@@ -167,7 +170,7 @@ class Arranger:
                     t0 = tick + self.swing(beat, swing) * PPQ
                     t1 = tick + self.swing(end_beat, swing) * PPQ
                     for part, bus in takes:
-                        self.strum(part, bus, kind, c, t0, t1, vel * scale, g.get("mute_len", 0.28))
+                        self.strum(part, bus, kind, c, t0, t1, vel * scale, g.get("mute_len", 0.28), voicing)
 
             if self.bass_on:
                 self.bass_bar(g.get("bass_style", "eighths"), segs, tick, bar_idx, swing, scale)

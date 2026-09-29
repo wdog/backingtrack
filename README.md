@@ -51,6 +51,7 @@
   hi-hat aperto/chiuso, ghost note, variazioni ogni 4 battute, **rullate** a fine sezione, piatto sugli attacchi.
 - 🎻 **Contrabbasso opzionale** (pizzicato) con walking, root-fifth o ottavi.
 - 🔁 **Sezioni ripetibili**: `repeat: 2` o un `arrangement` tipo `[Intro, Strofa x2, Rit, Strofa, Rit x2]`.
+- 🖐️ **4 voicing** per gli accordi: barré, aperti, jazz, triadi (scelti dal groove o con `voicing:`).
 - 🎚️ **23 groove** tra rock, blues, rockabilly, country e jazz (half-time, galoppo, rhumba, funk, stop-time, boom-chick…), anche diversi sezione per sezione.
 - 🧑‍🎤 **Suona umano**: micro-timing, velocity variabile, velocità della pennata legata alla dinamica, swing regolabile.
 - 🎛️ **Mix automatico**: EQ, compressione, riverbero a convoluzione, bilanciamento, limiter e loudness costante.
@@ -590,6 +591,7 @@ backingtrack render examples/blues/*.yaml --tempo 80 --mute guitar --bass --mp3 
 | `fills` | `true` | rullata sull'ultima battuta di ogni sezione |
 | `crash` | `true` | piatto all'inizio di ogni sezione |
 | `bass` | `false` | `true` = contrabbasso, oppure `ebass` (elettrico) o `sneakybass` (serve `setup <nome>`) |
+| `voicing` | dal groove | forma degli accordi pieni: `barre`, `open` (prima posizione, dove esiste), `jazz` (4 note), `triad` (3 corde alte) |
 | `guitar` | `gretsch` | chitarra: `gretsch` (hollowbody), `epiphone` (solid body), `archtop`, `archtop_mic` (servono `setup <nome>`) |
 | `amp` | dal groove | forza l'ampli: `clean` `blues` `twang` `crunch` `high` |
 | `double` | dal groove | chitarra doppiata a sinistra e destra |
@@ -826,7 +828,7 @@ backingtrack render examples/rockabilly/*.yaml --mp3     # tutto il rockabilly
 </details>
 
 <details>
-<summary><b>🎺 Jazz</b> — 8 brani</summary>
+<summary><b>🎺 Jazz</b> — 12 brani</summary>
 
 | File | Brano | BPM | Groove |
 |---|---|---|---|
@@ -838,6 +840,23 @@ backingtrack render examples/rockabilly/*.yaml --mp3     # tutto il rockabilly
 | [`rhythm_changes_Bb`](examples/jazz/rhythm_changes_Bb.yaml) | Rhythm changes in Bb | 180 | `jazz` |
 | [`so_what`](examples/jazz/so_what.yaml) | So What | 136 | `jazz/charleston` |
 | [`take_the_a_train`](examples/jazz/take_the_a_train.yaml) | Take the A Train | 160 | `jazz` |
+| [`cantaloupe_island`](examples/jazz/cantaloupe_island.yaml) | Cantaloupe Island | 112 | `jazz/bossa` |
+| [`ii_v_i_ballad`](examples/jazz/ii_v_i_ballad.yaml) | ii-V-I in C (ballad) | 66 | `jazz/ballad` |
+| [`minor_blues_Cm`](examples/jazz/minor_blues_Cm.yaml) | Minor blues in Cm | 170 | `jazz` |
+| [`satin_doll`](examples/jazz/satin_doll.yaml) | Satin Doll | 124 | `jazz` |
+
+</details>
+
+<details>
+<summary><b>🤠 Country</b> — 5 brani</summary>
+
+| File | Brano | BPM | Groove |
+|---|---|---|---|
+| [`country_roads`](examples/country/country_roads.yaml) | Take Me Home, Country Roads | 82 | `country` |
+| [`hey_good_lookin`](examples/country/hey_good_lookin.yaml) | Hey, Good Lookin' | 130 | `country/shuffle` |
+| [`jambalaya`](examples/country/jambalaya.yaml) | Jambalaya | 120 | `country` |
+| [`jolene`](examples/country/jolene.yaml) | Jolene | 112 | `rock/strum` |
+| [`wagon_wheel`](examples/country/wagon_wheel.yaml) | Wagon Wheel | 150 | `country` |
 
 </details>
 

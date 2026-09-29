@@ -1,0 +1,18 @@
+# John Denver, 1971. I-vi-V-IV in sol con accordi aperti.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Take Me Home, Country Roads (progressione)"
+tempo: 82
+groove: country
+
+sections:
+  - name: Strofa
+    repeat: 2
+    chords: |
+      | G | Em | D | C G |
+      | G | Em | D | C G |
+  - name: Ritornello
+    chords: |
+      | G | D | Em | C |
+      | G | D | C | G |
+
+arrangement: [Strofa x2, Ritornello, Strofa x2, Ritornello x2]
