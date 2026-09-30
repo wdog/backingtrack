@@ -51,9 +51,13 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
   tavolozza accordi. Tutti espongono `selected` + get/set_selected come Adw.ComboRow (niente Gtk.DropDown/ComboRow).
   Player: `Player` (Gtk.MediaFile, forma d'onda PNG da ffmpeg `showwavespic`, linee sezioni) + `ChordStrip`
   (ScrolledWindow orizzontale, battute larghe quanto il testo, numero battuta in piccolo, autoscroll salvo scroll manuale),
-  dati da `song_bars()` (`num` = battuta 1…, None per conteggio/finale); sotto il tempo "Battuta N / tot · sezione".
-  Scorciatoie Spazio/B/S via `EventControllerKey` in CAPTURE, ignorate se il focus è un `Gtk.Editable`.
-  Bozza automatica in `data_dir()/bozza.json`, proposta al riavvio. Colori sezione `SECTION_COLORS`, accento #e8811a.
+  dati da `song_bars()` (`num` = battuta 1…, None per conteggio/finale; `local`/`size` = battuta nella sezione, a destra
+  nella striscia); sotto il tempo "Battuta N / tot · sezione L / size". Guida `HELP` (F1, Aiuto › Guida; il popover ? degli
+  accordi riusa `BAR_EXAMPLES`/`CHORD_EXAMPLES`): tenerla allineata ai controlli.
+  Loop X–Y: `Player.loop_btn/loop_from/loop_to`, `loop_range()` in secondi, `_tick` riporta all'inizio;
+  Shift+clic sulla striscia = `set_loop`. Guida: `HELP` = pagine di voci renderizzate da `help_page()`.
+  Scorciatoie Spazio/B/S/L via `EventControllerKey` in CAPTURE, ignorate se il focus è un `Gtk.Editable`.
+  Bozza automatica in `data_dir()/bozza.json`, proposta al riavvio. Colori sezione `SECTION_COLORS`, tema Dracula (sfondi `@define-color`, accento viola #bd93f9, rosa #ff79c6, forzato scuro).
 - `sfz.py` — parser SFZ minimale + `read_wav` (RIFF proprio: PCM 8/16/24/32 e float) + `Instrument.select`.
 - `render.py` — `Sampler`: region → campione trasposto (np.interp, cache) → voci; choke `group/off_by`;
   `mix_voices` somma nei bus stereo float32 con release, palm mute (decadimento + FIR passa-basso).

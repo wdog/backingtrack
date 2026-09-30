@@ -85,9 +85,6 @@ def check_chord(token):
 
 
 HOLD = (".", "-", "/")
-BAR_HELP = ("Ogni battuta ha 4 tempi, divisi in parti uguali tra i simboli scritti. "
-            "'.' prolunga l'accordo precedente di una parte: 'Em . D C' = Em per 2 tempi, D per 1, C per 1. "
-            "'%' ripete la battuta precedente, 'N.C.' = pausa della chitarra.")
 
 
 def _beats(x):

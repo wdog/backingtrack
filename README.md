@@ -57,7 +57,8 @@
 - 🎛️ **Mix automatico**: EQ, compressione, riverbero a convoluzione, bilanciamento, limiter e loudness costante.
 - 🖥️ **Editor grafico** (GTK 4): sezioni colorate, griglia delle battute con **drag & drop** degli accordi,
   modelli di giro in ogni tonalità, validazione mentre scrivi, **player con forma d'onda e striscia degli accordi**
-  che scorre con la musica, bozza automatica.
+  che scorre con la musica, **loop da battuta a battuta** per studiare un passaggio, guida integrata (`F1`),
+  tema Dracula, bozza automatica.
 - 📤 **Output**: WAV, MP3, **MIDI** (per la tua DAW) e **stems** separati.
 - 🎯 **Per esercitarsi**: `--mute guitar` per la sola batteria, `--tempo 80` per rallentare, `--transpose -1` per accordature ribassate.
 - ⚡ **Veloce**: 2 minuti di brano in circa 5 secondi.
@@ -328,7 +329,7 @@ backingtrack gui mio_brano.yaml  # apri un brano
 
 La finestra ha tre schede e mostra solo l'essenziale: il pulsante **⚙ Avanzate** (o Brano ▸ Impostazioni avanzate)
 apre le impostazioni di dettaglio, e la scelta viene ricordata. Le spiegazioni stanno nei tooltip: passa col mouse
-su una voce per leggerle.
+su una voce per leggerle. Tema scuro in stile [Dracula](https://draculatheme.com), con accento viola e rosa.
 
 **🎵 Brano**: titolo, tempo, groove, contrabbasso e l'**ordine delle sezioni** (con ripetizioni e durata totale;
 lista vuota = ordine della pagina Sezioni). Tra le avanzate: chitarra e ampli, doppiatura, slapback, conteggio,
@@ -339,11 +340,11 @@ valore fuori scala.
 
 **🧩 Sezioni**: il cuore dell'editor, su tre colonne affiancate.
 - **a sinistra** l'elenco delle sezioni, ognuna col suo colore e l'emoji dello stile (🤘 rock, 🎷 blues, 🕺 rockabilly,
-  🤠 country), con **Nuova** e i pulsanti per duplicare, riordinare ed eliminare;
+  🤠 country, 🎺 jazz), con **Nuova** e i pulsanti per duplicare, riordinare ed eliminare;
 - **al centro gli accordi**:
   - scegli **tonica** e **basso** da una griglia di note (naturali, diesis, bemolle) e il **tipo** da una griglia
-    (m, 7, maj7, sus4…), poi **Nuova battuta** o **Aggiungi alla battuta**; il pulsante ⓘ ricorda come si
-    scrivono le battute;
+    (m, 7, maj7, sus4…), poi **Nuova battuta** o **Aggiungi alla battuta**; il pulsante ⓘ mostra una tabella
+    con esempi di battute e di accordi (Do Re Mi = C D E);
   - la **🎨 tavolozza** mostra l'accordo costruito e quelli già usati nel brano: **trascinali su una battuta**
     per metterli lì, o cliccali per aggiungere una battuta;
   - le battute sono una **griglia compatta** (4 per riga) col bordo nel colore della sezione. Trascina la maniglia
@@ -352,9 +353,12 @@ valore fuori scala.
     la battuta (*Em 2 tempi · D 1 · C 1*); se c'è un errore la cella diventa rossa e spiega cosa correggere;
 - **a destra** le impostazioni della sezione (nome, ripetizioni, groove; tra le avanzate dinamica, swing, rullata,
   strumenti) e i
-  **modelli di giro**: 12-bar blues, 8-bar, blues minore, I-IV-V, anni '50, pop-rock… in qualsiasi tonalità.
+  **modelli di giro**: 12-bar blues, 8-bar, blues minore, I-IV-V, anni '50, pop-rock… Sono scritti a gradi
+  (I, IV, V) e la **Tonalità** li trasforma in accordi veri: 12-bar blues in A = A7, D7, E7; in E = E7, A7, B7.
+  **Sostituisci accordi** cancella le battute della sezione e ci mette il giro, **Aggiungi in coda** lo mette dopo.
+  Nessuno dei due traspone: per spostare un brano già scritto c'è **Trasposizione** (Brano ▸ Avanzate).
 
-Il **groove** si sceglie da un menu diviso per stile (🤘 Rock ▸, 🎷 Blues ▸, 🕺 Rockabilly ▸, 🤠 Country ▸) con la
+Il **groove** si sceglie da un menu diviso per stile (🤘 Rock ▸, 🎷 Blues ▸, 🕺 Rockabilly ▸, 🤠 Country ▸, 🎺 Jazz ▸) con la
 descrizione di ogni voce; le altre scelte (chitarra, ampli, rullata…) sono menu a tendina compatti.
 Con la finestra stretta le colonne si impilano (accordi in alto).
 
@@ -365,12 +369,24 @@ In basso la **barra di stato** dice se il brano è pronto (✓ verde, con battut
 
 ### 🎧 Il player
 
-- pulsanti grandi **da capo**, **play/pausa**, **stop**, titolo, tempo e **battuta corrente** (*Battuta 6 / 64 · Strofa*);
+- pulsanti grandi **da capo**, **play/pausa**, **stop**, titolo, tempo e **battuta corrente**, nel brano e nella
+  sezione (*Battuta 10 / 52 · Strofa 6 / 12*);
 - la **forma d'onda** del brano con una linea colorata e il nome dove inizia ogni sezione: clicca o trascina per spostarti;
 - la **striscia degli accordi**: tutte le battute del brano in fila, ognuna larga quanto serve per leggere ogni
-  accordo, divise in proporzione ai tempi, col numero di battuta in piccolo. La battuta che suona è evidenziata e si riempie mentre avanza, la striscia
-  scorre da sola (puoi scorrerla anche a mano) e un clic su una battuta salta lì. C'è anche il conteggio iniziale e il finale;
+  accordo, divise in proporzione ai tempi. In alto a sinistra il numero di battuta nel brano, a destra quello nella
+  sezione (*6/12*). La battuta che suona è evidenziata e si riempie mentre avanza, la striscia scorre da sola
+  (puoi scorrerla anche a mano) e un clic su una battuta salta lì. C'è anche il conteggio iniziale e il finale;
+- il **🔁 loop** per studiare un passaggio: accendilo (o premi `L`), scegli **da battuta X a battuta Y** e il player
+  ripete solo quel tratto, segnato in rosa sulla forma d'onda e sotto le battute. **Shift+clic** su una battuta
+  della striscia sposta la fine del loop (o l'inizio, se la battuta viene prima);
 - volume e pulsante per aprire la cartella dei file generati.
+
+### ❓ Guida integrata
+
+**Aiuto ▸ Guida** (`F1`) spiega ogni parte della finestra, divisa in pagine: Inizio, Brano, Sezioni, Accordi,
+Tonalità, Player e Tasti.
+
+<p align="center"><img src="docs/gui-guida.jpg" alt="guida integrata: pagina Tonalità" width="640"></p>
 
 ### 💾 Salvataggio e bozza automatica
 
@@ -391,9 +407,11 @@ si chiude male o scegli "Non salvare" per sbaglio, alla riapertura ti propone di
 | `Spazio` | play / pausa |
 | `B` | riparti da capo |
 | `S` | stop |
+| `L` | loop acceso / spento |
+| `F1` | guida |
 | `Ctrl+Q` | esci |
 
-Spazio, B e S funzionano quando **non** stai scrivendo in un campo: così puoi digitare `Bb` o `Dsus4` senza problemi.
+Spazio, B, S e L funzionano quando **non** stai scrivendo in un campo: così puoi digitare `Bb` o `Dsus4` senza problemi.
 Il menu **File ▸ Apri esempio** carica al volo uno dei brani inclusi (gli esempi sono installati col programma).
 
 ---

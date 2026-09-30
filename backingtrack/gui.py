@@ -33,69 +33,234 @@ SWING_HINT = "0 = ottavi dritti · 0.5 = swing leggero · 1 = shuffle terzinato"
 TRI = ["dal groove", "sì", "no"]
 TRI_VAL = [None, True, False]
 
-SECTION_COLORS = ["#e8591a", "#2f9bd8", "#2ec27e", "#c061cb", "#f5c211", "#e01b8a", "#1abc9c", "#8b6fdc"]
+SECTION_COLORS = ["#ffb86c", "#8be9fd", "#50fa7b", "#bd93f9", "#f1fa8c", "#ff79c6", "#ff5555", "#6272a4"]  # Dracula
 STYLE_EMOJI = {"rock": "🤘", "blues": "🎷", "rockabilly": "🕺", "country": "🤠", "jazz": "🎺"}
 
+# Guida (menu Aiuto › Guida, F1): pagine (titolo, icona, voci). Voce: ("p", testo) paragrafo, ("h", titolo)
+# sottotitolo, ("code", [(esempio, significato)]) tabella di esempi, (termine, spiegazione) riga di una scheda.
+# Il testo è Pango markup.
+BAR_EXAMPLES = ("code", [("A", "A per tutti e 4 i tempi"), ("A D", "A 2 tempi, D 2"),
+                         ("C G Am F", "un accordo per tempo"),
+                         ("Em . D C", "«.» prolunga l'accordo prima: Em 2 tempi, D 1, C 1"),
+                         ("%", "ripete la battuta precedente"), ("N.C.", "pausa: la chitarra tace")])
+CHORD_EXAMPLES = ("code", [("C D E F G A B", "Do Re Mi Fa Sol La Si (il Si è B, non H)"),
+                           ("F#  Bb", "diesis con #, bemolle con b"),
+                           ("A  Am  A7", "maggiore, minore, settima"),
+                           ("Amaj7  Am7  A5", "settima maggiore, minore settima, power chord"),
+                           ("Asus4  Adim  A9", "anche 6, m6, add9, 13, 7#9, sus2, 7sus4, dim7, m7b5, aug"),
+                           ("D/F#", "accordo slash: D con F# al basso")])
+HELP = [
+    ("Inizio", "🎸", [
+        ("p", "Scrivi gli accordi di un brano, scegli uno stile e premi <b>Genera e ascolta</b>: il programma "
+              "suona chitarra ritmica e batteria (e il basso, se lo attivi) sui tuoi accordi. "
+              "Tu suoni sopra: assolo, melodia, canto."),
+        ("Brano", "tempo, stile e scaletta: quali sezioni suonano e in che ordine"),
+        ("Sezione", "un pezzo del brano (intro, strofa, ritornello…) che si può ripetere"),
+        ("Battuta", "una casella con gli accordi di 4 tempi"),
+        ("Groove", "lo stile di accompagnamento: ritmo di chitarra e batteria, ampli, swing"),
+        ("h", "In tre passi"),
+        ("1", "scheda <b>Sezioni</b>: scrivi gli accordi, oppure parti da un <b>modello di giro</b>"),
+        ("2", "scheda <b>Brano</b>: tempo, groove e ordine delle sezioni"),
+        ("3", "<b>Genera e ascolta</b> (Alt+G): il brano parte nel player in basso"),
+    ]),
+    ("Brano", "🎵", [
+        ("Titolo", "nome del brano e del file generato"),
+        ("Tempo (BPM)", "battiti al minuto: 60 lento, 120 medio, 180 veloce"),
+        ("Groove", "stile di tutto il brano; ogni sezione può cambiarlo"),
+        ("Basso", "contrabbasso o basso elettrico (campioni da Brano › Installa campioni mancanti)"),
+        ("Ordine delle sezioni", "la scaletta, es. Intro, Strofa ×2, Ritornello. Vuota = ordine della scheda "
+                                 "Sezioni, ognuna con le sue ripetizioni"),
+        ("h", "Avanzate"),
+        ("Suono", "chitarra, ampli (da pulito a distorto), chitarra doppiata L/R, slapback, voicing "
+                  "(barré, aperti, jazz, triadi)"),
+        ("Struttura", "conteggio iniziale, finale con accordo lungo, rullate a fine sezione, piatto sugli attacchi"),
+        ("Trasposizione", "sposta tutto il brano di semitoni: −1 = mezzo tono sotto"),
+        ("Swing", "0 = ottavi dritti, 0.5 = swing leggero, 1 = shuffle"),
+        ("Umanizzazione", "0 = tempo perfetto, 2 = molto sciolto"),
+        ("Velocità pennata", "millisecondi tra una corda e l'altra"),
+        ("Variazione", "un altro numero = altre dinamiche e altri campioni"),
+        ("Output", "cartella, MP3, tracce separate (stems) per un DAW"),
+    ]),
+    ("Sezioni", "🧩", [
+        ("p", "A sinistra l'elenco delle sezioni, al centro gli accordi, a destra le impostazioni."),
+        ("h", "Battute"),
+        ("p", "Una casella = una battuta di 4 tempi. Più accordi si dividono i tempi in parti uguali."),
+        BAR_EXAMPLES,
+        ("p", "Invio = battuta successiva · trascina ⠿ per spostare · tasto destro = menu."),
+        ("h", "Strumenti"),
+        ("Costruttore", "tonica, tipo e basso; trascina l'accordo su una battuta o usa «Nuova battuta»"),
+        ("Tavolozza", "accordi già usati: clic = nuova battuta, trascina = mettilo su una battuta"),
+        ("+ %  + N.C.", "aggiungono una battuta che ripete o una pausa"),
+        ("h", "Impostazioni della sezione"),
+        ("Ripetizioni", "quante volte suona di fila"),
+        ("Groove", "vuoto = quello del brano"),
+        ("Dinamica", "1 = normale, 0.8 = più piano (Avanzate)"),
+        ("Chitarra, Batteria", "spegnile per un'intro di sola batteria o uno stop (Avanzate)"),
+    ]),
+    ("Accordi", "🎼", [
+        ("p", "Notazione inglese, tonica maiuscola."),
+        CHORD_EXAMPLES,
+        ("p", "Una battuta sbagliata diventa rossa: il tooltip dice cosa correggere."),
+    ]),
+    ("Tonalità", "🔑", [
+        ("p", "I <b>modelli di giro</b> (12-bar blues, I-V-vi-IV…) sono scritti <b>a gradi</b>: I, IV e V sono "
+              "il primo, il quarto e il quinto accordo della scala. La <b>Tonalità</b> dice da che nota partire "
+              "e trasforma i gradi in accordi veri."),
+        ("code", [("in A", "A7  D7  E7"), ("in E", "E7  A7  B7"), ("in G", "G7  C7  D7")]),
+        ("p", "Scegli la tonalità del brano che vuoi suonare, o quella comoda per voce e strumento. "
+              "Il tooltip del modello mostra gli accordi che ottieni."),
+        ("Sostituisci accordi", "cancella le battute della sezione e ci mette il giro"),
+        ("Aggiungi in coda", "mette il giro dopo le battute che ci sono"),
+        ("p", "Nessuno dei due traspone: per spostare un brano già scritto usa <b>Trasposizione</b> "
+              "(Brano › Avanzate)."),
+    ]),
+    ("Player", "▶️", [
+        ("Forma d'onda", "le sezioni a colori; clic = salta lì"),
+        ("Striscia accordi", "ogni battuta: a sinistra il numero nel brano, a destra nella sezione (3/12)"),
+        ("Posizione", "sotto il tempo: «Battuta 15 / 64 · Strofa 3 / 12»"),
+        ("code", [("Spazio", "play / pausa"), ("B", "da capo"), ("S", "stop"), ("L", "loop acceso / spento")]),
+        ("h", "Loop"),
+        ("p", "Per studiare un passaggio: accendi il loop 🔁 e scegli da che battuta a che battuta suonare. "
+              "Arrivato alla fine, il player torna all'inizio del tratto. Il tratto è segnato in rosa "
+              "sulla forma d'onda e sotto le battute."),
+        ("Shift+clic", "su una battuta della striscia: fine del loop (o nuovo inizio, se è prima)"),
+    ]),
+    ("Tasti", "⌨️", [
+        ("code", [("Alt+G  Ctrl+R", "genera e ascolta"), ("Ctrl+N  Ctrl+O", "nuovo, apri"),
+                  ("Ctrl+S", "salva"), ("Ctrl+Shift+S", "salva con nome"),
+                  ("Ctrl+T  Ctrl+D", "nuova sezione, duplica sezione"),
+                  ("Ctrl+B  Ctrl+Shift+D", "nuova battuta, duplica battuta"),
+                  ("Spazio  B  S  L", "play/pausa, da capo, stop, loop"), ("F1", "guida"), ("Ctrl+Q", "esci")]),
+    ]),
+]
+
+
+def help_page(items):
+    """Una pagina della guida: paragrafi, sottotitoli e schede (termine | spiegazione o esempio | significato)."""
+    box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+    card = None
+    for kind, body in items:
+        if kind == "p":
+            box.append(Gtk.Label(label=body, use_markup=True, wrap=True, xalign=0))
+            card = None
+        elif kind == "h":
+            h = Gtk.Label(label=body, xalign=0, margin_top=8)
+            h.add_css_class("heading")
+            box.append(h)
+            card = None
+        else:
+            if card is None or kind == "code":
+                card, row = Gtk.Grid(column_spacing=16, row_spacing=8), 0
+                card.add_css_class("help-card")
+                box.append(card)
+            for left, right in (body if kind == "code" else [(kind, body)]):
+                term = Gtk.Label(label=left, xalign=0, valign=Gtk.Align.START)
+                term.add_css_class("help-code" if kind == "code" else "help-term")
+                card.attach(term, 0, row, 1, 1)
+                card.attach(Gtk.Label(label=right, use_markup=True, wrap=True, xalign=0, hexpand=True), 1, row, 1, 1)
+                row += 1
+            if kind == "code":
+                card = None
+    return box
+
+
 CSS = ("""
-:root { --accent-bg-color: #e8811a; --accent-fg-color: #ffffff; --accent-color: #f5a623; }
-@define-color accent_bg_color #e8811a;
-@define-color accent_fg_color #ffffff;
-@define-color accent_color #f5a623;
-viewswitcher button:checked, stackswitcher button:checked { color: #f5a623; }
-entry:focus-within { outline-color: alpha(#f5a623, 0.7); }
+/* tema Dracula (https://draculatheme.com): sfondi e testo, forzato scuro in App._activate */
+@define-color window_bg_color #282a36;
+@define-color window_fg_color #f8f8f2;
+@define-color view_bg_color #282a36;
+@define-color view_fg_color #f8f8f2;
+@define-color headerbar_bg_color #21222c;
+@define-color headerbar_fg_color #f8f8f2;
+@define-color sidebar_bg_color #21222c;
+@define-color sidebar_fg_color #f8f8f2;
+@define-color card_bg_color #343746;
+@define-color card_fg_color #f8f8f2;
+@define-color popover_bg_color #343746;
+@define-color popover_fg_color #f8f8f2;
+@define-color dialog_bg_color #343746;
+@define-color dialog_fg_color #f8f8f2;
+@define-color success_color #50fa7b;
+@define-color warning_color #ffb86c;
+@define-color error_color #ff5555;
+@define-color destructive_color #ff5555;
+:root { --window-bg-color: #282a36; --window-fg-color: #f8f8f2; --view-bg-color: #282a36; --view-fg-color: #f8f8f2;
+        --headerbar-bg-color: #21222c; --headerbar-fg-color: #f8f8f2; --sidebar-bg-color: #21222c;
+        --sidebar-fg-color: #f8f8f2; --card-bg-color: #343746; --card-fg-color: #f8f8f2;
+        --popover-bg-color: #343746; --popover-fg-color: #f8f8f2; --dialog-bg-color: #343746;
+        --dialog-fg-color: #f8f8f2; --success-color: #50fa7b; --warning-color: #ffb86c;
+        --error-color: #ff5555; --destructive-color: #ff5555; }
+window, .background { background-color: #282a36; color: #f8f8f2; }
+headerbar, .navigation-sidebar, popover > contents { background-color: #21222c; color: #f8f8f2; }
+selection { background-color: alpha(#bd93f9, 0.35); }
+:root { --accent-bg-color: #bd93f9; --accent-fg-color: #282a36; --accent-color: #caa9fa; }
+@define-color accent_bg_color #bd93f9;
+@define-color accent_fg_color #282a36;
+@define-color accent_color #caa9fa;
+viewswitcher button:checked, stackswitcher button:checked { color: #caa9fa; }
+entry:focus-within { outline-color: alpha(#caa9fa, 0.7); }
 .emoji { font-size: 1.25em; min-width: 1.6em; }
 .dot { font-size: 1.4em; }
 .status-ok { color: @success_color; }
 .status-bad { color: @warning_color; }
 .big-emoji { font-size: 3.5em; }
-button.render-btn { font-weight: 800; letter-spacing: 0.02em; color: white; border: none; border-radius: 999px;
+window button.render-btn { font-weight: 800; letter-spacing: 0.02em; color: #282a36; border: none; border-radius: 999px;
                     padding: 5px 8px 5px 16px; min-height: 30px;
-                    background: linear-gradient(135deg, #f7b03c 0%, #e8811a 55%, #d9591a 100%);
-                    box-shadow: 0 2px 10px alpha(#e8811a, 0.45), inset 0 1px alpha(white, 0.35); }
-button.render-btn:hover { background: linear-gradient(135deg, #ffc257 0%, #f0922e 55%, #e4662a 100%);
-                          box-shadow: 0 3px 14px alpha(#e8811a, 0.65), inset 0 1px alpha(white, 0.45); }
-button.render-btn:active { background: linear-gradient(135deg, #e8811a, #c94f12); box-shadow: inset 0 2px 4px alpha(black, 0.3); }
-button.render-btn:disabled { background: alpha(#e8811a, 0.30); color: alpha(white, 0.6); box-shadow: none; }
-button.render-btn image { -gtk-icon-size: 18px; }
+                    background: linear-gradient(135deg, #caa9fa 0%, #bd93f9 55%, #ff79c6 100%);
+                    box-shadow: 0 2px 10px alpha(#bd93f9, 0.45), inset 0 1px alpha(white, 0.35); }
+window button.render-btn:hover { background: linear-gradient(135deg, #d6bcfb 0%, #caa9fa 55%, #ff92d0 100%);
+                          box-shadow: 0 3px 14px alpha(#bd93f9, 0.65), inset 0 1px alpha(white, 0.45); }
+window button.render-btn:active { background: linear-gradient(135deg, #bd93f9, #9a6fe0); box-shadow: inset 0 2px 4px alpha(black, 0.3); }
+window button.render-btn:disabled { background: alpha(#bd93f9, 0.30); color: alpha(#282a36, 0.6); box-shadow: none; }
+window button.render-btn image { -gtk-icon-size: 18px; }
 .keycap { font-size: 0.72em; font-weight: 700; padding: 1px 7px; border-radius: 999px;
           background: alpha(black, 0.22); color: alpha(white, 0.9); }
 .adv-toggle { font-size: 0.9em; }
-togglebutton.adv-toggle:checked, button.adv-toggle:checked { background: alpha(#e8811a, 0.25); color: #f5a623; }
-viewswitcher button:checked { color: #f5a623; box-shadow: inset 0 -3px #e8811a; }
-.bar-num { font-size: 0.8em; opacity: 0.6; font-feature-settings: "tnum"; }
+togglebutton.adv-toggle:checked, button.adv-toggle:checked { background: alpha(#bd93f9, 0.25); color: #caa9fa; }
+viewswitcher button:checked { color: #caa9fa; box-shadow: inset 0 -3px #bd93f9; }
+.bar-num { font-size: 0.95em; font-weight: bold; color: #bd93f9; font-feature-settings: "tnum"; }
 .bar-entry { font-weight: bold; font-size: 1.1em; }
 .bar-reading { font-size: 0.8em; opacity: 0.75; }
+.help-card { background: alpha(currentColor, 0.045); border-radius: 12px; padding: 12px 16px; }
+.help-term { font-weight: 700; color: #bd93f9; }
+.help-code { font-family: monospace; font-weight: 700; color: #50fa7b; background: alpha(black, 0.25);
+             border-radius: 6px; padding: 1px 8px; }
+.help-side { min-width: 170px; background: #21222c; }
 .yaml-view { font-family: monospace; padding: 12px; }
 .summary { padding: 4px 12px; }
-.player { padding: 12px 16px 6px 16px; background: linear-gradient(to bottom, alpha(#e8811a, 0.10), alpha(#e8811a, 0.03));
-          border-top: 1px solid alpha(#e8811a, 0.35); }
+.player { padding: 12px 16px 6px 16px; background: linear-gradient(to bottom, alpha(#bd93f9, 0.10), alpha(#bd93f9, 0.03));
+          border-top: 1px solid alpha(#bd93f9, 0.35); }
 .player button.play-btn { min-width: 48px; min-height: 48px; -gtk-icon-size: 22px; padding: 0;
-                          background: #e8811a; color: white; border: none; outline: none;
+                          background: #bd93f9; color: #282a36; border: none; outline: none;
                           box-shadow: 0 2px 6px alpha(black, 0.3); }
-.player button.play-btn:hover { background: #f0922e; }
+.player button.play-btn:hover { background: #caa9fa; }
 .player .transport button.circular { min-width: 34px; min-height: 34px; }
 .player-title { font-weight: bold; font-size: 1.05em; }
 .player-time { font-feature-settings: "tnum"; font-size: 1.35em; font-weight: 300; }
 .player-total { font-feature-settings: "tnum"; opacity: 0.55; font-size: 0.9em; }
+.player .loop spinbutton { min-width: 0; min-height: 28px; }
+.player .loop spinbutton > text { padding: 0 2px 0 8px; }
+.player .loop spinbutton > button { min-width: 14px; min-height: 14px; padding: 0 3px; -gtk-icon-size: 10px; }
+.player .loop button.circular:checked { background-color: #ff79c6; color: #282a36; }
 .player-pos { font-feature-settings: "tnum"; font-size: 0.8em; opacity: 0.75; }
-.player scale trough highlight { background: #e8811a; }
-.player scale slider { background: #f5a623; }
+.player scale trough highlight { background: #bd93f9; }
+.player scale slider { background: #caa9fa; }
 .picker { font-weight: 600; }
 .bar-grid { margin-top: 4px; }
 .bar-cell { padding: 4px 6px 4px 4px; border-radius: 6px; background: alpha(currentColor, 0.06);
             border-left: 4px solid alpha(currentColor, 0.3); min-height: 34px; }
 .bar-cell.bad { background: alpha(@error_color, 0.18); border-left-color: @error_color; }
-.bar-cell.drop-hover, .bar-add.drop-hover { background: alpha(#e8811a, 0.35); }
+.bar-cell.drop-hover, .bar-add.drop-hover { background: alpha(#bd93f9, 0.35); }
 .bar-cell entry { background: transparent; box-shadow: none; min-height: 26px; padding: 0 2px; }
 .bar-handle { opacity: 0.35; font-size: 1.1em; padding: 0 2px; }
 .bar-handle:hover { opacity: 0.9; }
 .bar-add { min-height: 34px; font-size: 1.2em; }
 .chip { padding: 2px 10px; min-height: 26px; border-radius: 13px; font-weight: bold; }
-.chip-main { background: alpha(#e8811a, 0.25); padding: 4px 14px; }
+.chip-main { background: alpha(#bd93f9, 0.25); padding: 4px 14px; }
 toggle-group { background: alpha(currentColor, 0.08); border-radius: 10px; padding: 3px; }
 toggle-group > toggle { padding: 4px 11px; margin: 0 1px; border-radius: 8px; font-weight: 600; min-height: 24px; }
 toggle-group > toggle:hover { background: alpha(currentColor, 0.08); }
-toggle-group > toggle:checked { background: #e8811a; color: #ffffff; }
+toggle-group > toggle:checked { background: #bd93f9; color: #282a36; }
 toggle-group > separator { background: transparent; min-width: 0; }
 .grid-choice { min-width: 44px; font-weight: 600; }
 .wave { border-radius: 8px; background: alpha(currentColor, 0.06); }
@@ -119,14 +284,14 @@ toggle-group > separator { background: transparent; min-width: 0; }
 .bt-main button.image-button { padding: 4px 7px; }
 .bt-main button.circular { border-radius: 999px; padding: 4px; min-width: 30px; min-height: 30px; }
 .bt-main button.suggested-action, .bt-main menubutton.suggested-action > button {
-    color: white; font-weight: 600;
-    background-image: linear-gradient(to bottom, #f0922e, #e0741a);
+    color: #282a36; font-weight: 600;
+    background-image: linear-gradient(to bottom, #caa9fa, #a67ef0);
     box-shadow: 0 1px 3px alpha(black, 0.25), inset 0 1px alpha(white, 0.25); }
-.bt-main button.suggested-action:hover { background-image: linear-gradient(to bottom, #f8a13f, #e8811a); }
-.bt-main button.suggested-action:active { background-image: linear-gradient(to bottom, #d86d15, #c9600f); }
+.bt-main button.suggested-action:hover { background-image: linear-gradient(to bottom, #d6bcfb, #bd93f9); }
+.bt-main button.suggested-action:active { background-image: linear-gradient(to bottom, #9a6fe0, #8a5fd8); }
 .bt-main button.danger, .bt-main button.destructive-action {
-    background-color: alpha(#e5484d, 0.14); color: #ff8a8a; background-image: none; }
-.bt-main button.danger:hover, .bt-main button.destructive-action:hover { background-color: alpha(#e5484d, 0.30); color: white; }
+    background-color: alpha(#ff5555, 0.14); color: #ff6e6e; background-image: none; }
+.bt-main button.danger:hover, .bt-main button.destructive-action:hover { background-color: alpha(#ff5555, 0.30); color: white; }
 .bt-main button.pill { border-radius: 999px; padding: 10px 26px; }
 
 /* menu a scelta (groove, ampli, note…) */
@@ -134,15 +299,15 @@ toggle-group > separator { background: transparent; min-width: 0; }
     background-color: alpha(currentColor, 0.07); border-radius: 8px; padding: 4px 10px;
     box-shadow: inset 0 0 0 1px alpha(currentColor, 0.08); }
 .bt-main menubutton.picker > button:hover { background-color: alpha(currentColor, 0.13); }
-.bt-main menubutton.picker > button:checked { background-color: alpha(#e8811a, 0.25);
-                                            box-shadow: inset 0 0 0 1px alpha(#e8811a, 0.6); }
+.bt-main menubutton.picker > button:checked { background-color: alpha(#bd93f9, 0.25);
+                                            box-shadow: inset 0 0 0 1px alpha(#bd93f9, 0.6); }
 
 /* campi di testo e numeri */
 .bt-main spinbutton, .bt-main entry {
     border: none; border-radius: 8px; box-shadow: inset 0 0 0 1px alpha(currentColor, 0.10);
     background-color: alpha(currentColor, 0.05); background-image: none; min-height: 30px; }
 .bt-main spinbutton:focus-within, .bt-main entry:focus-within {
-    box-shadow: inset 0 0 0 2px alpha(#f5a623, 0.75); outline: none; }
+    box-shadow: inset 0 0 0 2px alpha(#caa9fa, 0.75); outline: none; }
 .bt-main spinbutton > text { padding: 0 8px; background: transparent; box-shadow: none; }
 .bt-main row spinbutton { background-color: transparent; }
 .bt-main entry > text { background: transparent; }
@@ -157,13 +322,13 @@ toggle-group > separator { background: transparent; min-width: 0; }
 .bt-main list.boxed-list > row.activatable:hover { background-color: alpha(currentColor, 0.04); }
 .bt-main switch { border: none; border-radius: 999px; background-color: alpha(currentColor, 0.18); }
 .bt-main switch > slider { border: none; border-radius: 999px; background: white; box-shadow: 0 1px 2px alpha(black, 0.3); }
-.bt-main switch:checked { background-color: #e8811a; }
+.bt-main switch:checked { background-color: #bd93f9; }
 
 /* barra laterale delle sezioni */
 .navigation-sidebar > row { border-radius: 10px; margin: 2px 6px; }
 .navigation-sidebar > row:hover { background-color: alpha(currentColor, 0.05); }
-.navigation-sidebar > row:selected { background-color: alpha(#e8811a, 0.22);
-                                     box-shadow: inset 3px 0 #e8811a; }
+.navigation-sidebar > row:selected { background-color: alpha(#bd93f9, 0.22);
+                                     box-shadow: inset 3px 0 #bd93f9; }
 .side-tools { padding-top: 6px; border-top: 1px solid alpha(currentColor, 0.08); }
 .card.builder { border: none; border-radius: 12px; background-color: alpha(currentColor, 0.035);
                 box-shadow: 0 0 0 1px alpha(currentColor, 0.07), 0 2px 6px alpha(black, 0.12); }
@@ -178,10 +343,10 @@ dialog.alert .response-area { padding: 4px 18px 18px 18px; border-spacing: 10px;
 dialog.alert .response-area > button { border: none; border-radius: 10px; min-height: 36px; padding: 6px 18px;
     background-image: none; box-shadow: none; background-color: alpha(currentColor, 0.09); font-weight: 600; margin: 0; }
 dialog.alert .response-area > button:hover { background-color: alpha(currentColor, 0.15); }
-dialog.alert .response-area > button.suggested-action { background-color: #e8811a; color: white; }
-dialog.alert .response-area > button.suggested-action:hover { background-color: #f0922e; }
-dialog.alert .response-area > button.destructive-action { background-color: alpha(#e5484d, 0.16); color: #ff8a8a; }
-dialog.alert .response-area > button.destructive-action:hover { background-color: alpha(#e5484d, 0.32); color: white; }
+dialog.alert .response-area > button.suggested-action { background-color: #bd93f9; color: #282a36; }
+dialog.alert .response-area > button.suggested-action:hover { background-color: #caa9fa; }
+dialog.alert .response-area > button.destructive-action { background-color: alpha(#ff5555, 0.16); color: #ff6e6e; }
+dialog.alert .response-area > button.destructive-action:hover { background-color: alpha(#ff5555, 0.32); color: white; }
 dialog.alert separator { background: transparent; min-width: 0; min-height: 0; }
 """ + "".join(
     ".sec-%d.bar-cell { border-left-color: %s; background: alpha(%s, 0.10); } .sec-%d.dot { color: %s; }\n"
@@ -473,7 +638,7 @@ class BarCell(Gtk.Box):
         num.add_css_class("bar-num")
         self.append(num)
         self.entry = Gtk.Entry(text=text, width_chars=3, max_width_chars=14, hexpand=True, has_frame=False,
-                               placeholder_text="—")
+                               placeholder_text="es. A7")
         self.entry.add_css_class("bar-entry")
         self.entry.connect("changed", self._changed)
         self.entry.connect("activate", lambda _e: editor.focus_bar(index + 1, create=True))
@@ -524,7 +689,8 @@ class BarCell(Gtk.Box):
         err = sf.check_bar(text, self.index == 0) if text.strip() else None
         (self.add_css_class if err else self.remove_css_class)("bad")
         reading = sf.describe_bar(text, self.index == 0) if text.strip() and not err else "battuta vuota"
-        tip = ("⚠ " + err) if err else "Battuta %d: %s\n\n%s" % (self.index + 1, reading, sf.BAR_HELP)
+        tip = ("⚠ " + err) if err else ("Battuta %d: %s\n\nA D = 2 tempi a testa · '.' prolunga · '%%' ripete · "
+                                          "N.C. = pausa · pulsante ? per gli accordi" % (self.index + 1, reading))
         self.set_tooltip_text(tip)
 
 
@@ -538,9 +704,10 @@ def hex_rgb(h):
 
 
 def song_bars(song, sections):
-    """Battute nel tempo, per la striscia accordi del player: [{start, dur, segs, section, color, first, num}].
+    """Battute nel tempo, per la striscia accordi del player: [{start, dur, segs, section, color, first, num, local, size}].
 
-    `num` è il numero della battuta nel brano (1…), None per conteggio e finale.
+    `num` è il numero della battuta nel brano (1…), None per conteggio e finale;
+    `local` il numero nella sezione (1…`size`, come nell'editor), ricomincia a ogni ripetizione.
     """
     order, timeline = build_timeline(song)
     bar = 240 / float(song.get("tempo", 120))
@@ -551,11 +718,14 @@ def song_bars(song, sections):
                          num=None))
         t = bar
     first_chord = None
+    local = 0
     for n, b in enumerate(timeline, 1):
+        local = 1 if b["first"] else local + 1
         segs = [(s0, d, c.name if c else "N.C.") for s0, d, c in b["segs"]]
         first_chord = first_chord or next((c.name for _, _, c in b["segs"] if c), None)
         name = b["sec"]["name"]
         bars.append(dict(start=t, dur=bar, segs=segs, section=name, first=b["first"], num=n,
+                         local=local, size=len(b["sec"]["bars"]),
                          color=names.index(name) % len(SECTION_COLORS) if name in names else None))
         t += bar
     if song.get("ending", True) and first_chord:
@@ -575,7 +745,7 @@ class ChordStrip(Gtk.ScrolledWindow):
     BAR_MIN = 96      # larghezza minima di una battuta
     FONT = "Sans Bold 13"
     FONT_CUR = "Sans Bold 14"
-    FONT_NUM = "Sans 7"
+    FONT_NUM = "Sans Bold 9"
     FONT_SEC = "Sans Bold 8"
     TOP = 16          # spazio sopra per il nome della sezione
     BOTTOM = 10       # spazio sotto per la barra di scorrimento (sovrapposta)
@@ -670,18 +840,21 @@ class ChordStrip(Gtk.ScrolledWindow):
         t = m.get_timestamp() / 1e6 if m else 0
         cur = self.current(t)
         top, bh = self.TOP, h - self.TOP - self.BOTTOM
+        p = self.player
+        loop = ((p.loop_from.get_value_as_int(), p.loop_to.get_value_as_int())
+                if p.loop_btn.get_active() else None)
         for i, b in enumerate(self.bars):
             x, bwi = self.xs[i], self.ws[i]
             col = hex_rgb(SECTION_COLORS[b["color"]]) if b["color"] is not None else ink
             # riquadro
             if i == cur:
-                cr.set_source_rgba(0.91, 0.51, 0.10, 0.40)
+                cr.set_source_rgba(0.74, 0.58, 0.98, 0.35)
             else:
                 cr.set_source_rgba(*ink, 0.04 if i < cur else 0.09)
             self._round(cr, x, top, bwi, bh, 7)
             cr.fill()
             if i == cur:
-                cr.set_source_rgba(0.96, 0.65, 0.14, 0.9)
+                cr.set_source_rgba(1.0, 0.47, 0.78, 0.9)
                 cr.set_line_width(1.5)
                 self._round(cr, x + 0.75, top + 0.75, bwi - 1.5, bh - 1.5, 6.5)
                 cr.stroke()
@@ -695,11 +868,15 @@ class ChordStrip(Gtk.ScrolledWindow):
                 cr.set_source_rgba(*col, 0.95)
                 cr.move_to(x + 4, 0)
                 PangoCairo.show_layout(cr, layout)
-            # numero di battuta in piccolo, in alto a sinistra
+            # numero di battuta in piccolo: nel brano a sinistra, nella sezione a destra
             if b["num"] is not None:
+                cr.set_source_rgba(*ink, 1.0 if i == cur else 0.75)
                 layout, _lg = self._layout(cr, str(b["num"]), self.FONT_NUM)
-                cr.set_source_rgba(*ink, 0.75 if i == cur else 0.4)
-                cr.move_to(x + 6, top + 4)
+                cr.move_to(x + 6, top + 5)
+                PangoCairo.show_layout(cr, layout)
+                cr.set_source_rgba(*col, 1.0 if i == cur else 0.8)  # colore della sezione
+                layout, lg = self._layout(cr, "%d/%d" % (b["local"], b["size"]), self.FONT_NUM)
+                cr.move_to(x + bwi - 6 - lg.width, top + 5)
                 PangoCairo.show_layout(cr, layout)
             # accordi
             mid = top + bh / 2 + 3
@@ -712,10 +889,17 @@ class ChordStrip(Gtk.ScrolledWindow):
                     cr.fill()
                 font = self.FONT_CUR if i == cur else self.FONT
                 self._text(cr, name, font, sx, mid, sw, (*ink, 1.0 if i >= cur else 0.4))
+            # battute nel loop: fascia rosa sotto
+            if b["num"] and loop and loop[0] <= b["num"] <= loop[1]:
+                cr.set_source_rgba(1.0, 0.47, 0.78, 0.9)
+                left = 3 if b["num"] > loop[0] else 0     # unisce le fasce nello spazio tra le battute
+                right = 3 if b["num"] < loop[1] else 0
+                cr.rectangle(x - left, top + bh + 3, bwi + left + right, 3)
+                cr.fill()
             # avanzamento nella battuta corrente
             if i == cur and b["dur"]:
                 frac = max(0, min(1, (t - b["start"]) / b["dur"]))
-                cr.set_source_rgba(0.96, 0.65, 0.14, 1)
+                cr.set_source_rgba(1.0, 0.47, 0.78, 1)
                 self._round(cr, x + 6, top + bh - 6, max(3, (bwi - 12) * frac), 3, 1.5)
                 cr.fill()
 
@@ -729,9 +913,18 @@ class ChordStrip(Gtk.ScrolledWindow):
         cr.arc(x + r, y + r, r, math.pi, 3 * math.pi / 2)
         cr.close_path()
 
-    def _click(self, _g, _n, x, _y):
+    def _click(self, gesture, _n, x, _y):
         m = self.player.media
+        shift = gesture.get_current_event_state() & Gdk.ModifierType.SHIFT_MASK
         for i, (bx, bw) in enumerate(zip(self.xs, self.ws)):
+            if shift and bx <= x <= bx + bw and self.bars[i]["num"]:
+                # Shift+clic: allarga il loop fino a questa battuta (o lo accorcia dall'inizio)
+                p, n = self.player, self.bars[i]["num"]
+                lo, hi = p.loop_from.get_value_as_int(), p.loop_to.get_value_as_int()
+                if not p.loop_btn.get_active():
+                    lo = hi = n
+                p.set_loop(min(lo, n), n if n >= lo else hi)
+                return
             if bx <= x <= bx + bw and m:
                 m.seek(int(self.bars[i]["start"] * 1e6))
                 self._manual_until = 0
@@ -780,6 +973,31 @@ class Player(Gtk.Revealer):
         info.append(self.pos)
         box.append(info)
 
+        # loop su un tratto: da battuta X a Y (numeri come nella striscia accordi)
+        loop = Gtk.Box(spacing=4, valign=Gtk.Align.CENTER)
+        loop.add_css_class("loop")
+        self.loop_btn = Gtk.ToggleButton(icon_name="media-playlist-repeat-symbolic",
+                                         tooltip_text="Loop da battuta a battuta (L) · Shift+clic su una battuta "
+                                                      "della striscia per scegliere il tratto")
+        self.loop_btn.add_css_class("circular")
+        self.loop_btn.connect("toggled", lambda _b: self._loop_changed(jump=True))
+        self.loop_from = Gtk.SpinButton.new_with_range(1, 1, 1)
+        self.loop_to = Gtk.SpinButton.new_with_range(1, 1, 1)
+        for sb in (self.loop_from, self.loop_to):
+            sb.set_width_chars(2)
+        for sb, other, sign in ((self.loop_from, self.loop_to, 1), (self.loop_to, self.loop_from, -1)):
+            sb.set_tooltip_text("Prima battuta del loop" if sign > 0 else "Ultima battuta del loop")
+            sb.set_valign(Gtk.Align.CENTER)
+            # da ≤ a: spostarne uno trascina l'altro
+            sb.connect("value-changed", lambda b, o=other, sg=sign: (
+                o.set_value(b.get_value()) if (b.get_value() - o.get_value()) * sg > 0 else None,
+                self._loop_changed()))
+        loop.append(self.loop_btn)
+        loop.append(self.loop_from)
+        loop.append(Gtk.Label(label="–"))
+        loop.append(self.loop_to)
+        box.append(loop)
+
         # forma d'onda + avanzamento disegnato sopra
         self.wave = Gtk.Picture(content_fit=Gtk.ContentFit.FILL, can_shrink=True, hexpand=True)
         self.progress = Gtk.DrawingArea(hexpand=True)
@@ -822,6 +1040,9 @@ class Player(Gtk.Revealer):
 
     def load(self, wav, title, wave_png=None, bars=None):
         self.strip.set_bars(bars or [])
+        total = max([b["num"] for b in bars or [] if b["num"]] or [1])
+        for sb in (self.loop_from, self.loop_to):
+            sb.set_range(1, total)
         if self.media:
             self.media.pause()
         self.media = Gtk.MediaFile.new_for_filename(str(wav))
@@ -834,8 +1055,32 @@ class Player(Gtk.Revealer):
         self.set_reveal_child(True)
         self.media.play()
 
+    def loop_range(self):
+        """(inizio, fine) in secondi del tratto in loop, None se il loop è spento."""
+        if not self.loop_btn.get_active():
+            return None
+        lo, hi = self.loop_from.get_value_as_int(), self.loop_to.get_value_as_int()
+        sel = [b for b in self.strip.bars if b["num"] and lo <= b["num"] <= hi]
+        return (sel[0]["start"], sel[-1]["start"] + sel[-1]["dur"]) if sel else None
+
+    def set_loop(self, lo, hi):
+        self.loop_from.set_value(lo)
+        self.loop_to.set_value(hi)
+        self.loop_btn.set_active(True)
+
+    def _loop_changed(self, jump=False):
+        rng = self.loop_range()
+        if rng and self.media and (jump or not rng[0] <= self.media.get_timestamp() / 1e6 < rng[1]):
+            self.media.seek(int(rng[0] * 1e6))
+        self.strip.area.queue_draw()
+        self.progress.queue_draw()
+
     def _tick(self, *_a):
         m = self.media
+        rng = self.loop_range()
+        # fuori dal tratto (fine raggiunta o clic altrove): si torna all'inizio del loop
+        if rng and m.get_playing() and not rng[0] - 0.05 <= m.get_timestamp() / 1e6 < rng[1]:
+            m.seek(int(rng[0] * 1e6))
         self.time.set_label(fmt_time(m.get_timestamp()))
         self.total.set_label("/ " + fmt_time(m.get_duration()))
         self.progress.queue_draw()
@@ -843,7 +1088,7 @@ class Player(Gtk.Revealer):
         self._update_pos()
 
     def _update_pos(self):
-        """Battuta e sezione correnti sotto il tempo: "Battuta 7 / 64 · Strofa"."""
+        """Battuta e sezione correnti sotto il tempo: "Battuta 7 / 64 · Strofa 3 / 8"."""
         bars = self.strip.bars
         if not bars or not self.media:
             self.pos.set_label("")
@@ -853,7 +1098,7 @@ class Player(Gtk.Revealer):
         if b["num"] is None:
             self.pos.set_label(b["section"].capitalize())
         else:
-            self.pos.set_label("Battuta %d / %d · %s" % (b["num"], total, b["section"]))
+            self.pos.set_label("Battuta %d / %d · %s %d / %d" % (b["num"], total, b["section"], b["local"], b["size"]))
 
     def _update_icon(self, *_a):
         playing = self.media is not None and self.media.get_playing()
@@ -863,13 +1108,18 @@ class Player(Gtk.Revealer):
         m = self.media
         frac = m.get_timestamp() / m.get_duration() if m and m.get_duration() else 0
         x = frac * w
-        cr.set_source_rgba(0, 0, 0, 0.45)  # parte non ancora suonata più scura
+        cr.set_source_rgba(0.16, 0.16, 0.21, 0.55)  # parte non ancora suonata più scura
         cr.rectangle(x, 0, w - x, h)
         cr.fill()
-        cr.set_source_rgba(0.96, 0.65, 0.14, 0.18)
+        cr.set_source_rgba(0.74, 0.58, 0.98, 0.18)
         cr.rectangle(0, 0, x, h)
         cr.fill()
         dur = m.get_duration() / 1e6 if m and m.get_duration() else 0
+        rng = self.loop_range() if dur else None
+        if rng:  # tratto in loop: fascia rosa
+            cr.set_source_rgba(1.0, 0.47, 0.78, 0.22)
+            cr.rectangle(rng[0] / dur * w, 0, (rng[1] - rng[0]) / dur * w, h)
+            cr.fill()
         marks = [b for b in self.strip.bars if b["first"] and b["color"] is not None] if dur else []
         for j, b in enumerate(marks):
             bx = b["start"] / dur * w
@@ -887,7 +1137,7 @@ class Player(Gtk.Revealer):
                 cr.set_source_rgba(*col, 1)
                 cr.move_to(bx + 4, 2)
                 PangoCairo.show_layout(cr, layout)
-        cr.set_source_rgba(1, 1, 1, 0.9)
+        cr.set_source_rgba(0.97, 0.97, 0.95, 0.9)
         cr.rectangle(x - 1, 0, 2, h)
         cr.fill()
 
@@ -1196,15 +1446,12 @@ class MainWindow(Adw.ApplicationWindow):
         head.append(title)
         self.bars_info = Gtk.Label(xalign=1, hexpand=True)
         self.bars_info.add_css_class("dim-label")
-        hint = Gtk.Label(wrap=True, xalign=0, max_width_chars=44, margin_start=6, margin_end=6,
-                         margin_top=6, margin_bottom=6,
-                         label="Una casella = una battuta di 4 tempi.\n"
-                               "Più accordi si dividono i tempi in parti uguali.\n"
-                               "'.' prolunga l'accordo prima: 'Em . D C' = Em 2 tempi, D 1, C 1.\n"
-                               "'%' ripete la battuta precedente, 'N.C.' = pausa.\n"
-                               "Invio = battuta successiva · trascina ⠿ per spostare.")
+        hint = help_page([("h", "Una casella = una battuta di 4 tempi"), BAR_EXAMPLES,
+                          ("h", "Accordi"), CHORD_EXAMPLES, ("p", "<small>Guida completa: F1</small>")])
+        for m in ("start", "end", "top", "bottom"):
+            getattr(hint, "set_margin_" + m)(10)
         help_btn = Gtk.MenuButton(icon_name="help-about-symbolic", valign=Gtk.Align.CENTER,
-                                  tooltip_text="Come si scrivono le battute", popover=Gtk.Popover(child=hint))
+                                  tooltip_text="Come si scrivono battute e accordi", popover=Gtk.Popover(child=hint))
         help_btn.add_css_class("flat")
         help_btn.add_css_class("circular")
         head.insert_child_after(help_btn, title)
@@ -1294,10 +1541,13 @@ class MainWindow(Adw.ApplicationWindow):
         self.t_key.connect("notify::selected", self.t_key_sub)
         self.t_key_sub()
         buttons = Gtk.Box(spacing=6, halign=Gtk.Align.END, margin_top=10)
-        rep = Gtk.Button(label="Sostituisci accordi")
+        rep = Gtk.Button(label="Sostituisci accordi",
+                         tooltip_text="Cancella le battute della sezione e mette il giro scelto nella tonalità scelta. "
+                                      "Non traspone: per cambiare tonalità a un brano usa Trasposizione")
         rep.add_css_class("suggested-action")
         rep.connect("clicked", lambda _b: self.apply_template(replace=True))
-        app = Gtk.Button(label="Aggiungi in coda")
+        app = Gtk.Button(label="Aggiungi in coda",
+                         tooltip_text="Aggiunge il giro dopo le battute che ci sono già")
         app.connect("clicked", lambda _b: self.apply_template(replace=False))
         buttons.append(app)
         buttons.append(rep)
@@ -2072,6 +2322,26 @@ class MainWindow(Adw.ApplicationWindow):
         path = EXAMPLES / rel
         self.confirm_discard(lambda: self.load_file(path))
 
+    def action_help(self):
+        stack = Gtk.Stack(transition_type=Gtk.StackTransitionType.CROSSFADE, hexpand=True)
+        for title, icon, items in HELP:
+            page = help_page(items)
+            head = Gtk.Label(label="%s  %s" % (icon, title), xalign=0)
+            head.add_css_class("title-1")
+            page.prepend(head)
+            clamp = Adw.Clamp(child=page, maximum_size=620, margin_start=24, margin_end=24, margin_top=18,
+                              margin_bottom=24)
+            stack.add_titled(Gtk.ScrolledWindow(child=clamp, hscrollbar_policy=Gtk.PolicyType.NEVER),
+                             title, "%s  %s" % (icon, title))
+        side = Gtk.StackSidebar(stack=stack)
+        side.add_css_class("help-side")
+        body = Gtk.Box()
+        body.append(side)
+        body.append(stack)
+        view = Adw.ToolbarView(content=body)
+        view.add_top_bar(Adw.HeaderBar())
+        Adw.Dialog(title="Guida", child=view, content_width=860, content_height=640).present(self)
+
     def action_about(self):
         about = Adw.AboutDialog(application_name="backingtrack", version=__version__,
                                 comments="Backing track con chitarra e batteria campionate, dai tuoi accordi.",
@@ -2092,7 +2362,8 @@ class MainWindow(Adw.ApplicationWindow):
         if isinstance(focus, Gtk.Editable) or isinstance(focus, Gtk.TextView):
             return False
         action = {Gdk.KEY_space: self.play_toggle, Gdk.KEY_b: self.play_restart, Gdk.KEY_B: self.play_restart,
-                  Gdk.KEY_s: self.play_stop, Gdk.KEY_S: self.play_stop}.get(keyval)
+                  Gdk.KEY_s: self.play_stop, Gdk.KEY_S: self.play_stop,
+                  Gdk.KEY_l: self.play_loop, Gdk.KEY_L: self.play_loop}.get(keyval)
         if action:
             action()
             return True
@@ -2115,6 +2386,10 @@ class MainWindow(Adw.ApplicationWindow):
     def play_stop(self):
         if self._ready():
             self.player.stop()
+
+    def play_loop(self):
+        if self._ready():
+            self.player.loop_btn.set_active(not self.player.loop_btn.get_active())
 
     def open_output_dir(self):
         wav = getattr(self, "last_output", None)
@@ -2195,7 +2470,8 @@ def build_menu():
 
     play_menu = Gio.Menu()
     for label, action, accel in (("Play / pausa", "app.play-toggle", "space"), ("Da capo", "app.play-restart", "b"),
-                                 ("Stop", "app.play-stop", "s")):
+                                 ("Stop", "app.play-stop", "s"),
+                                 ("Loop", "app.play-loop", "l")):
         item = Gio.MenuItem.new(label, action)
         item.set_attribute_value("accel", GLib.Variant.new_string(accel))  # solo indicazione: gestite dal tasto
         play_menu.append_item(item)
@@ -2209,6 +2485,7 @@ def build_menu():
     menubar.append_submenu("_Riproduzione", play_menu)
 
     help_menu = Gio.Menu()
+    help_menu.append("Guida", "app.guide")
     help_menu.append("Guida online", "app.help")
     help_menu.append("Informazioni", "app.about")
     menubar.append_submenu("_Aiuto", help_menu)
@@ -2225,7 +2502,7 @@ def make_waveform(wav):
         return None
     png = Path(tempfile.gettempdir()) / ("backingtrack-wave-%d.png" % abs(hash(str(wav))))
     p = subprocess.run([ffmpeg, "-y", "-v", "error", "-i", str(wav), "-filter_complex",
-                        "aformat=channel_layouts=mono,showwavespic=s=1600x120:colors=#f5a623:scale=lin",
+                        "aformat=channel_layouts=mono,showwavespic=s=1600x120:colors=#bd93f9:scale=lin",
                         "-frames:v", "1", str(png)], stdin=subprocess.DEVNULL)
     return png if p.returncode == 0 else None
 
@@ -2245,6 +2522,7 @@ class App(Adw.Application):
         theme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default())
         theme.add_search_path(str(Path(__file__).resolve().parent / "data"))
         Gtk.Window.set_default_icon_name(APP_ID)
+        Adw.StyleManager.get_default().set_color_scheme(Adw.ColorScheme.FORCE_DARK)  # Dracula è solo scuro
         provider = Gtk.CssProvider()
         provider.load_from_data(CSS)
         # sopra il gtk.css dell'utente: temi come Arc ridipingono di blu suggested-action e gli slider
@@ -2259,6 +2537,7 @@ class App(Adw.Application):
                                 ("section-dup", "<Control>d", win.duplicate_section),
                                 ("bar-new", "<Control>b", lambda: win.add_bar("")),
                                 ("bar-dup", "<Control><Shift>d", win.duplicate_focused_bar),
+                                ("guide", "F1", win.action_help),
                                 ("quit", "<Control>q", win.close)):
             act = Gio.SimpleAction.new(name, None)
             act.connect("activate", lambda _a, _p, f=fn: f())
@@ -2276,7 +2555,7 @@ class App(Adw.Application):
         win.set_advanced(load_prefs().get("advanced", False))
         for name, fn in (("open-output", win.open_output_dir), ("install", win.install_packs),
                          ("section-del", win.delete_section), ("play-toggle", win.play_toggle),
-                         ("play-restart", win.play_restart), ("play-stop", win.play_stop), ("section-up", lambda: win.move_section(-1)),
+                         ("play-restart", win.play_restart), ("play-stop", win.play_stop), ("play-loop", win.play_loop), ("section-up", lambda: win.move_section(-1)),
                          ("section-down", lambda: win.move_section(1)),
                          ("about", win.action_about),
                          ("help", lambda: Gtk.UriLauncher.new("https://github.com/wdog/backingtrack#readme")
