@@ -34,7 +34,8 @@ TRI = ["dal groove", "sì", "no"]
 TRI_VAL = [None, True, False]
 
 SECTION_COLORS = ["#ffb86c", "#8be9fd", "#50fa7b", "#bd93f9", "#f1fa8c", "#ff79c6", "#ff5555", "#6272a4"]  # Dracula
-STYLE_EMOJI = {"rock": "🤘", "blues": "🎷", "rockabilly": "🕺", "country": "🤠", "jazz": "🎺"}
+STYLE_EMOJI = {"rock": "🤘", "blues": "🎷", "rockabilly": "🕺", "country": "🤠", "jazz": "🎺",
+               "funk": "🪩", "reggae": "🌴", "soul": "🎤"}
 
 # Guida (menu Aiuto › Guida, F1): pagine (titolo, icona, voci). Voce: ("p", testo) paragrafo, ("h", titolo)
 # sottotitolo, ("code", [(esempio, significato)]) tabella di esempi, (termine, spiegazione) riga di una scheda.
@@ -89,7 +90,7 @@ HELP = [
         ("p", "Invio = battuta successiva · trascina ⠿ per spostare · tasto destro = menu."),
         ("h", "Strumenti"),
         ("Costruttore", "tonica, tipo e basso; trascina l'accordo su una battuta o usa «Nuova battuta»"),
-        ("Tavolozza", "accordi già usati: clic = nuova battuta, trascina = mettilo su una battuta"),
+        ("Tavolozza", "accordi già usati: clic = aggiungilo alla battuta selezionata (o nuova battuta se non ce n'è), trascina = mettilo su una battuta"),
         ("+ %  + N.C.", "aggiungono una battuta che ripete o una pausa"),
         ("h", "Impostazioni della sezione"),
         ("Ripetizioni", "quante volte suona di fila"),
@@ -113,6 +114,15 @@ HELP = [
         ("Aggiungi in coda", "mette il giro dopo le battute che ci sono"),
         ("p", "Nessuno dei due traspone: per spostare un brano già scritto usa <b>Trasposizione</b> "
               "(Brano › Avanzate)."),
+        ("h", "Tonica o tonalità?"),
+        ("Tonica", "la nota che dà il nome a <b>un accordo</b>: in Am7 è A, in D/F# è D. "
+                   "Nel costruttore scegli tonica + tipo (m, 7…) e ottieni un accordo solo"),
+        ("Tonalità", "la «casa» di <b>tutto il giro</b>: la scala da cui vengono i suoi accordi. "
+                     "Nei modelli trasforma i gradi (I, IV, V…) in accordi veri"),
+        ("p", "Le due cose si toccano in un punto: la tonica dell'accordo di I grado è la nota della tonalità. "
+              "Blues in A = A7 (I), D7 (IV), E7 (V): ogni accordo ha la sua tonica (A, D, E), la tonalità è una "
+              "sola, A. Cambiare la tonica nel costruttore cambia un accordo; cambiare la tonalità di un modello "
+              "cambia tutti gli accordi del giro."),
     ]),
     ("Player", "▶️", [
         ("Forma d'onda", "le sezioni a colori; clic = salta lì"),
@@ -129,7 +139,8 @@ HELP = [
         ("code", [("Alt+G  Ctrl+R", "genera e ascolta"), ("Ctrl+N  Ctrl+O", "nuovo, apri"),
                   ("Ctrl+S", "salva"), ("Ctrl+Shift+S", "salva con nome"),
                   ("Ctrl+T  Ctrl+D", "nuova sezione, duplica sezione"),
-                  ("Ctrl+B  Ctrl+Shift+D", "nuova battuta, duplica battuta"),
+                  ("Ctrl+B  Super+N", "nuova battuta"), ("Ctrl+Shift+D", "duplica battuta"),
+                  ("Super+Canc", "elimina la battuta selezionata"),
                   ("Spazio  B  S  L", "play/pausa, da capo, stop, loop"), ("F1", "guida"), ("Ctrl+Q", "esci")]),
     ]),
 ]
@@ -408,7 +419,8 @@ def icon_button(icon, tooltip, callback, *args):
     return b
 
 
-STYLE_NAMES = {"rock": "Rock", "blues": "Blues", "rockabilly": "Rockabilly", "country": "Country", "jazz": "Jazz"}
+STYLE_NAMES = {"rock": "Rock", "blues": "Blues", "rockabilly": "Rockabilly", "country": "Country", "jazz": "Jazz",
+               "funk": "Funk", "reggae": "Reggae", "soul": "Soul"}
 
 
 class MenuRow(Adw.ActionRow):
@@ -1300,8 +1312,8 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.w_guitar = ChoiceRow("Chitarra", [("Gretsch", "Anniversary hollowbody, twang e calore"),
                                                ("Epiphone", "solid body"),
-                                               ("Archtop", "Shinyguitar, pickup magnetico"),
-                                               ("Archtop mic", "Shinyguitar microfonata, suono acustico")])
+                                               ("Fender", "solid body single coil, per rock e hard rock"),
+                                               ("Acustica", "steel string Seagull, senza ampli")])
         self.w_amp = tip(ChoiceRow("Ampli", [("auto", "quello del groove"), ("clean", "pulito"),
                                              ("blues", "leggermente sporco, caldo"), ("twang", "brillante, anni '50"),
                                              ("crunch", "distorsione media"), ("high", "distorsione pesante")]),
@@ -1464,7 +1476,8 @@ class MainWindow(Adw.ApplicationWindow):
                               column_spacing=6, row_spacing=6, homogeneous=False)
         self.c_root = GridPicker(sf.ROOTS, note_rows(sf.ROOTS), fmt=lambda i: "Tonica: " + sf.ROOTS[i])
         self.c_root.set_selected(sf.ROOTS.index("A"))
-        self.c_root.set_tooltip_text("Tonica")
+        self.c_root.set_tooltip_text("Tonica: la nota che dà il nome all'accordo (A in Am7). "
+                                     "Non è la tonalità del brano: vedi F1 › Tonalità")
         qual_labels = [suf or "maggiore" for suf, _d in sf.QUALITY_CHOICES]
         self.c_qual = GridPicker(qual_labels, [list(range(i, min(i + 4, len(qual_labels))))
                                                for i in range(0, len(qual_labels), 4)],
@@ -1514,7 +1527,7 @@ class MainWindow(Adw.ApplicationWindow):
         pal = Gtk.Box(spacing=8)
         pal_label = Gtk.Label(label="🎨 Tavolozza")
         pal_label.add_css_class("heading")
-        pal_label.set_tooltip_text("Trascina un accordo su una battuta per metterlo lì; clic = nuova battuta")
+        pal_label.set_tooltip_text("Trascina un accordo su una battuta per metterlo lì; clic = aggiungilo alla battuta selezionata")
         pal.append(pal_label)
         self.palette = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=20,
                                    column_spacing=4, row_spacing=4, hexpand=True)
@@ -1537,6 +1550,8 @@ class MainWindow(Adw.ApplicationWindow):
         self.t_name.label.set_width_chars(10)
         self.t_name.connect("notify::selected", self.t_key_sub)
         self.t_key = deco(PickerRow("Tonalità", GridPicker(sf.KEYS, note_rows(sf.KEYS))), "🔑")
+        self.t_key.set_tooltip_text("Tonalità del giro: la nota da cui partono i gradi I, IV, V… "
+                                    "(blues in A = A7 D7 E7). Vedi F1 › Tonalità")
         self.t_key.set_selected(sf.KEYS.index("A"))
         self.t_key.connect("notify::selected", self.t_key_sub)
         self.t_key_sub()
@@ -1783,9 +1798,9 @@ class MainWindow(Adw.ApplicationWindow):
                             and not sf.check_chord(tok) and tok not in seen:
                         seen.append(tok)
         for tok in seen[:24]:
-            chip = Gtk.Button(label=tok, tooltip_text="Clic: nuova battuta · trascina su una battuta")
+            chip = Gtk.Button(label=tok, tooltip_text="Clic: aggiungi alla battuta selezionata · trascina su una battuta")
             chip.add_css_class("chip")
-            chip.connect("clicked", lambda _b, t=tok: self.add_bar(t))
+            chip.connect("clicked", lambda _b, t=tok: self.append_to_focused(t))
             drag_source(chip, lambda t=tok: "chord:" + t)
             self.palette.append(chip)
 
@@ -1878,6 +1893,14 @@ class MainWindow(Adw.ApplicationWindow):
             return
         i = self.focused_bar if self.focused_bar is not None and self.focused_bar < len(sec["bars"]) else len(sec["bars"]) - 1
         self.duplicate_bar(i)
+
+    def remove_focused_bar(self):
+        sec = self.section
+        i = self.focused_bar
+        if not sec or i is None or i >= len(sec["bars"]):
+            self.toast("Seleziona prima una battuta")
+            return
+        self.remove_bar(i)
 
     def remove_bar(self, index):
         sec = self.section
@@ -2255,10 +2278,19 @@ class MainWindow(Adw.ApplicationWindow):
         self.banner.set_button_label(None)
         self.spinner.start()
 
+        shown = [None]
+
+        def progress(name, done, total, _files=None):
+            mb = "%d / %d MB" % (done >> 20, total >> 20) if total else "%d MB" % (done >> 20)
+            title = "Scarico i campioni: %s%s · %s" % (name, " %d%%" % (100 * done // total) if total else "", mb)
+            if title != shown[0]:  # una chiamata per blocco scaricato: aggiorna solo se cambia
+                shown[0] = title
+                GLib.idle_add(self.banner.set_title, title)
+
         def work():
             try:
                 for p in missing:
-                    packs.install(p)
+                    packs.install(p, progress=lambda d, t, f=None, p=p: progress(p, d, t, f))
                 GLib.idle_add(done, None)
             except Exception as e:  # noqa: BLE001 — mostrato all'utente
                 GLib.idle_add(done, str(e))
@@ -2465,6 +2497,7 @@ def build_menu():
     part = Gio.Menu()
     part.append("Nuova battuta", "app.bar-new")
     part.append("Duplica battuta", "app.bar-dup")
+    part.append("Elimina battuta", "app.bar-del")
     sec_menu.append_section(None, part)
     menubar.append_submenu("_Sezione", sec_menu)
 
@@ -2537,6 +2570,7 @@ class App(Adw.Application):
                                 ("section-dup", "<Control>d", win.duplicate_section),
                                 ("bar-new", "<Control>b", lambda: win.add_bar("")),
                                 ("bar-dup", "<Control><Shift>d", win.duplicate_focused_bar),
+                                ("bar-del", "<Super>Delete", win.remove_focused_bar),
                                 ("guide", "F1", win.action_help),
                                 ("quit", "<Control>q", win.close)):
             act = Gio.SimpleAction.new(name, None)
@@ -2544,6 +2578,7 @@ class App(Adw.Application):
             self.add_action(act)
             self.set_accels_for_action("app." + name, [accel])
         self.set_accels_for_action("app.render", ["<Alt>g", "<Control>r"])
+        self.set_accels_for_action("app.bar-new", ["<Control>b", "<Super>n"])
         adv = Gio.SimpleAction.new_stateful("advanced", None, GLib.Variant.new_boolean(False))
 
         def on_adv(a, value):

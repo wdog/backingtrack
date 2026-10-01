@@ -97,6 +97,20 @@ class Arranger:
             hits = [(0, 0)]
         elif style == "slow":
             hits = [(0, 0), (1, 7), (2, 9), (3, 7)]
+        elif style == "two":
+            hits = [(0, 0), (2, 7)]
+        elif style == "octave":
+            hits = [(i / 2, 12 * (i % 2)) for i in range(8)]
+        elif style == "funk":
+            hits = [(0, 0), (0.75, 0), (1.5, 12), (2, 0), (2.5, 7), (3.5, 10)]
+        elif style == "reggae":
+            hits = [(0, 0), (1.5, 7), (2, 12), (3, 10)]
+        elif style == "quarters":
+            hits = [(b, 0) for b in range(4)]
+        elif style == "dotted":
+            hits = [(0, 0), (1.5, 0), (3, 7)]
+        elif style == "tumbao":
+            hits = [(1.5, 7), (3, 0)]
         else:  # walk: R 3 5 6 | b7 6 5 3
             hits = [(b, None) for b in range(4)]
         for k, (beat, iv) in enumerate(hits):

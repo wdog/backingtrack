@@ -4,6 +4,8 @@ import platform
 import shutil
 import subprocess
 import sys
+import tarfile
+import threading
 import urllib.parse
 import urllib.request
 import zipfile
@@ -52,16 +54,17 @@ PACKS = {
         author="Karoryfer Samples / D. Smolken", license="CC0-1.0",
         repo="sfzinstruments/karoryfer.emilyguitar", sfz="emily_clean.sfz", size_mb=100, light_mb=40, rr=1,
         keys=range(36, 90), kind="guitar"),
-    "archtop": dict(
-        title="Shinyguitar — chitarra archtop, pickup magnetico (guitar: archtop)",
-        author="Karoryfer Samples / D. Smolken", license="CC0-1.0",
-        repo="sfzinstruments/karoryfer.shinyguitar", sfz="Programs/electric_one.sfz", size_mb=212, light_mb=106,
-        rr=2, keys=range(36, 90), exclude=("GUI/",), kind="guitar"),
-    "archtop_mic": dict(
-        title="Shinyguitar — chitarra archtop microfonata, suono acustico (guitar: archtop_mic)",
-        author="Karoryfer Samples / D. Smolken", license="CC0-1.0",
-        repo="sfzinstruments/karoryfer.shinyguitar", sfz="Programs/acoustic_one.sfz", cc={100: 127},
-        size_mb=212, light_mb=106, rr=2, keys=range(36, 90), exclude=("GUI/",), kind="guitar"),
+    "acoustic": dict(
+        title="FSS Steel-String — chitarra acustica Seagull, quasi ogni semitono, 2 dinamiche (guitar: acoustic)",
+        author="FreePats / FlameStudios", license="GPL-3.0+ con eccezione per i brani",
+        urls=[("acoustic.tar.xz",
+               "https://freepats.zenvoid.org/Guitar/FSS-SteelStringGuitar/FSS-SteelStringGuitar-SFZ-20200521.tar.xz")],
+        sfz="FSS-SteelStringGuitar-20200521.sfz", size_mb=25, light_mb=25, amp="acoustic", kind="guitar"),
+    "fender": dict(
+        title="Electric Guitar FSBS — Fender solid body DI, pickup al ponte, 4 round robin (guitar: fender)",
+        author="FreePats", license="CC0-1.0",
+        repo="freepats/electric-guitar-FSBS-direct", sfz="EGuitarFSBS-direct bridge 20220911.sfz",
+        size_mb=314, light_mb=160, rr=2, keys=range(36, 90), kind="guitar"),
     "ebass": dict(
         title="Black & Blue Basses 'darkblack' — basso elettrico a dita (bass: ebass)",
         author="Karoryfer Samples", license="CC0-1.0",
@@ -126,11 +129,22 @@ def sfz_path(name, key="sfz"):
     return pack_dir(name) / rel if rel else None
 
 
-def _download(url, dest):
+def print_progress(done, total, files=None):
+    """Avanzamento del download sul terminale (sovrascrive la riga)."""
+    line = "  %3d%%  %d / %d MB" % (100 * done // max(total, 1), done >> 20, total >> 20) if total \
+        else "  %d MB" % (done >> 20)
+    if files:
+        line += "  (%d/%d file)" % files
+    sys.stdout.write("\r" + line.ljust(40))
+    sys.stdout.flush()
+
+
+def _download(url, dest, progress):
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(".part")
     req = urllib.request.Request(url, headers={"User-Agent": "backingtrack"})
     with urllib.request.urlopen(req) as r, open(tmp, "wb") as f:
+        total = int(r.headers.get("Content-Length") or 0)
         done = 0
         while True:
             chunk = r.read(1 << 17)
@@ -138,9 +152,9 @@ def _download(url, dest):
                 break
             f.write(chunk)
             done += len(chunk)
-            sys.stdout.write("\r  scaricati %d MB" % (done >> 20))
-            sys.stdout.flush()
-    print()
+            progress(done, total)
+    if progress is print_progress:
+        print()
     tmp.replace(dest)
 
 
@@ -203,7 +217,7 @@ def _needed_samples(info, dest, tree_paths):
     return needed
 
 
-def _install_selective(name, info, dest, full=False):
+def _install_selective(name, info, dest, full, progress):
     """Scarica solo definizioni SFZ e campioni necessari, file per file."""
     import json
     tree = json.loads(_fetch("https://api.github.com/repos/%s/git/trees/HEAD?recursive=1" % info["repo"]))
@@ -229,17 +243,20 @@ def _install_selective(name, info, dest, full=False):
 
     def get_sample(path):
         get(path)
-        done[0] += 1
-        done[1] += files[path]
-        sys.stdout.write("\r  scaricati %d/%d (%d MB)" % (done[0], len(needed), done[1] >> 20))
-        sys.stdout.flush()
+        with lock:
+            done[0] += 1
+            done[1] += files[path]
+            progress(done[1], total, (done[0], len(needed)))
 
+    lock = threading.Lock()
     with ThreadPoolExecutor(16) as ex:
         list(ex.map(get_sample, needed))
-    print()
+    if progress is print_progress:
+        print()
 
 
-def install(name, force=False, full=False):
+def install(name, force=False, full=False, progress=print_progress):
+    """progress(fatti, totale, (file, file_totali) | None): byte scaricati, chiamata dal thread del download."""
     info = PACKS[name]
     if is_installed(name) and not force:
         print("✓ %s già installato" % name)
@@ -255,40 +272,51 @@ def install(name, force=False, full=False):
         # file per file da raw.githubusercontent: gli zip di GitHub applicano le conversioni
         # di fine riga di .gitattributes anche ai WAV (succede con black-and-green-guitars)
         try:
-            _install_selective(name, info, dest, full)
+            _install_selective(name, info, dest, full, progress)
         except (OSError, ValueError) as e:
             shutil.rmtree(dest, ignore_errors=True)
             raise SongError("download di '%s' non riuscito: %s. Riprova più tardi." % (name, e))
     else:
-        zips = _install_zip(name, info, dest)
+        zips = _install_zip(name, info, dest, progress)
     _finish(name, info, dest, zips)
 
 
-def _install_zip(name, info, dest):
+def _install_zip(name, info, dest, progress):
     sources = info.get("urls") or [(name + ".zip", "https://github.com/%s/archive/HEAD.zip" % info["repo"])]
     zips = []
     for fname, url in sources:
         zpath = cache_dir() / fname
         if not zpath.is_file():
             print("  %s" % url)
-            _download(url, zpath)
+            _download(url, zpath, progress)
         zips.append(zpath)
     print("  estraggo...")
     for zpath in zips:
-        with zipfile.ZipFile(zpath) as z:
-            for member in z.infolist():
-                rel = member.filename.split("/", 1)[1] if "/" in member.filename else ""
-                if not rel or member.is_dir() or member.filename.startswith("__MACOSX"):
-                    continue
-                if any(x in rel for x in info.get("exclude", ())):
-                    continue
-                if info.get("include") and not any(x in rel for x in info["include"]):
-                    continue
-                target = dest / (rel.rsplit("/", 1)[-1].replace(" ", "_") if info.get("flatten") else rel)
-                target.parent.mkdir(parents=True, exist_ok=True)
-                with z.open(member) as src, open(target, "wb") as out:
-                    shutil.copyfileobj(src, out)
+        for filename, is_dir, opener in _archive_members(zpath):
+            rel = filename.split("/", 1)[1] if "/" in filename else ""
+            if not rel or is_dir or filename.startswith("__MACOSX"):
+                continue
+            if any(x in rel for x in info.get("exclude", ())):
+                continue
+            if info.get("include") and not any(x in rel for x in info["include"]):
+                continue
+            target = dest / (rel.rsplit("/", 1)[-1].replace(" ", "_") if info.get("flatten") else rel)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with opener() as src, open(target, "wb") as out:
+                shutil.copyfileobj(src, out)
     return zips
+
+
+def _archive_members(path):
+    """(nome, è_cartella, apri) per ogni voce di uno zip o di un tar (.tar.xz, .tar.gz...)."""
+    if zipfile.is_zipfile(path):
+        with zipfile.ZipFile(path) as z:
+            for m in z.infolist():
+                yield m.filename, m.is_dir(), lambda m=m: z.open(m)
+    else:
+        with tarfile.open(path) as t:
+            for m in t:
+                yield m.name, not m.isfile(), lambda m=m: t.extractfile(m)
 
 
 def _finish(name, info, dest, zips):

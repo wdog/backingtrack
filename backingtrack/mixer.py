@@ -42,6 +42,11 @@ AMPS = {
         ir="12_World_Collider_44.wav", post="equalizer=f=500:t=q:w=1:g=-4",
         cab_eq="equalizer=f=100:t=q:w=1:g=4,equalizer=f=500:t=q:w=1:g=-5,equalizer=f=2200:t=q:w=1:g=3,"
                "lowpass=f=4200,lowpass=f=4600"),
+    # chitarra acustica (microfonata): niente ampli né cassa, solo compressione e un po' di brillantezza
+    "acoustic": dict(
+        pre="highpass=f=80,acompressor=threshold=0.15:ratio=2.5:attack=8:release=150:makeup=2,"
+            "equalizer=f=250:t=q:w=1:g=-2,equalizer=f=5000:t=q:w=1:g=2",
+        ir=None, post="", cab_eq=""),
 }
 PAN = {"L": (0.95, 0.3), "R": (0.3, 0.95), "C": (0.72, 0.69)}
 DRUMS_CHAIN = ("acompressor=threshold=0.125:ratio=3:attack=10:release=100:makeup=1.5,"
@@ -72,10 +77,10 @@ def bus_graph(bus, cab_dir=None):
     tail = ",".join(x for x in (a["post"], "highpass=f=70", pan) if x)
     if bus.endswith(":slap"):
         tail += ",asplit[a][b];[b]%s[e];[a][e]amix=inputs=2:normalize=0" % SLAP
-    ir = Path(cab_dir) / a["ir"] if cab_dir else None
+    ir = Path(cab_dir) / a["ir"] if cab_dir and a["ir"] else None
     if ir and ir.is_file():
         return [str(ir)], "[0]pan=mono|c0=c0,%s[p];[p][1]afir=dry=10:wet=10[c];[c]%s[out]" % (a["pre"], tail)
-    return [], "[0]pan=mono|c0=c0,%s,%s,%s[out]" % (a["pre"], a["cab_eq"], tail)
+    return [], "[0]pan=mono|c0=c0,%s[out]" % ",".join(x for x in (a["pre"], a["cab_eq"], tail) if x)
 
 
 def rms(x):

@@ -5,7 +5,7 @@ Guida per Claude Code su questo repository.
 ## Progetto
 
 `backingtrack`: CLI Python che genera backing track (chitarra ritmica + batteria, contrabbasso opzionale)
-da un file YAML con tempo, groove, sezioni ripetibili e accordi. Stili: rock, blues, rockabilly, country, jazz.
+da un file YAML con tempo, groove, sezioni ripetibili e accordi. Stili: rock, blues, rockabilly, country, jazz, funk, reggae, soul (≥15 groove ciascuno).
 Lingua di UI, messaggi di errore, commenti e documentazione: **italiano**.
 
 ## Comandi
@@ -76,16 +76,21 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 - Repo GitHub: `wdog/backingtrack`, branch `main`. Pacchetto via `pyproject.toml` (entry point `backingtrack.cli:main`).
 - `install.sh` (`curl -fsSL https://raw.githubusercontent.com/wdog/backingtrack/main/install.sh | bash`):
   controlla Python ≥3.8, installa ffmpeg (chiede via `/dev/tty`), usa pipx o un venv in `~/.local/share/backingtrack/venv`,
+  su Linux scrive `~/.local/share/applications/io.github.wdog.backingtrack.desktop` + icona hicolor (dal pacchetto),
   poi `backingtrack setup`. Variabili: `BT_BASS`, `BT_NO_SAMPLES`, `BT_YES`, `BT_REF`, `BT_SRC` (sorgente locale per test:
   `HOME=/tmp/h BT_SRC=$PWD BT_NO_SAMPLES=1 bash install.sh`).
 - `install.ps1`: equivalente Windows (`irm ... | iex`), venv in `%LOCALAPPDATA%\backingtrack`.
-- README: indice in cima; le tabelle groove ed elenco brani vanno tenute allineate a `GROOVES` e `examples/`.
+- README: indice in cima; le tabelle groove (generate da `GROOVES`, una tendina per stile) ed elenco brani vanno tenute allineate a `GROOVES` e `examples/`.
 
 ## Campioni
 
 - chitarra (default `gretsch`): Karoryfer Black & Green Guitars, Gretsch "green" (CC0), DI, ogni semitono;
   `Programs/04-green_twang.sfz` + `05-green_staccato.sfz` per le note stoppate (`muted="real"`).
   Alternativa `epiphone` = Emilyguitar (CC0), palm mute simulato. Scelta con `guitar:` nel YAML.
+  `fender` = FreePats FSBS direct (Fender DI ponte, CC0, repo GitHub), per rock/hard rock.
+  `acoustic` = FreePats FSS Seagull steel string (GPL+eccezione, tar.xz da freepats.zenvoid.org): `amp="acoustic"` nel
+  pacchetto → `cli.render` sostituisce l'ampli dei bus chitarra con `AMPS["acoustic"]` (senza IR né cassa).
+  Scartati: Shinyguitar archtop (brutta), Martin HD28 del Discord GM (15 campioni), BJAM/Ella G. (RAR su Google Drive).
 - casse: Jester's Emerald (Marshall 4x12 Greenback) + Brutal (V30), IR 44.1 kHz; `AMPS[amp]["ir"]`, convoluzione
   `afir` in `mixer.bus_graph`; senza IR si usa `cab_eq`.
 - batteria: Salamander Drumkit (CC-BY-SA 3.0), hi-hat aperto/chiuso via CC4 sul tasto 42.
@@ -120,7 +125,12 @@ presente se quello estratto non è installato. `backingtrack remove <pack>` libe
 
 ## Aggiungere un groove
 
-Nuova voce in `GROOVES` con `desc, amp, double, swing, bass_style, guitar, drums, turn, fill`.
+Nuova voce in `GROOVES` con `desc, amp, double, swing, bass_style, guitar, drums, turn, fill`; i groove aggiunti usano
+`g(desc, amp, guitar, drums, turn, fill, bass=, swing=, ...)` e `pat("D.DU.UDU")` (8/12/16 caratteri = ottavi/terzine/
+sedicesimi; maiuscolo forte, minuscolo piano; D U X=chop M/N=stoppati P/p J B F=quinta, `.` pausa, `-` tiene).
+Bassi (`arranger.bass_bar`): eighths rootfifth stop slow walk two octave funk reggae quarters dotted tumbao.
+Nuovo stile = prefisso del nome + `STYLE_EMOJI`/`STYLE_NAMES` in gui.py + logo (`docs/make_images.py`).
+Batteria: solo note in `SALAMANDER_MAP` (niente cowbell/clap: si usa `BELL` 53 = campana del ride).
 Tipi evento chitarra: `D U C P B B5 R5 R6 R7 J` (J = voicing jazz a 4 note, `Chord.jazz`).
   Voicing di D/U/C: `Chord.voicing(barre|open|jazz|triad)`, default del groove (`voicing=`), il brano lo cambia con
   `voicing:`; forme aperte in `theory.OPEN_SHAPES` (open ripiega sul barré) + suffisso `m` (stoppato). Aggiornare la tabella groove nel README.

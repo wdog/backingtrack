@@ -55,17 +55,19 @@ for i,b in enumerate(bars):
 
 # testo
 f1 = ImageFont.truetype(FB, 132*S)
-f2 = ImageFont.truetype(FC, 44*S)
+f2 = ImageFont.truetype(FC, 38*S)
 f3 = ImageFont.truetype(FR, 30*S)
 tx = 560*S
-d.text((tx+5*S, 108*S+6*S), "backing", font=f1, fill=(0,0,0))
-d.text((tx, 108*S), "backing", font=f1, fill=CREAM)
+d.text((tx+5*S, 90*S+6*S), "backing", font=f1, fill=(0,0,0))
+d.text((tx, 90*S), "backing", font=f1, fill=CREAM)
 wb = d.textlength("backing", font=f1)
-d.text((tx+wb+5*S, 108*S+6*S), "track", font=f1, fill=(0,0,0))
-d.text((tx+wb, 108*S), "track", font=f1, fill=AMBER)
-d.text((tx+4*S, 285*S), "ROCK  ·  BLUES  ·  ROCKABILLY", font=f2, fill=CREAM)
-d.line([(tx+4*S, 350*S), (tx+900*S, 350*S)], fill=RED, width=4*S)
-d.text((tx+4*S, 372*S), "chitarra e batteria vere, dai tuoi accordi", font=f3, fill=(200,190,170))
+d.text((tx+wb+5*S, 90*S+6*S), "track", font=f1, fill=(0,0,0))
+d.text((tx+wb, 90*S), "track", font=f1, fill=AMBER)
+# stili su due righe (tutti quelli dei groove)
+for i, row in enumerate(["ROCK  ·  BLUES  ·  ROCKABILLY  ·  COUNTRY", "JAZZ  ·  FUNK  ·  REGGAE  ·  SOUL"]):
+    d.text((tx+4*S, (272+50*i)*S), row, font=f2, fill=CREAM if i == 0 else AMBER)
+d.line([(tx+4*S, 385*S), (tx+900*S, 385*S)], fill=RED, width=4*S)
+d.text((tx+4*S, 402*S), "chitarra e batteria vere, dai tuoi accordi", font=f3, fill=(200,190,170))
 
 img.resize((W//S, H//S), Image.LANCZOS).save(Path(__file__).parent / "logo.jpg", quality=92)
 

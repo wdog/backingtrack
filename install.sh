@@ -98,6 +98,7 @@ if have pipx; then
   # --system-site-packages: la GUI usa PyGObject/GTK installati dal sistema
   pipx uninstall backingtrack >/dev/null 2>&1 || true
   pipx install --system-site-packages "$PKG" >/dev/null 2>&1 || die "pipx install fallito"
+  BTPY="$(pipx environment --value PIPX_LOCAL_VENVS)/backingtrack/bin/python"
   ok "installato con pipx"
 else
   DATA="${XDG_DATA_HOME:-$HOME/.local/share}/backingtrack"
@@ -115,6 +116,7 @@ else
   "$VENV/bin/python" -m pip install -q --upgrade "$PKG"
   mkdir -p "$BIN"
   ln -sf "$VENV/bin/backingtrack" "$BIN/backingtrack"
+  BTPY="$VENV/bin/python"
   ok "installato in $VENV"
 fi
 
@@ -122,6 +124,28 @@ BT="$BIN/backingtrack"
 have backingtrack && BT="$(command -v backingtrack)"
 [ -x "$BT" ] || die "installazione non riuscita: comando backingtrack non trovato"
 ok "comando: $BT ($("$BT" --version))"
+
+# voce nel menu applicazioni (Linux): icona dal pacchetto installato + file .desktop
+if [ "$OS" = Linux ]; then
+  APP_ID="io.github.wdog.backingtrack"
+  SHARE="${XDG_DATA_HOME:-$HOME/.local/share}"
+  PKGDIR="$("$BTPY" -c 'import backingtrack, os; print(os.path.dirname(backingtrack.__file__))')"
+  mkdir -p "$SHARE/icons/hicolor/256x256/apps" "$SHARE/applications"
+  cp "$PKGDIR/data/$APP_ID.png" "$SHARE/icons/hicolor/256x256/apps/"
+  cat > "$SHARE/applications/$APP_ID.desktop" <<EOF
+[Desktop Entry]
+Type=Application
+Name=backingtrack
+Comment=Backing track da accordi: chitarra, batteria e contrabbasso
+Exec=$BT gui %f
+Icon=$APP_ID
+Terminal=false
+Categories=AudioVideo;Audio;Music;
+StartupWMClass=$APP_ID
+EOF
+  have update-desktop-database && update-desktop-database -q "$SHARE/applications" || true
+  ok "menu applicazioni: $SHARE/applications/$APP_ID.desktop"
+fi
 
 # ---------------------------------------------------------------- campioni
 if [ "${BT_NO_SAMPLES:-0}" = 1 ]; then

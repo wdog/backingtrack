@@ -11,7 +11,7 @@
   <img alt="Python" src="https://img.shields.io/badge/python-3.8%2B-3776AB?logo=python&logoColor=white">
   <img alt="Platform" src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-555">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
-  <img alt="Styles" src="https://img.shields.io/badge/stili-rock%20%7C%20blues%20%7C%20rockabilly%20%7C%20country-F5A623">
+  <img alt="Styles" src="https://img.shields.io/badge/stili-rock%20%7C%20blues%20%7C%20rockabilly%20%7C%20country%20%7C%20jazz%20%7C%20funk%20%7C%20reggae%20%7C%20soul-F5A623">
   <img alt="Examples" src="https://img.shields.io/badge/esempi-67%20brani-C0392B">
 </p>
 
@@ -52,7 +52,7 @@
 - 🎻 **Contrabbasso opzionale** (pizzicato) con walking, root-fifth o ottavi.
 - 🔁 **Sezioni ripetibili**: `repeat: 2` o un `arrangement` tipo `[Intro, Strofa x2, Rit, Strofa, Rit x2]`.
 - 🖐️ **4 voicing** per gli accordi: barré, aperti, jazz, triadi (scelti dal groove o con `voicing:`).
-- 🎚️ **23 groove** tra rock, blues, rockabilly, country e jazz (half-time, galoppo, rhumba, funk, stop-time, boom-chick…), anche diversi sezione per sezione.
+- 🎚️ **125 groove** in 8 stili: rock, blues, rockabilly, country, jazz, funk, reggae e soul (almeno 15 per stile: half-time, galoppo, surf, punk, rhumba, Purdie shuffle, boom-chick, bluegrass, western swing, bossa, samba, afro 6/8, disco, go-go, one drop, ska, Motown, Stax, gospel…), anche diversi sezione per sezione.
 - 🧑‍🎤 **Suona umano**: micro-timing, velocity variabile, velocità della pennata legata alla dinamica, swing regolabile.
 - 🎛️ **Mix automatico**: EQ, compressione, riverbero a convoluzione, bilanciamento, limiter e loudness costante.
 - 🖥️ **Editor grafico** (GTK 4): sezioni colorate, griglia delle battute con **drag & drop** degli accordi,
@@ -122,7 +122,8 @@ irm https://raw.githubusercontent.com/wdog/backingtrack/main/install.ps1 | iex
 ```
 
 Lo script controlla Python, installa ffmpeg se manca (chiedendo conferma), installa `backingtrack`
-(con `pipx` se c'è, altrimenti in un virtualenv dedicato) e scarica i campioni.
+(con `pipx` se c'è, altrimenti in un virtualenv dedicato), su Linux aggiunge la voce nel menu applicazioni
+(file `.desktop` e icona in `~/.local/share`) e scarica i campioni.
 **Rilanciarlo equivale ad aggiornare**: reinstalla il programma e scarica solo i campioni che mancano.
 Opzioni: `BT_BASS=1` aggiunge il contrabbasso, `BT_NO_SAMPLES=1` salta i campioni, `BT_YES=1` non fa domande.
 
@@ -189,8 +190,8 @@ e al massimo 2 round robin per la chitarra e 6 per la batteria. Rispetto alle li
 | `cabs` 🔈 | 21 impulse response di casse Marshall 4×12 | ~5 MB | ~5 MB |
 | `bass` 🎻 | contrabbasso pizzicato (solo con `--bass`) | ~56 MB | ~130 MB |
 | `epiphone` 🎸 | chitarra alternativa, Epiphone solid body (opzionale) | ~40 MB | ~100 MB |
-| `archtop` 🎸 | chitarra archtop Shinyguitar, pickup magnetico (opzionale) | ~106 MB | ~212 MB |
-| `archtop_mic` 🎸 | la stessa archtop microfonata, suono acustico (opzionale) | ~106 MB | ~212 MB |
+| `fender` 🎸 | Fender solid body DI, pickup al ponte: rock e hard rock con `amp: crunch`/`high` (opzionale) | ~160 MB | ~314 MB |
+| `acoustic` 🎸 | chitarra acustica steel string Seagull, suonata senza ampli (opzionale, GPL con eccezione) | ~25 MB | ~25 MB |
 | `ebass` 🎸 | basso elettrico Black & Blue 'darkblack', a dita (opzionale) | ~80 MB | ~160 MB |
 | `sneakybass` 🎻 | contrabbasso Sneakybass, pizzicato leggero (opzionale) | ~63 MB | ~124 MB |
 
@@ -282,6 +283,8 @@ Il programma e i campioni stanno in posti diversi: puoi togliere uno, l'altro o 
 # 1. il programma
 pipx uninstall backingtrack                       # se installato con pipx (o con l'installer e pipx)
 rm -rf ~/.local/share/backingtrack/venv ~/.local/bin/backingtrack   # se installato dall'installer senza pipx
+rm -f ~/.local/share/applications/io.github.wdog.backingtrack.desktop \
+      ~/.local/share/icons/hicolor/256x256/apps/io.github.wdog.backingtrack.png   # voce di menu (Linux)
 
 # 2. i campioni, le bozze e la cache
 rm -rf ~/.local/share/backingtrack ~/.cache/backingtrack
@@ -345,8 +348,8 @@ valore fuori scala.
   - scegli **tonica** e **basso** da una griglia di note (naturali, diesis, bemolle) e il **tipo** da una griglia
     (m, 7, maj7, sus4…), poi **Nuova battuta** o **Aggiungi alla battuta**; il pulsante ⓘ mostra una tabella
     con esempi di battute e di accordi (Do Re Mi = C D E);
-  - la **🎨 tavolozza** mostra l'accordo costruito e quelli già usati nel brano: **trascinali su una battuta**
-    per metterli lì, o cliccali per aggiungere una battuta;
+  - la **🎨 tavolozza** mostra gli accordi già usati nel brano: **trascinali su una battuta** per metterli lì,
+    o **cliccali** per aggiungerli alla battuta selezionata (se nessuna è selezionata, ne crea una nuova);
   - le battute sono una **griglia compatta** (4 per riga) col bordo nel colore della sezione. Trascina la maniglia
     `⠿` per **spostare una battuta**, usa il **tasto destro** per duplicarla, inserirne una prima/dopo, svuotarla o
     eliminarla, e il `＋` in fondo per aggiungerne (ci puoi trascinare sopra un accordo). Passando col mouse leggi
@@ -357,8 +360,10 @@ valore fuori scala.
   (I, IV, V) e la **Tonalità** li trasforma in accordi veri: 12-bar blues in A = A7, D7, E7; in E = E7, A7, B7.
   **Sostituisci accordi** cancella le battute della sezione e ci mette il giro, **Aggiungi in coda** lo mette dopo.
   Nessuno dei due traspone: per spostare un brano già scritto c'è **Trasposizione** (Brano ▸ Avanzate).
+  **Tonica ≠ tonalità**: la *tonica* è la nota che dà il nome a un accordo (A in Am7, scelta nel costruttore);
+  la *tonalità* è la «casa» di tutto il giro (blues in A: accordi A7, D7, E7 con toniche diverse, tonalità una sola).
 
-Il **groove** si sceglie da un menu diviso per stile (🤘 Rock ▸, 🎷 Blues ▸, 🕺 Rockabilly ▸, 🤠 Country ▸, 🎺 Jazz ▸) con la
+Il **groove** si sceglie da un menu diviso per stile (🤘 Rock ▸, 🎷 Blues ▸, 🕺 Rockabilly ▸, 🤠 Country ▸, 🎺 Jazz ▸, 🪩 Funk ▸, 🌴 Reggae ▸, 🎤 Soul ▸) con la
 descrizione di ogni voce; le altre scelte (chitarra, ampli, rullata…) sono menu a tendina compatti.
 Con la finestra stretta le colonne si impilano (accordi in alto).
 
@@ -402,7 +407,8 @@ si chiude male o scegli "Non salvare" per sbaglio, alla riapertura ti propone di
 | `Ctrl+S` / `Ctrl+Shift+S` | salva / salva con nome |
 | `Alt+G` (o `Ctrl+R`) | genera e ascolta |
 | `Ctrl+T` / `Ctrl+D` | nuova sezione / duplica sezione |
-| `Ctrl+B` / `Ctrl+Shift+D` | nuova battuta / duplica battuta |
+| `Ctrl+B` o `Super+N` / `Ctrl+Shift+D` | nuova battuta / duplica battuta |
+| `Super+Canc` | elimina la battuta selezionata |
 | `Invio` (in una battuta) | passa alla battuta successiva (la crea se serve) |
 | `Spazio` | play / pausa |
 | `B` | riparti da capo |
@@ -610,7 +616,7 @@ backingtrack render examples/blues/*.yaml --tempo 80 --mute guitar --bass --mp3 
 | `crash` | `true` | piatto all'inizio di ogni sezione |
 | `bass` | `false` | `true` = contrabbasso, oppure `ebass` (elettrico) o `sneakybass` (serve `setup <nome>`) |
 | `voicing` | dal groove | forma degli accordi pieni: `barre`, `open` (prima posizione, dove esiste), `jazz` (4 note), `triad` (3 corde alte) |
-| `guitar` | `gretsch` | chitarra: `gretsch` (hollowbody), `epiphone` (solid body), `archtop`, `archtop_mic` (servono `setup <nome>`) |
+| `guitar` | `gretsch` | chitarra: `gretsch` (hollowbody), `epiphone` (solid body), `fender` (rock/hard rock), `acoustic` (acustica, ignora `amp`) (servono `setup <nome>`) |
 | `amp` | dal groove | forza l'ampli: `clean` `blues` `twang` `crunch` `high` |
 | `double` | dal groove | chitarra doppiata a sinistra e destra |
 | `slapback` | dal groove | eco slapback rockabilly |
@@ -672,31 +678,197 @@ Errori comuni, con il messaggio che ricevi:
 
 ## 🥁 Groove disponibili
 
-| Groove | Ampli | Chitarra | Batteria |
-|---|---|---|---|
-| 🤘 `rock` | high | power chord a ottavi con palm mute, ampli distorto, chitarre doppiate · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
-| 🤘 `rock/strum` | crunch | accordi aperti D . D U . U D U, crunch, chitarre doppiate · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
-| 🤘 `rock/drive` | crunch | pennate giù a ottavi, accordi pieni (punk/drive) · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
-| 🤘 `rock/ballad` | clean | accordi lunghi e pennate leggere, batteria half-time | half-time, rullante sul 3 |
-| 🤘 `rock/halftime` | high | half-time pesante, power chord lunghi e rullante sul 3 · doppiata L/R | half-time pesante, rullante sul 3 |
-| 🤘 `rock/gallop` | high | galoppo (ottavo + due sedicesimi) in palm mute, stile heavy metal classico · doppiata L/R | cassa al galoppo, rullante 2-4 |
-| 🤘 `rock/pop` | crunch | pennate a sedicesimi D D DU DU, crunch leggero · doppiata L/R | rock: cassa 1-3-3&, rullante 2-4, hi-hat a ottavi |
-| 🎷 `blues` | blues | shuffle boogie 5-6 (stile Jimmy Reed) · swing 1 | shuffle con hi-hat terzinato |
-| 🎷 `blues/7` | blues | shuffle boogie 5-6-b7-6 · swing 1 | shuffle con hi-hat terzinato |
-| 🎷 `blues/strum` | blues | accordi pieni in shuffle (D . D U . U D U) · swing 1 | shuffle con hi-hat terzinato |
-| 🎷 `blues/slow` | blues | pennate sulle terzine, ride | ride sulle terzine, 12/8 |
-| 🎷 `blues/rhumba` | blues | boogie dritto con ritmo latino e side-stick | ritmo latino con side-stick |
-| 🎷 `blues/funk` | clean | chop a sedicesimi (chicken scratch) su accordi di nona | funk a sedicesimi con ghost note |
-| 🎷 `blues/stop` | blues | un colpo secco sul primo tempo, poi silenzio (per le strofe cantate) · swing 1 | un colpo sul primo tempo |
-| 🕺 `rockabilly` | twang | boom-chick (basso/accordo) + train beat, slapback · slapback, swing 0.5 | train beat: rullante a ottavi con accenti |
-| 🕺 `rockabilly/boogie` | twang | boogie 5-6 swing veloce, slapback · slapback, swing 0.6 | swing rockabilly |
-| 🕺 `rockabilly/strum` | twang | accordi pieni sul battere, chop su 2 e 4, slapback · slapback, swing 0.6 | swing rockabilly |
-| 🤠 `country` | twang | boom-chick dritto, basso alternato e spazzolata sul 2 e 4 | spazzolata sul 2 e 4, hi-hat a pedale |
-| 🤠 `country/shuffle` | twang | boom-chick in swing, stile Texas / honky-tonk · swing 0.7 | shuffle con hi-hat terzinato |
-| 🎺 `jazz` | clean | comping a semiminime alla Freddie Green, voicing jazz a 4 note · swing 1 | ride "ding ding-da", charleston su 2 e 4 |
-| 🎺 `jazz/charleston` | clean | comping Charleston (1 e levare del 2), accordi corti · swing 1 | ride jazz |
-| 🎺 `jazz/ballad` | clean | accordi lunghi e morbidi, basso in due · swing 1 | spazzole (rullante leggero), ride sul 1 e 3 |
-| 🎺 `jazz/bossa` | clean | bossa nova: basso alternato col pollice e accordi sincopati | cross-stick, cassa bossa, hi-hat leggero |
+125 groove in 8 stili. Colonne: ampli, swing (0 = dritto, 1 = terzinato), basso (`--bass`) e descrizione;
+🎧 = chitarra doppiata L/R, 🔁 = slapback.
+
+<details>
+<summary><b>🤘 Rock</b> — 16 groove</summary>
+
+| Groove | Ampli | Swing | Basso | Descrizione |
+|---|---|---|---|---|
+| `rock` | high 🎧 | 0 | eighths | power chord a ottavi con palm mute, ampli distorto, chitarre doppiate |
+| `rock/strum` | crunch 🎧 | 0 | eighths | accordi aperti D . D U . U D U, crunch, chitarre doppiate |
+| `rock/drive` | crunch 🎧 | 0 | eighths | pennate giù a ottavi, accordi pieni (punk/drive) |
+| `rock/ballad` | clean | 0 | slow | accordi lunghi e pennate leggere, batteria half-time |
+| `rock/halftime` | high 🎧 | 0 | slow | half-time pesante, power chord lunghi e rullante sul 3 |
+| `rock/gallop` | high 🎧 | 0 | eighths | galoppo (ottavo + due sedicesimi) in palm mute, stile heavy metal classico |
+| `rock/pop` | crunch 🎧 | 0 | eighths | pennate a sedicesimi D D DU DU, crunch leggero |
+| `rock/shuffle` | crunch 🎧 | 1 | walk | boogie shuffle distorto in palm mute (stile ZZ Top / Status Quo) |
+| `rock/punk` | high 🎧 | 0 | eighths | power chord a ottavi tutti in giù, batteria in levare a tutta velocità |
+| `rock/diddley` | twang 🔁 | 0 | dotted | clave 3-2 sui tom e accordi sulla clave |
+| `rock/glam` | crunch 🎧 | 0 | quarters | power chord in quarti e cassa/tom pesanti (anni '70) |
+| `rock/chug` | high 🎧 | 0 | eighths | chug a sedicesimi in palm mute, accento sul primo (hard rock / metal) |
+| `rock/arena` | crunch 🎧 | 0 | dotted | accordi aperti 3-3-2 lasciati suonare, ride e cassa larga |
+| `rock/grunge` | high 🎧 | 0 | eighths | power chord sincopati, hi-hat aperto sporco |
+| `rock/surf` | twang 🔁 | 0 | eighths | tremolo picking sulla tonica a sedicesimi, ride e tom (stile Misirlou) |
+| `rock/southern` | crunch 🎧 | 0.35 | rootfifth | accordi aperti D . D U D U D u con un filo di swing |
+
+</details>
+
+<details>
+<summary><b>🎷 Blues</b> — 15 groove</summary>
+
+| Groove | Ampli | Swing | Basso | Descrizione |
+|---|---|---|---|---|
+| `blues` | blues | 1 | walk | shuffle boogie 5-6 (stile Jimmy Reed) |
+| `blues/7` | blues | 1 | walk | shuffle boogie 5-6-b7-6 |
+| `blues/strum` | blues | 1 | walk | accordi pieni in shuffle (D . D U . U D U) |
+| `blues/slow` | blues | 0 | slow | pennate sulle terzine, ride |
+| `blues/rhumba` | blues | 0 | walk | boogie dritto con ritmo latino e side-stick |
+| `blues/funk` | clean | 0 | eighths | chop a sedicesimi (chicken scratch) su accordi di nona |
+| `blues/stop` | blues | 1 | stop | un colpo secco sul primo tempo, poi silenzio (per le strofe cantate) |
+| `blues/train` | blues | 0.5 | rootfifth | boogie in levare leggero sul train beat (Mystery Train, Chicago veloce) |
+| `blues/texas` | crunch | 1 | walk | accordo su ogni tempo e levare stoppato (stile Stevie Ray Vaughan) |
+| `blues/jump` | clean | 1 | walk | chop su 2 e 4, ride swing e walking (anni '40) |
+| `blues/minor` | blues | 0 | slow | tonica e quinta col pollice, accordo sulle terzine |
+| `blues/delta` | clean | 1 | rootfifth | pollice alternato e chop in levare, batteria leggera |
+| `blues/hill` | crunch | 0 | eighths | boogie ipnotico dritto, cassa doppia (stile R.L. Burnside) |
+| `blues/halfshuffle` | blues | 1 | walk | half-time shuffle alla Purdie, ghost note sul rullante |
+| `blues/chicago` | blues | 1 | walk | accordo lungo su 1 e 3, chop su 2 e 4 |
+
+</details>
+
+<details>
+<summary><b>🕺 Rockabilly</b> — 17 groove</summary>
+
+| Groove | Ampli | Swing | Basso | Descrizione |
+|---|---|---|---|---|
+| `rockabilly` | twang 🔁 | 0.5 | rootfifth | boom-chick (basso/accordo) + train beat, slapback |
+| `rockabilly/boogie` | twang 🔁 | 0.6 | walk | boogie 5-6 swing veloce, slapback |
+| `rockabilly/strum` | twang 🔁 | 0.6 | walk | accordi pieni sul battere, chop su 2 e 4, slapback |
+| `rockabilly/slap` | twang 🔁 | 0.6 | walk | pollice tonica/quinta e levare stoppati, slap |
+| `rockabilly/stroll` | twang 🔁 | 1 | walk | accordo, chop e levare stoppato, swing pieno |
+| `rockabilly/train` | twang 🔁 | 0.4 | rootfifth | basso alternato e pennate stoppate sul train beat (Sun Records) |
+| `rockabilly/stop` | twang 🔁 | 0.6 | stop | colpo sul primo tempo e ripresa sul levare del 4 |
+| `rockabilly/twist` | twang 🔁 | 0 | rootfifth | accordi e chop dritti, rullante su 2 e 4 (primi anni '60) |
+| `rockabilly/jive` | twang 🔁 | 1 | walk | boogie 5-6-b7-6 su ride swing, slapback |
+| `rockabilly/psycho` | crunch 🔁 | 0 | eighths | power chord a ottavi, batteria in levare velocissima |
+| `rockabilly/latin` | twang 🔁 | 0 | tumbao | basso e chop sulla clave, tom |
+| `rockabilly/ballad` | twang 🔁 | 0 | slow | accordi sulle terzine, slapback |
+| `rockabilly/hillbilly` | twang 🔁 | 0.5 | walk | boogie 5-6 su batteria country, mezzo swing |
+| `rockabilly/shuffle` | twang 🔁 | 1 | walk | solo chop su 2 e 4, spazio al contrabbasso |
+| `rockabilly/sun` | twang 🔁 | 0.3 | rootfifth | tonica, accordo e quinta con levare stoppati |
+| `rockabilly/chuck` | crunch | 0 | eighths | Rock'n'roll alla Chuck Berry: boogie 5-6 dritto e crunch |
+| `rockabilly/jungle` | twang 🔁 | 1 | walk | timpano a ottavi, accordi lunghi su 1 e 3 |
+
+</details>
+
+<details>
+<summary><b>🤠 Country</b> — 17 groove</summary>
+
+| Groove | Ampli | Swing | Basso | Descrizione |
+|---|---|---|---|---|
+| `country` | twang | 0 | rootfifth | boom-chick dritto, basso alternato e spazzolata sul 2 e 4 |
+| `country/shuffle` | twang | 0.7 | walk | boom-chick in swing, stile Texas / honky-tonk |
+| `country/train` | twang 🔁 | 0 | rootfifth | chug stoppato a ottavi sul train beat (boom-chicka-boom alla Johnny Cash) |
+| `country/twostep` | twang | 0.3 | rootfifth | basso alternato, chop e pennata in su, un filo di swing |
+| `country/ballad` | clean | 0 | slow | accordi aperti lunghi e pennate leggere |
+| `country/bluegrass` | clean | 0 | rootfifth | pollice alternato e pennate veloci, batteria appena accennata |
+| `country/outlaw` | twang | 0.2 | eighths | pennate stoppate a ottavi (stile Waylon Jennings) |
+| `country/rock` | crunch 🎧 | 0 | rootfifth | basso sul primo e accordi aperti in crunch, chitarre doppiate |
+| `country/cajun` | twang | 0 | rootfifth | tonica e quinta in battere, accordo forte in levare |
+| `country/travis` | clean | 0 | rootfifth | pollice alternato e cantini stoppati in levare |
+| `country/pop` | crunch 🎧 | 0 | eighths | accordi aperti a sedicesimi, crunch leggero, doppiate |
+| `country/western` | clean | 1 | two | comping in quarti con voicing jazz (stile Bob Wills) |
+| `country/gallop` | twang | 0 | eighths | pennate stoppate al galoppo sui tom (stile Ghost Riders) |
+| `country/brush` | clean | 0.5 | rootfifth | basso, chop e levare stoppato |
+| `country/chickin` | twang 🔁 | 0 | rootfifth | chop stoppati a sedicesimi con accenti, slapback |
+| `country/boogie` | twang | 0.5 | walk | boogie 5-6 su batteria country (anni '50) |
+| `country/stomp` | crunch | 0 | quarters | accordi aperti in quarti, cassa in quattro e rullante pieno |
+
+</details>
+
+<details>
+<summary><b>🎺 Jazz</b> — 15 groove</summary>
+
+| Groove | Ampli | Swing | Basso | Descrizione |
+|---|---|---|---|---|
+| `jazz` | clean | 1 | walk | comping a semiminime alla Freddie Green, ride e walking bass |
+| `jazz/charleston` | clean | 1 | walk | comping Charleston (1 e levare del 2), accordi corti |
+| `jazz/ballad` | clean | 1 | slow | accordi lunghi e morbidi, spazzole, basso in due |
+| `jazz/bossa` | clean | 0 | rootfifth | basso alternato col pollice e accordi sincopati, cross-stick |
+| `jazz/two` | clean | 1 | two | basso su 1 e 3, comping alla Freddie Green (temi, intro) |
+| `jazz/latin` | clean | 0 | tumbao | accordi sulla clave, campana e cassa anticipata, basso tumbao |
+| `jazz/samba` | clean | 0 | rootfifth | accordi sincopati, surdo e hi-hat a sedicesimi |
+| `jazz/fast` | clean | 1 | walk | comping rado e corto (1, 2&, 3&), ride e bombe sul rullante |
+| `jazz/brushes` | clean | 1 | walk | comping in quarti morbido e walking |
+| `jazz/afro` | clean | 0 | two | campana a 12, accordi sulle terzine, basso in due |
+| `jazz/basie` | clean | 1 | walk | Jazz shuffle alla Count Basie: quarti di chitarra, rullante su 2 e 4 |
+| `jazz/modal` | clean | 1 | walk | due accordi in levare lasciati suonare (stile So What) |
+| `jazz/funk` | clean | 0 | funk | accordi corti a sedicesimi, batteria funk |
+| `jazz/gypsy` | clean | 1 | two | la pompe, basso corto su 1 e 3 e chop forte su 2 e 4 |
+| `jazz/cha` | clean | 0 | tumbao | accordi su 1-2-3 e 4&, campana in quarti e basso tumbao |
+
+</details>
+
+<details>
+<summary><b>🪩 Funk</b> — 15 groove</summary>
+
+| Groove | Ampli | Swing | Basso | Descrizione |
+|---|---|---|---|---|
+| `funk` | clean | 0 | funk | pennate a sedicesimi con chop stoppati, accenti sul levare (stile James Brown) |
+| `funk/disco` | clean 🎧 | 0 | octave | cassa in quattro, hi-hat aperto in levare, sedicesimi (stile Nile Rodgers) |
+| `funk/scratch` | clean | 0 | funk | solo chop stoppati a sedicesimi con accenti |
+| `funk/one` | clean | 0 | funk | accordo lungo sul primo, chop sparsi dopo |
+| `funk/clav` | clean | 0 | funk | stab jazz a sedicesimi sincopati (stile Superstition) |
+| `funk/slow` | clean | 0 | funk | accordo lungo e chop, rullante sul 3 |
+| `funk/purdie` | clean | 0.6 | walk | half-time con ghost note, chop swingati |
+| `funk/pocket` | clean | 0 | funk | accordi corti sincopati e chop |
+| `funk/gogo` | clean | 0.6 | funk | chop swingati, campana e cassa sincopata |
+| `funk/rock` | crunch 🎧 | 0 | funk | power chord sincopati in crunch, doppiate |
+| `funk/boogaloo` | clean | 0 | funk | tonica e quinta sincopate come una linea di basso (stile Cissy Strut) |
+| `funk/lowrider` | crunch | 0 | tumbao | pennate sincopate, campana in quarti, basso tumbao (stile Low Rider) |
+| `funk/fusion` | clean | 0 | octave | accordi jazz 3-3-2 lasciati suonare, basso in ottave |
+| `funk/pop` | clean | 0 | funk | chop radi in levare, hi-hat a sedicesimi (stile Prince) |
+| `funk/halftime` | clean | 0 | funk | accordo sul primo e chop a sedicesimi, rullante sul 3 |
+
+</details>
+
+<details>
+<summary><b>🌴 Reggae</b> — 15 groove</summary>
+
+| Groove | Ampli | Swing | Basso | Descrizione |
+|---|---|---|---|---|
+| `reggae` | clean | 0.3 | reggae | skank corto sul 2 e 4, cassa sul 3, basso lento |
+| `reggae/ska` | clean | 0 | walk | pennate in su stoppate su tutti i levare, hi-hat aperto, ritmo veloce |
+| `reggae/rockers` | clean | 0.2 | reggae | skank doppio sul 2 e 4, cassa su 1 e 3 (anni '70) |
+| `reggae/steppers` | clean | 0.2 | eighths | cassa in quattro, skank su ogni levare |
+| `reggae/bubble` | clean | 0.3 | reggae | chop a sedicesimi come l'organo reggae, one drop |
+| `reggae/rocksteady` | clean | 0.5 | walk | skank sul 2 e 4 con levare stoppato, basso che cammina |
+| `reggae/dub` | clean | 0.3 | two | un solo skank sul 2, tanto spazio, basso in due |
+| `reggae/dancehall` | clean | 0 | dotted | ritmo dembow, chop in levare |
+| `reggae/roots` | clean | 0.3 | reggae | skank sul 2 e 4 ripetuto in levare |
+| `reggae/lovers` | clean | 0.3 | slow | accordo aperto lungo e skank sul 4 |
+| `reggae/skinhead` | clean | 0 | walk | doppie pennate stoppate in levare, veloce |
+| `reggae/calypso` | clean | 0 | dotted | pennate sincopate aperte, cassa in quattro |
+| `reggae/2tone` | crunch | 0 | walk | levare stoppati in crunch, batteria punk |
+| `reggae/police` | clean | 0 | two | accordi lunghi sui levare, one drop dritto (stile The Police) |
+| `reggae/bluebeat` | clean | 1 | walk | ska in shuffle, levare stoppati swingati |
+
+</details>
+
+<details>
+<summary><b>🎤 Soul</b> — 15 groove</summary>
+
+| Groove | Ampli | Swing | Basso | Descrizione |
+|---|---|---|---|---|
+| `soul` | clean | 0 | eighths | chop sul 2 e 4, rullante su tutti i tempi |
+| `soul/ballad` | clean | 0 | slow | Soul ballad 12/8 (doo-wop): accordi sulle terzine, ride, basso lento |
+| `soul/memphis` | clean | 0 | dotted | stab corti sul 2 e 4 (stile Steve Cropper) |
+| `soul/gospel` | clean | 0 | slow | accordo lungo e chop sulle terzine, ride |
+| `soul/northern` | clean | 0 | eighths | cassa in quattro, rullante su tutti i tempi, uptempo |
+| `soul/philly` | clean 🎧 | 0 | octave | chop a sedicesimi, hi-hat aperto in levare, basso in ottave |
+| `soul/neo` | clean | 0.6 | dotted | accordi jazz lunghi e laid-back, rim su 2 e 4 |
+| `soul/rnb` | clean | 0 | tumbao | ottavi dritti sul ritmo latino, basso tumbao (stile What'd I Say) |
+| `soul/funky` | clean | 0 | funk | accordi sincopati e chop (stile Sly Stone) |
+| `soul/spector` | clean 🎧 | 0 | dotted | ottavi aperti, boom . boom-boom CHA (stile Be My Baby) |
+| `soul/swamp` | twang | 0.6 | walk | pennate stoppate swingate (stile Tony Joe White) |
+| `soul/blues` | clean | 0 | slow | accordo lungo e chop, batteria half-time (stile Al Green) |
+| `soul/sweet` | clean | 0 | slow | accordi aperti e pennate leggere in su |
+| `soul/sixeight` | clean | 0 | two | accordi jazz sulle terzine, basso in due |
+| `soul/boogaloo` | clean | 0.2 | funk | chop sincopati e cassa a sedicesimi |
+
+</details>
 
 `backingtrack grooves` mostra l'elenco aggiornato.
 

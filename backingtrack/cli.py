@@ -97,15 +97,20 @@ def render(song, out, tempo=None, groove=None, bass=False, mute=None, mp3=False,
             continue
         groups[fam].append(dict(start=arr.seconds(n.start), end=arr.seconds(n.end), key=n.pitch,
                                 vel=n.vel, muted=n.muted, bus=n.bus))
+    pack = str(song.get("guitar", "gretsch"))
+    if groups["guitar"]:
+        if pack not in GUITARS:
+            raise SongError("guitar: '%s' sconosciuta (usa %s)" % (pack, ", ".join(GUITARS)))
+        amp = packs.PACKS[pack].get("amp")
+        if amp:  # chitarra con catena propria (acustica): sostituisce l'ampli del groove
+            for n in groups["guitar"]:
+                n["bus"] = "gtr:%s:%s" % (amp, n["bus"].split(":", 2)[2])
     bus_names = {v["bus"] for g in groups.values() for v in g}
     if not bus_names:
         raise SongError("tutte le tracce sono mutate")
     buses = new_buses(bus_names, secs + 4)
 
     if groups["guitar"]:
-        pack = str(song.get("guitar", "gretsch"))
-        if pack not in GUITARS:
-            raise SongError("guitar: '%s' sconosciuta (usa %s)" % (pack, ", ".join(GUITARS)))
         notes = groups["guitar"]
         mute_sfz = packs.sfz_path(pack, "mute_sfz")
         if mute_sfz:  # note stoppate con i veri campioni staccato
