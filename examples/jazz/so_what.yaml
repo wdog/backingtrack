@@ -1,0 +1,16 @@
+# Miles Davis, 1959 (Kind of Blue). Jazz modale: re dorico e mib dorico, AABA di 32 battute.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "So What (progressione)"
+tempo: 136
+groove: jazz/charleston
+
+sections:
+  - name: A
+    repeat: 2
+    chords: "| Dm7 | % | % | % | % | % | % | % |"
+  - name: B
+    chords: "| Ebm7 | % | % | % | % | % | % | % |"
+  - name: A finale
+    chords: "| Dm7 | % | % | % | % | % | % | % |"
+
+arrangement: [A x2, B, A finale, A x2, B, A finale]

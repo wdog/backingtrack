@@ -26,7 +26,7 @@ PACKS = {
         author="Karoryfer Samples", license="CC0-1.0",
         repo="sfzinstruments/karoryfer.black-and-green-guitars", sfz="Programs/04-green_twang.sfz",
         mute_sfz="Programs/05-green_staccato.sfz", size_mb=270, light_mb=175, rr=2, keys=range(36, 90),
-        exclude=("Samples/black/", "GUI/"), default=True),
+        exclude=("Samples/black/", "GUI/"), default=True, kind="guitar"),
     "drums": dict(
         title="Salamander Drumkit — batteria acustica, fino a 20 round robin",
         author="Alexander Holm", license="CC-BY-SA-3.0",
@@ -46,13 +46,46 @@ PACKS = {
         author="D. Smolken", license="CC0-1.0",
         repo="sfzinstruments/dsmolken.double-bass", sfz="d_smolken_rubner_bass_pizz.sfz", size_mb=130,
         light_mb=56, rr=2, keys=range(24, 64),
-        exclude=("arco/",)),
+        exclude=("arco/",), kind="bass"),
     "epiphone": dict(
         title="Emilyguitar — Epiphone solid body (alternativa: guitar: epiphone)",
         author="Karoryfer Samples / D. Smolken", license="CC0-1.0",
         repo="sfzinstruments/karoryfer.emilyguitar", sfz="emily_clean.sfz", size_mb=100, light_mb=40, rr=1,
-        keys=range(36, 90)),
+        keys=range(36, 90), kind="guitar"),
+    "archtop": dict(
+        title="Shinyguitar — chitarra archtop, pickup magnetico (guitar: archtop)",
+        author="Karoryfer Samples / D. Smolken", license="CC0-1.0",
+        repo="sfzinstruments/karoryfer.shinyguitar", sfz="Programs/electric_one.sfz", size_mb=212, light_mb=106,
+        rr=2, keys=range(36, 90), exclude=("GUI/",), kind="guitar"),
+    "archtop_mic": dict(
+        title="Shinyguitar — chitarra archtop microfonata, suono acustico (guitar: archtop_mic)",
+        author="Karoryfer Samples / D. Smolken", license="CC0-1.0",
+        repo="sfzinstruments/karoryfer.shinyguitar", sfz="Programs/acoustic_one.sfz", cc={100: 127},
+        size_mb=212, light_mb=106, rr=2, keys=range(36, 90), exclude=("GUI/",), kind="guitar"),
+    "ebass": dict(
+        title="Black & Blue Basses 'darkblack' — basso elettrico a dita (bass: ebass)",
+        author="Karoryfer Samples", license="CC0-1.0",
+        repo="sfzinstruments/karoryfer.black-and-blue-basses", sfz="Programs/05-darkblack_pluck.sfz",
+        size_mb=160, light_mb=80, rr=2, keys=range(24, 64), exclude=("GUI/",), kind="bass"),
+    "sneakybass": dict(
+        title="Sneakybass — contrabbasso Rubner 1958 pizzicato leggero, da jazz notturno (bass: sneakybass)",
+        author="D. Smolken", license="CC0-1.0",
+        repo="sfzinstruments/karoryfer.sneakybass", sfz="Programs/02-sneakybass_pluck.sfz",
+        size_mb=124, light_mb=63, rr=2, keys=range(24, 64), exclude=("GUI/",), kind="bass"),
 }
+GUITAR_PACKS = [n for n, p in PACKS.items() if p.get("kind") == "guitar"]
+BASS_PACKS = [n for n, p in PACKS.items() if p.get("kind") == "bass"]
+
+
+def bass_pack(value):
+    """Valore di `bass:` nel YAML -> pacchetto (None = niente basso). true = contrabbasso 'bass'."""
+    if value in (None, False, "", "false", "no"):
+        return None
+    if value is True or value in ("true", "sì", "si", "yes"):
+        return "bass"
+    if value in BASS_PACKS:
+        return value
+    raise SongError("bass: '%s' sconosciuto (usa true/false o %s)" % (value, ", ".join(BASS_PACKS)))
 DEFAULT_PACKS = [n for n, p in PACKS.items() if p.get("default")]
 
 
@@ -140,6 +173,7 @@ def _needed_samples(info, dest, tree_paths):
         control, ops_list = parse(sfz_file)
         default_path = control.get("default_path", "").replace("\\", "/")
         cc_def = {int(k[6:]): int(float(v)) for k, v in control.items() if k.startswith("set_cc")}
+        cc_def.update(info.get("cc") or {})
         groups = {}
         for i, ops in enumerate(ops_list):
             if "sample" not in ops:

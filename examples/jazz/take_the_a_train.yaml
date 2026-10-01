@@ -1,0 +1,22 @@
+# Billy Strayhorn, 1939 (Duke Ellington Orchestra). Standard in do, AABA di 32 battute.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Take the A Train (progressione)"
+tempo: 160
+groove: jazz
+
+sections:
+  - name: A
+    repeat: 2
+    chords: |
+      | C6 | C6 | D7 | D7 |
+      | Dm7 | G7 | C6 | Dm7 G7 |
+  - name: Bridge
+    chords: |
+      | Fmaj7 | Fmaj7 | Fmaj7 | Fmaj7 |
+      | D7 | D7 | Dm7 | G7 |
+  - name: A finale
+    chords: |
+      | C6 | C6 | D7 | D7 |
+      | Dm7 | G7 | C6 | C6 |
+
+arrangement: [A x2, Bridge, A finale, A x2, Bridge, A finale]

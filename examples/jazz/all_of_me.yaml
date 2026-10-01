@@ -1,0 +1,21 @@
+# Simons & Marks, 1931. Standard in do, ABAC di 32 battute.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "All of Me (progressione)"
+tempo: 140
+groove: jazz/charleston
+
+sections:
+  - name: A
+    chords: |
+      | C6 | C6 | E7 | E7 |
+      | A7 | A7 | Dm7 | Dm7 |
+  - name: B
+    chords: |
+      | E7 | E7 | Am7 | Am7 |
+      | D7 | D7 | Dm7 | G7 |
+  - name: C
+    chords: |
+      | F6 | Fm6 | Em7 | A7 |
+      | Dm7 | G7 | C6 | Dm7 G7 |
+
+arrangement: [A, B, A, C, A, B, A, C]

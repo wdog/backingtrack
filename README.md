@@ -51,12 +51,14 @@
   hi-hat aperto/chiuso, ghost note, variazioni ogni 4 battute, **rullate** a fine sezione, piatto sugli attacchi.
 - 🎻 **Contrabbasso opzionale** (pizzicato) con walking, root-fifth o ottavi.
 - 🔁 **Sezioni ripetibili**: `repeat: 2` o un `arrangement` tipo `[Intro, Strofa x2, Rit, Strofa, Rit x2]`.
-- 🎚️ **19 groove** tra rock, blues, rockabilly e country (half-time, galoppo, rhumba, funk, stop-time, boom-chick…), anche diversi sezione per sezione.
+- 🖐️ **4 voicing** per gli accordi: barré, aperti, jazz, triadi (scelti dal groove o con `voicing:`).
+- 🎚️ **23 groove** tra rock, blues, rockabilly, country e jazz (half-time, galoppo, rhumba, funk, stop-time, boom-chick…), anche diversi sezione per sezione.
 - 🧑‍🎤 **Suona umano**: micro-timing, velocity variabile, velocità della pennata legata alla dinamica, swing regolabile.
 - 🎛️ **Mix automatico**: EQ, compressione, riverbero a convoluzione, bilanciamento, limiter e loudness costante.
 - 🖥️ **Editor grafico** (GTK 4): sezioni colorate, griglia delle battute con **drag & drop** degli accordi,
   modelli di giro in ogni tonalità, validazione mentre scrivi, **player con forma d'onda e striscia degli accordi**
-  che scorre con la musica, bozza automatica.
+  che scorre con la musica, **loop da battuta a battuta** per studiare un passaggio, guida integrata (`F1`),
+  tema Dracula, bozza automatica.
 - 📤 **Output**: WAV, MP3, **MIDI** (per la tua DAW) e **stems** separati.
 - 🎯 **Per esercitarsi**: `--mute guitar` per la sola batteria, `--tempo 80` per rallentare, `--transpose -1` per accordature ribassate.
 - ⚡ **Veloce**: 2 minuti di brano in circa 5 secondi.
@@ -187,6 +189,10 @@ e al massimo 2 round robin per la chitarra e 6 per la batteria. Rispetto alle li
 | `cabs` 🔈 | 21 impulse response di casse Marshall 4×12 | ~5 MB | ~5 MB |
 | `bass` 🎻 | contrabbasso pizzicato (solo con `--bass`) | ~56 MB | ~130 MB |
 | `epiphone` 🎸 | chitarra alternativa, Epiphone solid body (opzionale) | ~40 MB | ~100 MB |
+| `archtop` 🎸 | chitarra archtop Shinyguitar, pickup magnetico (opzionale) | ~106 MB | ~212 MB |
+| `archtop_mic` 🎸 | la stessa archtop microfonata, suono acustico (opzionale) | ~106 MB | ~212 MB |
+| `ebass` 🎸 | basso elettrico Black & Blue 'darkblack', a dita (opzionale) | ~80 MB | ~160 MB |
+| `sneakybass` 🎻 | contrabbasso Sneakybass, pizzicato leggero (opzionale) | ~63 MB | ~124 MB |
 
 - **Vuoi il massimo?** `backingtrack setup --full` scarica tutti i round robin: più varietà, circa il doppio dello spazio.
 - **Vuoi liberare spazio?** `backingtrack remove bass` (o qualsiasi pacchetto); per cancellare tutto elimina la cartella dei campioni.
@@ -321,49 +327,66 @@ backingtrack gui mio_brano.yaml  # apri un brano
 
 <p align="center"><img src="docs/gui-sezioni.jpg" alt="editor: pagina Sezioni" width="900"></p>
 
-La finestra ha quattro schede.
+La finestra ha tre schede e mostra solo l'essenziale: il pulsante **⚙ Avanzate** (o Brano ▸ Impostazioni avanzate)
+apre le impostazioni di dettaglio, e la scelta viene ricordata. Le spiegazioni stanno nei tooltip: passa col mouse
+su una voce per leggerle. Tema scuro in stile [Dracula](https://draculatheme.com), con accento viola e rosa.
 
-**🎵 Brano**: tempo, groove, trasposizione, swing, chitarra e ampli, contrabbasso, conteggio, finale, rullate,
-umanizzazione e cartella di output. Ogni scelta ha il suo menu a tendina e non si può inserire un valore fuori scala.
+**🎵 Brano**: titolo, tempo, groove, contrabbasso e l'**ordine delle sezioni** (con ripetizioni e durata totale;
+lista vuota = ordine della pagina Sezioni). Tra le avanzate: chitarra e ampli, doppiatura, slapback, conteggio,
+finale, rullate, trasposizione, swing, umanizzazione e output. Ogni scelta ha il suo menu e non si può inserire un
+valore fuori scala.
 
 <p align="center"><img src="docs/gui-brano.jpg" alt="editor: pagina Brano" width="700"></p>
 
 **🧩 Sezioni**: il cuore dell'editor, su tre colonne affiancate.
 - **a sinistra** l'elenco delle sezioni, ognuna col suo colore e l'emoji dello stile (🤘 rock, 🎷 blues, 🕺 rockabilly,
-  🤠 country), con i pulsanti **Nuova**, **Duplica**, **Elimina** e le frecce per riordinarle;
+  🤠 country, 🎺 jazz), con **Nuova** e i pulsanti per duplicare, riordinare ed eliminare;
 - **al centro gli accordi**:
   - scegli **tonica** e **basso** da una griglia di note (naturali, diesis, bemolle) e il **tipo** da una griglia
-    (m, 7, maj7, sus4…), poi **Nuova battuta** o **Aggiungi alla battuta**;
+    (m, 7, maj7, sus4…), poi **Nuova battuta** o **Aggiungi alla battuta**; il pulsante ⓘ mostra una tabella
+    con esempi di battute e di accordi (Do Re Mi = C D E);
   - la **🎨 tavolozza** mostra l'accordo costruito e quelli già usati nel brano: **trascinali su una battuta**
     per metterli lì, o cliccali per aggiungere una battuta;
   - le battute sono una **griglia compatta** (4 per riga) col bordo nel colore della sezione. Trascina la maniglia
     `⠿` per **spostare una battuta**, usa il **tasto destro** per duplicarla, inserirne una prima/dopo, svuotarla o
     eliminarla, e il `＋` in fondo per aggiungerne (ci puoi trascinare sopra un accordo). Passando col mouse leggi
     la battuta (*Em 2 tempi · D 1 · C 1*); se c'è un errore la cella diventa rossa e spiega cosa correggere;
-- **a destra** le impostazioni della sezione (ripetizioni, groove, dinamica, swing, rullata, strumenti) e i
-  **modelli di giro**: 12-bar blues, 8-bar, blues minore, I-IV-V, anni '50, pop-rock… in qualsiasi tonalità.
+- **a destra** le impostazioni della sezione (nome, ripetizioni, groove; tra le avanzate dinamica, swing, rullata,
+  strumenti) e i
+  **modelli di giro**: 12-bar blues, 8-bar, blues minore, I-IV-V, anni '50, pop-rock… Sono scritti a gradi
+  (I, IV, V) e la **Tonalità** li trasforma in accordi veri: 12-bar blues in A = A7, D7, E7; in E = E7, A7, B7.
+  **Sostituisci accordi** cancella le battute della sezione e ci mette il giro, **Aggiungi in coda** lo mette dopo.
+  Nessuno dei due traspone: per spostare un brano già scritto c'è **Trasposizione** (Brano ▸ Avanzate).
 
-Il **groove** si sceglie da un menu diviso per stile (🤘 Rock ▸, 🎷 Blues ▸, 🕺 Rockabilly ▸, 🤠 Country ▸) con la
+Il **groove** si sceglie da un menu diviso per stile (🤘 Rock ▸, 🎷 Blues ▸, 🕺 Rockabilly ▸, 🤠 Country ▸, 🎺 Jazz ▸) con la
 descrizione di ogni voce; le altre scelte (chitarra, ampli, rullata…) sono menu a tendina compatti.
 Con la finestra stretta le colonne si impilano (accordi in alto).
-
-**🔁 Arrangiamento**: l'ordine delle sezioni con le ripetizioni, e la durata totale.
-
-<p align="center"><img src="docs/gui-arrangiamento.jpg" alt="editor: arrangiamento" width="700"></p>
 
 **📄 YAML**: il file che verrà salvato, sempre aggiornato, da copiare con un clic.
 
 In basso la **barra di stato** dice se il brano è pronto (✓ verde, con battute e durata) o cosa correggere (⚠).
-**Genera e ascolta** crea l'audio **anche se non hai salvato** e lo suona subito nel player integrato.
+**Genera e ascolta** (`Alt+G`) crea l'audio **anche se non hai salvato** e lo suona subito nel player integrato.
 
 ### 🎧 Il player
 
-- pulsanti grandi **da capo**, **play/pausa**, **stop**, titolo e tempo;
-- la **forma d'onda** del brano con una linea colorata dove inizia ogni sezione: clicca o trascina per spostarti;
+- pulsanti grandi **da capo**, **play/pausa**, **stop**, titolo, tempo e **battuta corrente**, nel brano e nella
+  sezione (*Battuta 10 / 52 · Strofa 6 / 12*);
+- la **forma d'onda** del brano con una linea colorata e il nome dove inizia ogni sezione: clicca o trascina per spostarti;
 - la **striscia degli accordi**: tutte le battute del brano in fila, ognuna larga quanto serve per leggere ogni
-  accordo, divise in proporzione ai tempi. La battuta che suona è evidenziata e si riempie mentre avanza, la striscia
-  scorre da sola (puoi scorrerla anche a mano) e un clic su una battuta salta lì. C'è anche il conteggio iniziale e il finale;
+  accordo, divise in proporzione ai tempi. In alto a sinistra il numero di battuta nel brano, a destra quello nella
+  sezione (*6/12*). La battuta che suona è evidenziata e si riempie mentre avanza, la striscia scorre da sola
+  (puoi scorrerla anche a mano) e un clic su una battuta salta lì. C'è anche il conteggio iniziale e il finale;
+- il **🔁 loop** per studiare un passaggio: accendilo (o premi `L`), scegli **da battuta X a battuta Y** e il player
+  ripete solo quel tratto, segnato in rosa sulla forma d'onda e sotto le battute. **Shift+clic** su una battuta
+  della striscia sposta la fine del loop (o l'inizio, se la battuta viene prima);
 - volume e pulsante per aprire la cartella dei file generati.
+
+### ❓ Guida integrata
+
+**Aiuto ▸ Guida** (`F1`) spiega ogni parte della finestra, divisa in pagine: Inizio, Brano, Sezioni, Accordi,
+Tonalità, Player e Tasti.
+
+<p align="center"><img src="docs/gui-guida.jpg" alt="guida integrata: pagina Tonalità" width="640"></p>
 
 ### 💾 Salvataggio e bozza automatica
 
@@ -377,17 +400,19 @@ si chiude male o scegli "Non salvare" per sbaglio, alla riapertura ti propone di
 |---|---|
 | `Ctrl+N` / `Ctrl+O` | nuovo / apri |
 | `Ctrl+S` / `Ctrl+Shift+S` | salva / salva con nome |
-| `Ctrl+R` | genera e ascolta |
+| `Alt+G` (o `Ctrl+R`) | genera e ascolta |
 | `Ctrl+T` / `Ctrl+D` | nuova sezione / duplica sezione |
 | `Ctrl+B` / `Ctrl+Shift+D` | nuova battuta / duplica battuta |
 | `Invio` (in una battuta) | passa alla battuta successiva (la crea se serve) |
 | `Spazio` | play / pausa |
 | `B` | riparti da capo |
 | `S` | stop |
+| `L` | loop acceso / spento |
+| `F1` | guida |
 | `Ctrl+Q` | esci |
 
-Spazio, B e S funzionano quando **non** stai scrivendo in un campo: così puoi digitare `Bb` o `Dsus4` senza problemi.
-Il menu **File ▸ Apri esempio** carica al volo uno dei brani inclusi.
+Spazio, B, S e L funzionano quando **non** stai scrivendo in un campo: così puoi digitare `Bb` o `Dsus4` senza problemi.
+Il menu **File ▸ Apri esempio** carica al volo uno dei brani inclusi (gli esempi sono installati col programma).
 
 ---
 
@@ -583,8 +608,9 @@ backingtrack render examples/blues/*.yaml --tempo 80 --mute guitar --bass --mp3 
 | `ending_chord` | primo accordo | accordo del finale |
 | `fills` | `true` | rullata sull'ultima battuta di ogni sezione |
 | `crash` | `true` | piatto all'inizio di ogni sezione |
-| `bass` | `false` | contrabbasso (serve `setup --bass`) |
-| `guitar` | `gretsch` | chitarra: `gretsch` (hollowbody) o `epiphone` (solid body, serve `setup epiphone`) |
+| `bass` | `false` | `true` = contrabbasso, oppure `ebass` (elettrico) o `sneakybass` (serve `setup <nome>`) |
+| `voicing` | dal groove | forma degli accordi pieni: `barre`, `open` (prima posizione, dove esiste), `jazz` (4 note), `triad` (3 corde alte) |
+| `guitar` | `gretsch` | chitarra: `gretsch` (hollowbody), `epiphone` (solid body), `archtop`, `archtop_mic` (servono `setup <nome>`) |
 | `amp` | dal groove | forza l'ampli: `clean` `blues` `twang` `crunch` `high` |
 | `double` | dal groove | chitarra doppiata a sinistra e destra |
 | `slapback` | dal groove | eco slapback rockabilly |
@@ -667,6 +693,10 @@ Errori comuni, con il messaggio che ricevi:
 | 🕺 `rockabilly/strum` | twang | accordi pieni sul battere, chop su 2 e 4, slapback · slapback, swing 0.6 | swing rockabilly |
 | 🤠 `country` | twang | boom-chick dritto, basso alternato e spazzolata sul 2 e 4 | spazzolata sul 2 e 4, hi-hat a pedale |
 | 🤠 `country/shuffle` | twang | boom-chick in swing, stile Texas / honky-tonk · swing 0.7 | shuffle con hi-hat terzinato |
+| 🎺 `jazz` | clean | comping a semiminime alla Freddie Green, voicing jazz a 4 note · swing 1 | ride "ding ding-da", charleston su 2 e 4 |
+| 🎺 `jazz/charleston` | clean | comping Charleston (1 e levare del 2), accordi corti · swing 1 | ride jazz |
+| 🎺 `jazz/ballad` | clean | accordi lunghi e morbidi, basso in due · swing 1 | spazzole (rullante leggero), ride sul 1 e 3 |
+| 🎺 `jazz/bossa` | clean | bossa nova: basso alternato col pollice e accordi sincopati | cross-stick, cassa bossa, hi-hat leggero |
 
 `backingtrack grooves` mostra l'elenco aggiornato.
 
@@ -812,6 +842,39 @@ backingtrack render examples/rockabilly/*.yaml --mp3     # tutto il rockabilly
 | [`train_kept_a_rollin`](examples/rockabilly/train_kept_a_rollin.yaml) | Train Kept A-Rollin' *(in stile)* | 180 | `rockabilly/boogie` |
 | [`tutti_frutti`](examples/rockabilly/tutti_frutti.yaml) | Tutti Frutti | 180 | `rockabilly/boogie` |
 | [`whole_lotta_shakin`](examples/rockabilly/whole_lotta_shakin.yaml) | Whole Lotta Shakin' Goin' On | 150 | `rockabilly/boogie` |
+
+</details>
+
+<details>
+<summary><b>🎺 Jazz</b> — 12 brani</summary>
+
+| File | Brano | BPM | Groove |
+|---|---|---|---|
+| [`all_of_me`](examples/jazz/all_of_me.yaml) | All of Me | 140 | `jazz/charleston` |
+| [`autumn_leaves`](examples/jazz/autumn_leaves.yaml) | Autumn Leaves | 130 | `jazz` |
+| [`blue_bossa`](examples/jazz/blue_bossa.yaml) | Blue Bossa | 140 | `jazz/bossa` |
+| [`fly_me_to_the_moon`](examples/jazz/fly_me_to_the_moon.yaml) | Fly Me to the Moon | 120 | `jazz` |
+| [`jazz_blues_F`](examples/jazz/jazz_blues_F.yaml) | Jazz blues in F | 150 | `jazz` |
+| [`rhythm_changes_Bb`](examples/jazz/rhythm_changes_Bb.yaml) | Rhythm changes in Bb | 180 | `jazz` |
+| [`so_what`](examples/jazz/so_what.yaml) | So What | 136 | `jazz/charleston` |
+| [`take_the_a_train`](examples/jazz/take_the_a_train.yaml) | Take the A Train | 160 | `jazz` |
+| [`cantaloupe_island`](examples/jazz/cantaloupe_island.yaml) | Cantaloupe Island | 112 | `jazz/bossa` |
+| [`ii_v_i_ballad`](examples/jazz/ii_v_i_ballad.yaml) | ii-V-I in C (ballad) | 66 | `jazz/ballad` |
+| [`minor_blues_Cm`](examples/jazz/minor_blues_Cm.yaml) | Minor blues in Cm | 170 | `jazz` |
+| [`satin_doll`](examples/jazz/satin_doll.yaml) | Satin Doll | 124 | `jazz` |
+
+</details>
+
+<details>
+<summary><b>🤠 Country</b> — 5 brani</summary>
+
+| File | Brano | BPM | Groove |
+|---|---|---|---|
+| [`country_roads`](examples/country/country_roads.yaml) | Take Me Home, Country Roads | 82 | `country` |
+| [`hey_good_lookin`](examples/country/hey_good_lookin.yaml) | Hey, Good Lookin' | 130 | `country/shuffle` |
+| [`jambalaya`](examples/country/jambalaya.yaml) | Jambalaya | 120 | `country` |
+| [`jolene`](examples/country/jolene.yaml) | Jolene | 112 | `rock/strum` |
+| [`wagon_wheel`](examples/country/wagon_wheel.yaml) | Wagon Wheel | 150 | `country` |
 
 </details>
 

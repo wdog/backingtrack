@@ -1,0 +1,21 @@
+# Bart Howard, 1954. Circolo delle quinte in do, AB di 32 battute.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Fly Me to the Moon (progressione)"
+tempo: 120
+groove: jazz
+
+sections:
+  - name: A
+    chords: |
+      | Am7 | Dm7 | G7 | Cmaj7 |
+      | Fmaj7 | Bm7b5 | E7 | Am7 A7 |
+      | Dm7 | G7 | Cmaj7 | Am7 |
+      | Dm7 | G7 | Cmaj7 | Bm7b5 E7 |
+  - name: B
+    chords: |
+      | Am7 | Dm7 | G7 | Cmaj7 |
+      | Fmaj7 | Bm7b5 | E7 | Am7 A7 |
+      | Dm7 | G7 | Em7 | A7 |
+      | Dm7 | G7 | Cmaj7 | Bm7b5 E7 |
+
+arrangement: [A, B, A, B]

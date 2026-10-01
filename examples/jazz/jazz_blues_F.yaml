@@ -1,0 +1,13 @@
+# Blues jazz in fa: il giro di 12 battute con ii-V e diminuita (Now's the Time, Billie's Bounce, C Jam Blues…).
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Jazz blues in F"
+tempo: 150
+groove: jazz
+
+sections:
+  - name: Chorus
+    repeat: 4
+    chords: |
+      | F7 | Bb7 | F7 | Cm7 F7 |
+      | Bb7 | Bdim7 | F7 | D7 |
+      | Gm7 | C7 | F7 D7 | Gm7 C7 |

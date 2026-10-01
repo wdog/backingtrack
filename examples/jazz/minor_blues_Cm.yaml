@@ -1,0 +1,13 @@
+# Blues minore jazz in do (tipo Mr. P.C. di John Coltrane): 12 battute con bVI7-V7.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Minor blues in Cm"
+tempo: 170
+groove: jazz
+
+sections:
+  - name: Chorus
+    repeat: 4
+    chords: |
+      | Cm7 | Cm7 | Cm7 | Cm7 |
+      | Fm7 | Fm7 | Cm7 | Cm7 |
+      | Ab7 | G7 | Cm7 | Dm7b5 G7 |

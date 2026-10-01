@@ -1,0 +1,22 @@
+# Duke Ellington e Billy Strayhorn, 1953. ii-V che scendono di tono, AABA di 32 battute.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Satin Doll (progressione)"
+tempo: 124
+groove: jazz
+
+sections:
+  - name: A
+    repeat: 2
+    chords: |
+      | Dm7 G7 | Dm7 G7 | Em7 A7 | Em7 A7 |
+      | Am7 D7 | Abm7 Db7 | C6 | C6 |
+  - name: Bridge
+    chords: |
+      | Gm7 C7 | Gm7 C7 | Fmaj7 | Fmaj7 |
+      | Am7 D7 | Am7 D7 | Dm7 | G7 |
+  - name: A finale
+    chords: |
+      | Dm7 G7 | Dm7 G7 | Em7 A7 | Em7 A7 |
+      | Am7 D7 | Abm7 Db7 | C6 | C6 |
+
+arrangement: [A x2, Bridge, A finale, A x2, Bridge, A finale]

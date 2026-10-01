@@ -1,0 +1,18 @@
+# Hank Williams, 1951. Honky-tonk in do con dominanti secondarie.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Hey, Good Lookin' (progressione)"
+tempo: 130
+groove: country/shuffle
+
+sections:
+  - name: Strofa
+    repeat: 2
+    chords: |
+      | C | C | D7 | D7 |
+      | G7 | G7 | C | G7 |
+  - name: Ponte
+    chords: |
+      | C7 | C7 | F | F |
+      | C | C | D7 | G7 |
+
+arrangement: [Strofa x2, Ponte, Strofa, Strofa x2, Ponte, Strofa]

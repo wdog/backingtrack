@@ -21,7 +21,7 @@ AMPS = {
                "lowpass=f=6500,lowpass=f=7000"),
     "blues": dict(
         pre="highpass=f=90,acompressor=threshold=0.1:ratio=3:attack=5:release=120:makeup=2,"
-            "lowpass=f=6000,volume=12dB,asoftclip=type=tanh",
+            "lowpass=f=6000,volume=8dB,asoftclip=type=tanh",
         ir="3_Wasabi_Warrior_44.wav", post="equalizer=f=1000:t=q:w=1:g=1.5",
         cab_eq="equalizer=f=120:t=q:w=1:g=2,equalizer=f=1000:t=q:w=1:g=2,equalizer=f=3000:t=q:w=1:g=-1,"
                "lowpass=f=5000,lowpass=f=5500"),
@@ -32,12 +32,12 @@ AMPS = {
         cab_eq="equalizer=f=150:t=q:w=1:g=1,equalizer=f=900:t=q:w=1:g=-2,equalizer=f=3500:t=q:w=1:g=5,"
                "lowpass=f=8000"),
     "crunch": dict(
-        pre="highpass=f=130,lowpass=f=5000,volume=20dB,asoftclip=type=tanh,highpass=f=90",
+        pre="highpass=f=130,lowpass=f=5000,volume=17dB,asoftclip=type=tanh,highpass=f=90",
         ir="5_Don_Spinacio_44.wav", post="equalizer=f=650:t=q:w=1:g=-2",
         cab_eq="equalizer=f=110:t=q:w=1:g=3,equalizer=f=650:t=q:w=1:g=-2,"
                "equalizer=f=1800:t=q:w=1:g=3,lowpass=f=4800,lowpass=f=5200"),
     "high": dict(
-        pre="highpass=f=180,lowpass=f=4500,volume=28dB,asoftclip=type=tanh,highpass=f=120,volume=10dB,"
+        pre="highpass=f=180,lowpass=f=4500,volume=20dB,asoftclip=type=tanh,highpass=f=120,volume=2dB,"
             "asoftclip=type=atan",
         ir="12_World_Collider_44.wav", post="equalizer=f=500:t=q:w=1:g=-4",
         cab_eq="equalizer=f=100:t=q:w=1:g=4,equalizer=f=500:t=q:w=1:g=-5,equalizer=f=2200:t=q:w=1:g=3,"

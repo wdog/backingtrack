@@ -25,10 +25,15 @@ backingtrack = "backingtrack.cli:main"
 backingtrack-gui = "backingtrack.gui:main"
 
 [tool.setuptools]
-packages = ["backingtrack"]
+# gli esempi del repo finiscono nel pacchetto come backingtrack/examples (menu "Apri esempio" della GUI)
+packages = ["backingtrack", "backingtrack.examples"]
+
+[tool.setuptools.package-dir]
+"backingtrack.examples" = "examples"
 
 [tool.setuptools.dynamic]
 version = { attr = "backingtrack.__version__" }
 
 [tool.setuptools.package-data]
 backingtrack = ["data/*"]
+"backingtrack.examples" = ["*/*.yaml"]

@@ -14,7 +14,7 @@ from .theory import FLAT_NAMES, NOTE_PC, SHARP_NAMES, Chord
 # chiave -> default (None = "dal groove")
 SONG_DEFAULTS = {
     "title": "Nuova canzone", "tempo": 120, "groove": "blues", "transpose": 0, "swing": None,
-    "guitar": "gretsch", "amp": None, "double": None, "slapback": None, "bass": False,
+    "guitar": "gretsch", "amp": None, "double": None, "slapback": None, "bass": False, "voicing": None,
     "count_in": True, "ending": True, "ending_chord": None, "fills": True, "crash": True,
     "humanize": 1.0, "strum_ms": 14, "seed": 1,
 }
@@ -33,7 +33,8 @@ QUALITY_CHOICES = [
     ("m7b5", "semidiminuito"), ("aug", "aumentato"),
 ]
 AMPS = ["clean", "blues", "twang", "crunch", "high"]
-GUITARS = ["gretsch", "epiphone"]
+GUITARS = ["gretsch", "epiphone", "archtop", "archtop_mic"]
+BASSES = [False, True, "ebass", "sneakybass"]  # valori di `bass:` (true = contrabbasso)
 FLAT_KEYS = {"F", "Bb", "Eb", "Ab", "Db", "Gb"}
 
 # modelli: (nome, [battute con gradi]) — gradi: I bIII IV V bVI bVII ii iii vi, suffissi dopo ":"
@@ -84,9 +85,6 @@ def check_chord(token):
 
 
 HOLD = (".", "-", "/")
-BAR_HELP = ("Ogni battuta ha 4 tempi, divisi in parti uguali tra i simboli scritti. "
-            "'.' prolunga l'accordo precedente di una parte: 'Em . D C' = Em per 2 tempi, D per 1, C per 1. "
-            "'%' ripete la battuta precedente, 'N.C.' = pausa della chitarra.")
 
 
 def _beats(x):

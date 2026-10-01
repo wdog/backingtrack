@@ -5,7 +5,7 @@ Guida per Claude Code su questo repository.
 ## Progetto
 
 `backingtrack`: CLI Python che genera backing track (chitarra ritmica + batteria, contrabbasso opzionale)
-da un file YAML con tempo, groove, sezioni ripetibili e accordi. Stili: rock, blues, rockabilly.
+da un file YAML con tempo, groove, sezioni ripetibili e accordi. Stili: rock, blues, rockabilly, country, jazz.
 Lingua di UI, messaggi di errore, commenti e documentazione: **italiano**.
 
 ## Comandi
@@ -40,16 +40,24 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 - `songfile.py` — modello dell'editor, senza GTK: `SONG_DEFAULTS`, `from_song_dict`/`to_song_dict`/`to_yaml`
   (solo valori non di default, `chords` come blocco `|`), `check_bar`/`describe_bar` (messaggi e lettura
   "Em 2 tempi · D 1 · C 1"), `TEMPLATES` a gradi (I, IV, V:7, vi:m…) → `template_bars(nome, tonalità)`.
-- `gui.py` — Adw.Application: schede Brano / Sezioni (3 colonne: elenco | accordi | impostazioni+modelli;
-  `Adw.OverlaySplitView` con `pin_sidebar`, si chiude solo < 600sp; colonne impilate < 820sp) / Arrangiamento / YAML;
+- `gui.py` — Adw.Application: schede Brano (+ ordine sezioni) / Sezioni (3 colonne: elenco | accordi | impostazioni+modelli;
+  `Adw.OverlaySplitView` con `pin_sidebar`, si chiude solo < 600sp; colonne impilate < 820sp) / YAML.
+  Solo le impostazioni base in vista: il resto passa da `self.advanced(widget)` ed è mostrato dall'azione stateful
+  `app.advanced` (pulsanti "Avanzate", ricordata in `data_dir()/gui.json`). Spiegazioni nei tooltip, non nei sottotitoli.
+  Genera e ascolta: `Alt+G` (anche `Ctrl+R`).
   barra menu File, Sezione, Brano, Riproduzione, Aiuto. Render in un thread con `cli.render(song_dict, out)`.
   Widget: `MenuRow` (pulsante-menu con sottomenu: `GrooveRow`, `ChoiceRow`, modelli), `GridPicker`/`PickerRow`
   (griglie note/tipi), `BarCell` (griglia battute; drag & drop con payload stringa 'chord:X' / 'bar:N', tasto destro),
   tavolozza accordi. Tutti espongono `selected` + get/set_selected come Adw.ComboRow (niente Gtk.DropDown/ComboRow).
   Player: `Player` (Gtk.MediaFile, forma d'onda PNG da ffmpeg `showwavespic`, linee sezioni) + `ChordStrip`
-  (ScrolledWindow orizzontale, battute larghe quanto il testo, autoscroll salvo scroll manuale), dati da `song_bars()`.
-  Scorciatoie Spazio/B/S via `EventControllerKey` in CAPTURE, ignorate se il focus è un `Gtk.Editable`.
-  Bozza automatica in `data_dir()/bozza.json`, proposta al riavvio. Colori sezione `SECTION_COLORS`, accento #e8811a.
+  (ScrolledWindow orizzontale, battute larghe quanto il testo, numero battuta in piccolo, autoscroll salvo scroll manuale),
+  dati da `song_bars()` (`num` = battuta 1…, None per conteggio/finale; `local`/`size` = battuta nella sezione, a destra
+  nella striscia); sotto il tempo "Battuta N / tot · sezione L / size". Guida `HELP` (F1, Aiuto › Guida; il popover ? degli
+  accordi riusa `BAR_EXAMPLES`/`CHORD_EXAMPLES`): tenerla allineata ai controlli.
+  Loop X–Y: `Player.loop_btn/loop_from/loop_to`, `loop_range()` in secondi, `_tick` riporta all'inizio;
+  Shift+clic sulla striscia = `set_loop`. Guida: `HELP` = pagine di voci renderizzate da `help_page()`.
+  Scorciatoie Spazio/B/S/L via `EventControllerKey` in CAPTURE, ignorate se il focus è un `Gtk.Editable`.
+  Bozza automatica in `data_dir()/bozza.json`, proposta al riavvio. Colori sezione `SECTION_COLORS`, tema Dracula (sfondi `@define-color`, accento viola #bd93f9, rosa #ff79c6, forzato scuro).
 - `sfz.py` — parser SFZ minimale + `read_wav` (RIFF proprio: PCM 8/16/24/32 e float) + `Instrument.select`.
 - `render.py` — `Sampler`: region → campione trasposto (np.interp, cache) → voci; choke `group/off_by`;
   `mix_voices` somma nei bus stereo float32 con release, palm mute (decadimento + FIR passa-basso).
@@ -93,7 +101,13 @@ presente se quello estratto non è installato. `backingtrack remove <pack>` libe
 - `Gtk.MediaFile` ha `is_prepared()`, non `get_prepared()`; il seek prima di `is_prepared()` viene ignorato.
 - Nei test automatici la finestra non riceve frame: le animazioni (Revealer, OverlaySplitView) restano a metà.
   Il player usa Revealer senza transizione; per le schermate impostare `gtk-enable-animations` a False.
+- Esempi nel menu: `pyproject` installa `examples/` come `backingtrack/examples` (package-dir); `EXAMPLES` cerca
+  prima nel pacchetto, poi nel repo.
+- Il CSS ha uno stile proprio per pulsanti, menu (`.picker`), spinbutton, liste e switch (selettori `window …`),
+  perché il tema di sistema li rende squadrati. `.danger` = pulsante distruttivo morbido.
 - Adw.ToggleGroup non ha stile con questo tema e all'utente non piaceva: usare menu (`ChoiceRow`).
+- Il CSS dell'app è registrato a `STYLE_PROVIDER_PRIORITY_USER + 1`: il `~/.config/gtk-4.0/gtk.css` dell'utente
+  (tema tipo Arc) altrimenti ridipinge di blu `suggested-action`, slider e bordi. Selettori specifici (`.player button.play-btn`).
 
 ## Vincoli e scelte
 
@@ -107,7 +121,9 @@ presente se quello estratto non è installato. `backingtrack remove <pack>` libe
 ## Aggiungere un groove
 
 Nuova voce in `GROOVES` con `desc, amp, double, swing, bass_style, guitar, drums, turn, fill`.
-Tipi evento chitarra: `D U C P B B5 R5 R6 R7` + suffisso `m` (stoppato). Aggiornare la tabella groove nel README.
+Tipi evento chitarra: `D U C P B B5 R5 R6 R7 J` (J = voicing jazz a 4 note, `Chord.jazz`).
+  Voicing di D/U/C: `Chord.voicing(barre|open|jazz|triad)`, default del groove (`voicing=`), il brano lo cambia con
+  `voicing:`; forme aperte in `theory.OPEN_SHAPES` (open ripiega sul barré) + suffisso `m` (stoppato). Aggiornare la tabella groove nel README.
 
 ## Aggiungere un ampli
 
