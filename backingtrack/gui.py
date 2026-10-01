@@ -350,7 +350,10 @@ toggle-group > separator { background: transparent; min-width: 0; }
     background: transparent; color: #caa9fa; box-shadow: inset 0 -3px #bd93f9; }
 
 /* voci dei menu a comparsa: evidenziazione viola invece del blu del tema di sistema */
-popover.menu modelbutton { padding: 0 10px; border-radius: 6px; min-height: 30px; }
+popover.menu > contents { padding: 6px; border-radius: 12px; }
+popover.menu modelbutton { padding: 0 12px; border-radius: 6px; min-height: 30px; }
+popover.menu modelbutton > accelerator { margin-left: 28px; opacity: 0.55; }
+popover.menu separator { margin: 4px 6px; }
 popover.menu modelbutton:hover, popover.menu modelbutton:selected {
     background-color: alpha(#bd93f9, 0.28); color: #f8f8f2; }
 
