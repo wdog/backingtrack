@@ -247,3 +247,36 @@ class TestSongfile(unittest.TestCase):
                 a, b = build_timeline(load_song(f)), build_timeline(again)
                 self.assertEqual(len(a[1]), len(b[1]))
                 self.assertEqual([(s["name"], r) for s, r in a[0]], [(s["name"], r) for s, r in b[0]])
+
+
+class TestScales(unittest.TestCase):
+    def test_blues_scales_and_caged(self):
+        from backingtrack import theory
+        self.assertEqual(sorted(theory.scale_names(9, "Blues minore").values()), sorted("A C D Eb E G".split()))
+        self.assertEqual(sorted(theory.scale_names(7, "Blues maggiore").values()), sorted("G A Bb B D E".split()))
+        # A minore: box Em ai tasti 5-8 (il "box 1"), G maggiore: forma E ai tasti 2-5
+        self.assertIn(("E", 5, 8), theory.caged_boxes(9, "Blues minore"))
+        self.assertIn(("E", 2, 5), theory.caged_boxes(7, "Blues maggiore"))
+        notes = theory.fretboard_notes(9, "Blues minore")
+        self.assertIn((6, 5, 0), notes)   # A sulla 6a corda, 5o tasto = tonica
+        self.assertIn((5, 6, 6), notes)   # Eb sulla 5a corda, 6o tasto = b5
+        self.assertTrue(all(iv in theory.DEGREES for _s, _f, iv in notes))
+
+    def test_spelling_and_box_selection(self):
+        from backingtrack import theory
+
+        def spelled(root, scale):
+            names = theory.scale_names(root, scale)
+            return [names[(root + st) % 12] for st in theory.SCALES[scale]["steps"]]
+        self.assertEqual(spelled(9, "Dorica"), "A B C D E F# G".split())
+        self.assertEqual(spelled(9, "Lidia"), "A B C# D# E F# G#".split())
+        self.assertEqual(spelled(4, "Minore armonica"), "E F# G A B C D#".split())
+        t = theory.toggle_box
+        self.assertEqual(t("", "E"), "E")
+        self.assertEqual(t("E", "D"), "ED")       # adiacente sopra: si aggiunge
+        self.assertEqual(t("ED", "G"), "GED")     # adiacente sotto
+        self.assertEqual(t("GED", "G"), "ED")     # estremità: si toglie
+        self.assertEqual(t("GED", "E"), "E")      # in mezzo: resta solo lui
+        self.assertEqual(t("ED", "A"), "A")       # non adiacente: ricomincia
+        self.assertEqual(t("DC", "A"), "DCA")     # ciclico: dopo D viene C
+        self.assertEqual(t("E", "E"), "")         # tolto l'ultimo = tutti

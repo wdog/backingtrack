@@ -25,6 +25,7 @@ from . import songfile as sf
 from .errors import SongError
 from .grooves import GROOVES
 from .song import build_timeline, load_song
+from . import theory
 from .theory import Chord
 
 APP_ID = "io.github.wdog.backingtrack"
@@ -89,8 +90,9 @@ HELP = [
         BAR_EXAMPLES,
         ("p", "Invio = battuta successiva · trascina ⠿ per spostare · tasto destro = menu."),
         ("h", "Strumenti"),
-        ("Costruttore", "tonica, tipo e basso; trascina l'accordo su una battuta o usa «Nuova battuta»"),
-        ("Tavolozza", "accordi già usati: clic = aggiungilo alla battuta selezionata (o nuova battuta se non ce n'è), trascina = mettilo su una battuta"),
+        ("Tavolozza", "le 12 note (alterazione sotto la sua nota) e gli accordi già usati: clic = aggiungi alla "
+                      "battuta selezionata (o nuova battuta se non ce n'è), trascina = mettilo su una battuta. "
+                      "Una nota = accordo maggiore: m, 7… si scrivono nella battuta"),
         ("+ %  + N.C.", "aggiungono una battuta che ripete o una pausa"),
         ("h", "Impostazioni della sezione"),
         ("Ripetizioni", "quante volte suona di fila"),
@@ -115,14 +117,46 @@ HELP = [
         ("p", "Nessuno dei due traspone: per spostare un brano già scritto usa <b>Trasposizione</b> "
               "(Brano › Avanzate)."),
         ("h", "Tonica o tonalità?"),
-        ("Tonica", "la nota che dà il nome a <b>un accordo</b>: in Am7 è A, in D/F# è D. "
-                   "Nel costruttore scegli tonica + tipo (m, 7…) e ottieni un accordo solo"),
-        ("Tonalità", "la «casa» di <b>tutto il giro</b>: la scala da cui vengono i suoi accordi. "
-                     "Nei modelli trasforma i gradi (I, IV, V…) in accordi veri"),
-        ("p", "Le due cose si toccano in un punto: la tonica dell'accordo di I grado è la nota della tonalità. "
-              "Blues in A = A7 (I), D7 (IV), E7 (V): ogni accordo ha la sua tonica (A, D, E), la tonalità è una "
-              "sola, A. Cambiare la tonica nel costruttore cambia un accordo; cambiare la tonalità di un modello "
-              "cambia tutti gli accordi del giro."),
+        ("p", "Pensa a una città con le sue vie. La <b>tonalità</b> è la città: dice dove si gioca tutto il brano. "
+              "La <b>tonica</b> è il numero civico di una casa: è la nota su cui è costruito <b>un singolo "
+              "accordo</b>. Un brano ha una tonalità sola, ma tanti accordi, ognuno con la sua tonica."),
+        ("h", "Esempio: blues in A"),
+        ("p", "Il 12-bar blues usa tre accordi: I, IV e V grado. In <b>tonalità A</b> diventano:"),
+        ("code", [("A7", "I grado · tonica A · è «casa», da qui si parte e qui si torna"),
+                  ("D7", "IV grado · tonica D · ci si allontana un po'"),
+                  ("E7", "V grado · tonica E · tensione, vuole tornare ad A7")]),
+        ("p", "Le 12 battute (è il modello «12-bar blues» con tonalità A):"),
+        ("code", [("battute 1–4", "A7  A7  A7  A7"), ("battute 5–8", "D7  D7  A7  A7"),
+                  ("battute 9–12", "E7  D7  A7  E7")]),
+        ("p", "Tre toniche diverse (A, D, E), <b>una sola tonalità: A</b>. Il brano «è in A» perché gira intorno "
+              "ad A7 e finisce lì."),
+        ("h", "Cosa cambia se tocchi l'una o l'altra"),
+        ("Tonica", "cambi <b>un accordo</b>: scrivi G7 al posto di D7 nella battuta 5 e cambia solo "
+                   "quella battuta"),
+        ("Tonalità (modelli)", "cambi <b>tutto il giro</b>, sempre con la stessa forma: lo stesso blues "
+                               "in E diventa E7 · A7 · B7, in G diventa G7 · C7 · D7"),
+        ("p", "In pratica: tonalità A = blues comodo per la chitarra; tonalità E = più grave, classico del "
+              "Chicago blues. Scegli la tonalità in cui canti o suoni meglio, il giro resta lo stesso."),
+    ]),
+    ("Scale", "🎸", [
+        ("p", "Scheda <b>Sezioni › Scale</b>: la tastiera mostra dove stanno le note di una scala, per improvvisare "
+              "sopra la base. Corda 1 (mi cantino) in alto, come nelle tablature."),
+        ("Pentatoniche e blues", "pentatonica minore e maggiore (5 note), blues minore (+ b5) e maggiore (+ b3)"),
+        ("Maggiore e minori", "maggiore, minore naturale, armonica (7 maggiore) e melodica (6 e 7 maggiori)"),
+        ("Modi", "dorica (minore con la 6), misolidia (maggiore con la b7), lidia (#4), frigia (b2)"),
+        ("code", [("● viola", "tonica: la nota «casa», dove le frasi si chiudono bene"),
+                  ("● rosa", "blue note nei blues; nei modi la nota caratteristica, quella che dà il colore"),
+                  ("● azzurro", "le altre note della scala")]),
+        ("h", "Sistema CAGED"),
+        ("p", "Gli accordi aperti C, A, G, E e D, spostati lungo il manico, dividono la tastiera in <b>5 box</b> "
+              "che si incastrano: ogni box è una posizione in cui la mano suona la scala senza spostarsi. "
+              "Nelle scale minori le forme sono minori (Em, Dm…)."),
+        ("p", "Blues minore in A: il box <b>Em</b> sta ai tasti 5–8 (il «box 1» che si impara per primo), poi "
+              "Dm 7–10, Cm 9–13, Am 12–15, Gm 2–5. Dopo il 12 tutto si ripete un'ottava sopra."),
+        ("Box CAGED", "Tutti = il manico intero. Clic su un box per vederlo da solo, poi sui box accanto per "
+                      "unirli (es. Em + Dm = tasti 5–10); clic su quello all'estremità per toglierlo. "
+                      "Si possono cliccare anche le fasce colorate sulla tastiera"),
+        ("Etichette", "Note (A, C, D…) o Gradi (1, b3, 4…): i gradi valgono in ogni tonalità"),
     ]),
     ("Player", "▶️", [
         ("Forma d'onda", "le sezioni a colori; clic = salta lì"),
@@ -140,7 +174,7 @@ HELP = [
                   ("Ctrl+S", "salva"), ("Ctrl+Shift+S", "salva con nome"),
                   ("Ctrl+T  Ctrl+D", "nuova sezione, duplica sezione"),
                   ("Ctrl+B  Super+N", "nuova battuta"), ("Ctrl+Shift+D", "duplica battuta"),
-                  ("Super+Canc", "elimina la battuta selezionata"),
+                  ("Super+Canc", "elimina la battuta selezionata"), ("F9  Shift+F9", "mostra / nascondi elenco sezioni, impostazioni"),
                   ("Spazio  B  S  L", "play/pausa, da capo, stop, loop"), ("F1", "guida"), ("Ctrl+Q", "esci")]),
     ]),
 ]
@@ -208,14 +242,14 @@ selection { background-color: alpha(#bd93f9, 0.35); }
 @define-color accent_bg_color #bd93f9;
 @define-color accent_fg_color #282a36;
 @define-color accent_color #caa9fa;
-viewswitcher button:checked, stackswitcher button:checked { color: #caa9fa; }
+stackswitcher button:checked { color: #caa9fa; }
 entry:focus-within { outline-color: alpha(#caa9fa, 0.7); }
 .emoji { font-size: 1.25em; min-width: 1.6em; }
 .dot { font-size: 1.4em; }
 .status-ok { color: @success_color; }
 .status-bad { color: @warning_color; }
 .big-emoji { font-size: 3.5em; }
-window button.render-btn { font-weight: 800; letter-spacing: 0.02em; color: #282a36; border: none; border-radius: 999px;
+window button.render-btn { font-weight: 800; letter-spacing: 0.02em; color: #282a36; border: none; border-radius: 10px;
                     padding: 5px 8px 5px 16px; min-height: 30px;
                     background: linear-gradient(135deg, #caa9fa 0%, #bd93f9 55%, #ff79c6 100%);
                     box-shadow: 0 2px 10px alpha(#bd93f9, 0.45), inset 0 1px alpha(white, 0.35); }
@@ -224,7 +258,7 @@ window button.render-btn:hover { background: linear-gradient(135deg, #d6bcfb 0%,
 window button.render-btn:active { background: linear-gradient(135deg, #bd93f9, #9a6fe0); box-shadow: inset 0 2px 4px alpha(black, 0.3); }
 window button.render-btn:disabled { background: alpha(#bd93f9, 0.30); color: alpha(#282a36, 0.6); box-shadow: none; }
 window button.render-btn image { -gtk-icon-size: 18px; }
-.keycap { font-size: 0.72em; font-weight: 700; padding: 1px 7px; border-radius: 999px;
+.keycap { font-size: 0.72em; font-weight: 700; padding: 1px 7px; border-radius: 6px;
           background: alpha(black, 0.22); color: alpha(white, 0.9); }
 .adv-toggle { font-size: 0.9em; }
 togglebutton.adv-toggle:checked, button.adv-toggle:checked { background: alpha(#bd93f9, 0.25); color: #caa9fa; }
@@ -266,8 +300,7 @@ viewswitcher button:checked { color: #caa9fa; box-shadow: inset 0 -3px #bd93f9; 
 .bar-handle { opacity: 0.35; font-size: 1.1em; padding: 0 2px; }
 .bar-handle:hover { opacity: 0.9; }
 .bar-add { min-height: 34px; font-size: 1.2em; }
-.chip { padding: 2px 10px; min-height: 26px; border-radius: 13px; font-weight: bold; }
-.chip-main { background: alpha(#bd93f9, 0.25); padding: 4px 14px; }
+.chip { padding: 2px 10px; min-height: 26px; min-width: 22px; border-radius: 8px; font-weight: bold; }
 toggle-group { background: alpha(currentColor, 0.08); border-radius: 10px; padding: 3px; }
 toggle-group > toggle { padding: 4px 11px; margin: 0 1px; border-radius: 8px; font-weight: 600; min-height: 24px; }
 toggle-group > toggle:hover { background: alpha(currentColor, 0.08); }
@@ -303,7 +336,23 @@ toggle-group > separator { background: transparent; min-width: 0; }
 .bt-main button.danger, .bt-main button.destructive-action {
     background-color: alpha(#ff5555, 0.14); color: #ff6e6e; background-image: none; }
 .bt-main button.danger:hover, .bt-main button.destructive-action:hover { background-color: alpha(#ff5555, 0.30); color: white; }
-.bt-main button.pill { border-radius: 999px; padding: 10px 26px; }
+.bt-main button.pill { border-radius: 10px; padding: 10px 26px; }
+
+/* schede (Brano/Sezioni/YAML, Accordi/Scale): niente riquadro da pulsante, solo testo e sottolineatura.
+   Il tema di sistema (Qogir & co.) le fa squadrate con padding proprio: qui si azzera e si ridefinisce tutto. */
+.bt-main viewswitcher button.toggle { background: transparent; box-shadow: none; border: none; border-radius: 0;
+    padding: 0; margin: 0 4px; min-height: 0; }
+.bt-main viewswitcher button.toggle > stack > box.wide { padding: 8px 14px; border-spacing: 8px; }
+.bt-main viewswitcher button.toggle > stack > box.narrow { padding: 4px 10px; }
+.bt-main viewswitcher button.toggle:hover { background: transparent; color: #f8f8f2;
+    box-shadow: inset 0 -2px alpha(currentColor, 0.25); }
+.bt-main viewswitcher button.toggle:checked, .bt-main viewswitcher button.toggle:checked:hover {
+    background: transparent; color: #caa9fa; box-shadow: inset 0 -3px #bd93f9; }
+
+/* voci dei menu a comparsa: evidenziazione viola invece del blu del tema di sistema */
+popover.menu modelbutton { padding: 0 10px; border-radius: 6px; min-height: 30px; }
+popover.menu modelbutton:hover, popover.menu modelbutton:selected {
+    background-color: alpha(#bd93f9, 0.28); color: #f8f8f2; }
 
 /* menu a scelta (groove, ampli, note…) */
 .bt-main menubutton.picker > button, .bt-main button.picker {
@@ -338,8 +387,13 @@ toggle-group > separator { background: transparent; min-width: 0; }
 /* barra laterale delle sezioni */
 .navigation-sidebar > row { border-radius: 10px; margin: 2px 6px; }
 .navigation-sidebar > row:hover { background-color: alpha(currentColor, 0.05); }
-.navigation-sidebar > row:selected { background-color: alpha(#bd93f9, 0.22);
-                                     box-shadow: inset 3px 0 #bd93f9; }
+/* sezione selezionata: stesso gradiente di «Genera e ascolta», testo scuro */
+.navigation-sidebar > row:selected, .navigation-sidebar > row:selected:hover {
+    background-color: transparent; color: #282a36;
+    background-image: linear-gradient(135deg, #caa9fa 0%, #bd93f9 55%, #ff79c6 100%);
+    box-shadow: 0 2px 10px alpha(#bd93f9, 0.40), inset 0 1px alpha(white, 0.30); }
+.navigation-sidebar > row:selected label:not(.dot) { color: #282a36; }
+.navigation-sidebar > row:selected .dim-label { opacity: 0.7; }
 .side-tools { padding-top: 6px; border-top: 1px solid alpha(currentColor, 0.08); }
 .card.builder { border: none; border-radius: 12px; background-color: alpha(currentColor, 0.035);
                 box-shadow: 0 0 0 1px alpha(currentColor, 0.07), 0 2px 6px alpha(black, 0.12); }
@@ -463,8 +517,11 @@ class MenuRow(Adw.ActionRow):
 
         self.label = Gtk.Label(ellipsize=3, max_width_chars=24,
                                width_chars=min(18, max(len(button_label(n)) for n in self.names)))
-        self.button = Gtk.MenuButton(menu_model=menu, valign=Gtk.Align.CENTER, always_show_arrow=True)
+        self.button = Gtk.MenuButton(valign=Gtk.Align.CENTER, always_show_arrow=True)
+        # NESTED: ogni sottomenu è un popover a sé, largo quanto le sue voci (non quanto la più lunga di tutti)
+        self.button.set_popover(Gtk.PopoverMenu.new_from_model_full(menu, Gtk.PopoverMenuFlags.NESTED))
         self.button.add_css_class("picker")
+        self.button.insert_action_group("row", group)  # il pulsante funziona anche staccato dalla riga
         self.button.set_child(self.label)
         self.add_suffix(self.button)
         self.set_activatable_widget(self.button)
@@ -502,6 +559,7 @@ def GrooveRow(title, inherit=False, song_groove=None):
     groups = [("%s  %s" % (STYLE_EMOJI.get(st, "🎵"), STYLE_NAMES.get(st, st.title())), names)
               for st, names in by_style.items()]
     desc = lambda n: GROOVES[n]["desc"].split(":", 1)[-1].strip()
+    short = lambda t: t if len(t) <= 48 else t[:46].rstrip(" ,(") + "…"  # nel menu; intera nel sottotitolo
 
     def subtitle(n):
         if n:
@@ -511,7 +569,7 @@ def GrooveRow(title, inherit=False, song_groove=None):
 
     return MenuRow(title, ([""] if inherit else []) + GROOVE_NAMES, groups,
                    top=[""] if inherit else (),
-                   item_label=lambda n: "🎵 come il brano" if not n else "%s — %s" % (n, desc(n)),
+                   item_label=lambda n: "🎵 come il brano" if not n else "%s — %s" % (n, short(desc(n))),
                    button_label=lambda n: "🎵 come il brano" if not n else "%s %s" % (style_emoji(n), n),
                    subtitle=subtitle)
 
@@ -581,13 +639,15 @@ class GridPicker(Gtk.MenuButton):
             (b.add_css_class if j == i else b.remove_css_class)("suggested-action")
 
 
-def note_rows(names, offset=0):
-    """Griglia di note: naturali, diesis, bemolle."""
-    idx = {n: i + offset for i, n in enumerate(names)}
-    rows = [[idx.get(n) for n in "C D E F G A B".split()],
-            [idx.get(n) for n in "C# D# F# G# A#".split()],
-            [idx.get(n) for n in "Db Eb Gb Ab Bb".split()]]
-    return [[i for i in r if i is not None] for r in rows]
+def note_rows(names):
+    """Griglia di note: sopra le naturali, sotto ognuna la sua alterazione (C# o Db sotto C), come sul piano.
+
+    None = casella vuota (sotto E e B), così le colonne restano allineate.
+    """
+    idx = {n: i for i, n in enumerate(names)}
+    nat = "C D E F G A B".split()
+    acc = [idx.get(n + "#", idx.get(up + "b")) for n, up in zip(nat, nat[1:] + nat[:1])]
+    return [[idx.get(n) for n in nat], acc]
 
 
 class PickerRow(Adw.ActionRow):
@@ -944,12 +1004,142 @@ class ChordStrip(Gtk.ScrolledWindow):
                 return
 
 
+SCALE_DESC = {
+    "Pentatonica minore": "5 note, la base di rock e blues: la prima da imparare",
+    "Pentatonica maggiore": "5 note, solare: country, southern rock, pop",
+    "Blues minore": "pentatonica minore + b5: il suono classico del blues",
+    "Blues maggiore": "pentatonica maggiore + b3: più dolce, country e rock'n'roll",
+    "Maggiore (ionica)": "la scala do-re-mi: melodie, pop, canzoni",
+    "Minore naturale (eolia)": "la scala minore: ballate, rock malinconico",
+    "Dorica": "minore con la 6 maggiore: funk, jazz, Santana, «Oye como va»",
+    "Misolidia": "maggiore con la b7: rock, blues-rock, sopra gli accordi di settima",
+    "Lidia": "maggiore con la #4: sognante, colonne sonore",
+    "Frigia": "minore con la b2: spagnolo, flamenco, metal",
+    "Minore armonica": "minore con la 7 maggiore: neoclassico, gipsy, sopra il V7 in minore",
+    "Minore melodica": "minore con 6 e 7 maggiori: jazz",
+}
+CAGED_COLORS = {"C": "#ffb86c", "A": "#50fa7b", "G": "#f1fa8c", "E": "#8be9fd", "D": "#ff5555"}
+
+
+def draw_text(cr, text, font, cx, cy, rgba):
+    """Testo centrato in (cx, cy)."""
+    layout = PangoCairo.create_layout(cr)
+    layout.set_font_description(Pango.FontDescription.from_string(font))
+    layout.set_text(text, -1)
+    ext = layout.get_pixel_extents()[1]
+    cr.set_source_rgba(*rgba)
+    cr.move_to(cx - ext.width / 2 - ext.x, cy - ext.height / 2 - ext.y)
+    PangoCairo.show_layout(cr, layout)
+
+
+class Fretboard(Gtk.DrawingArea):
+    """Manico (corda 1 in alto, tasti 0-15) con le note di una scala e i box CAGED colorati."""
+    FRETS = 15
+
+    def __init__(self, on_box_click=None):
+        super().__init__(hexpand=True, content_height=265)
+        self.set_size_request(520, -1)
+        self.root, self.scale, self.shapes, self.degrees = 9, "Blues minore", "", False
+        self.boxes_x = []  # (forma, x da, x a) dell'ultimo disegno, per il clic
+        self.set_draw_func(self._draw)
+        if on_box_click:  # clic su una fascia = seleziona/deseleziona quel box
+            click = Gtk.GestureClick()
+            click.connect("released", lambda _g, _n, x, _y: self._click(x, on_box_click))
+            self.add_controller(click)
+
+    def _click(self, x, callback):
+        hits = [(abs((a + b) / 2 - x), shape) for shape, a, b in self.boxes_x if a <= x <= b]
+        if hits:
+            callback(min(hits)[1])
+
+    def update(self, root, scale, shapes, degrees):
+        """shapes: box selezionati in ordine CAGED ("" = tutti)."""
+        self.root, self.scale, self.shapes, self.degrees = root, scale, shapes, degrees
+        self.queue_draw()
+
+    def _draw(self, _area, cr, w, h):
+        left, right, top, bottom, open_w = 30, 12, 34, 36, 34
+        fw = (w - left - right - open_w) / self.FRETS
+        sh = (h - top - bottom) / 5
+
+        def x0(f):  # bordo sinistro della casella del tasto f (0 = corde a vuoto)
+            return left if f == 0 else left + open_w + (f - 1) * fw
+
+        def xc(f):
+            return left + open_w / 2 if f == 0 else x0(f) + fw / 2
+
+        def y(string):  # corda 1 (mi cantino) in alto
+            return top + (string - 1) * sh
+
+        minor = theory.SCALES[self.scale]["minor"]
+        boxes = theory.caged_boxes(self.root, self.scale, self.FRETS)
+        self.boxes_x = [(shape, x0(a), x0(b) + (open_w if b == 0 else fw)) for shape, a, b in boxes]
+        shown = [b for b in boxes if not self.shapes or b[0] in self.shapes]
+        for i, (shape, a, b) in enumerate(shown):  # box CAGED: fasce colorate con la lettera sopra
+            r, g, bl = hex_rgb(CAGED_COLORS[shape])
+            xa, xb = x0(a), x0(b) + (open_w if b == 0 else fw)
+            lane = i % 2  # box vicini si sovrappongono: lettere su due righe
+            cr.set_source_rgba(r, g, bl, 0.16 if self.shapes else 0.10)
+            cr.rectangle(xa + 1, top - 10, xb - xa - 2, h - top - bottom + 20)
+            cr.fill()
+            cr.set_source_rgba(r, g, bl, 0.8)
+            cr.rectangle(xa + 1, 4 + lane * 13, xb - xa - 2, 2)
+            cr.fill()
+            draw_text(cr, shape + ("m" if minor else ""), "Sans Bold 9", (xa + xb) / 2, 12 + lane * 13,
+                      (r, g, bl, 1))
+
+        fg = (0.97, 0.97, 0.95)
+        cr.set_source_rgba(0.38, 0.45, 0.64, 0.9)  # tasti
+        for f in range(1, self.FRETS + 1):
+            cr.rectangle(x0(f) + fw - 1, y(1), 2, y(6) - y(1))
+            cr.fill()
+        cr.set_source_rgba(*fg, 0.9)  # capotasto
+        cr.rectangle(x0(1) - 3, y(1) - 1, 5, y(6) - y(1) + 2)
+        cr.fill()
+        for f in (3, 5, 7, 9, 15):  # segni sulla tastiera
+            cr.set_source_rgba(0.38, 0.45, 0.64, 0.6)
+            cr.new_sub_path()
+            cr.arc(xc(f), (y(3) + y(4)) / 2, 4, 0, 6.3)
+            cr.fill()
+        for yy in ((y(2) + y(3)) / 2, (y(4) + y(5)) / 2):
+            cr.new_sub_path()
+            cr.arc(xc(12), yy, 4, 0, 6.3)
+            cr.fill()
+        for f in range(self.FRETS + 1):
+            draw_text(cr, str(f), "Sans 8", xc(f), h - bottom / 2, (*fg, 0.5))
+        names = "e B G D A E".split()
+        for string in range(1, 7):
+            cr.set_source_rgba(*fg, 0.55)
+            cr.set_line_width(0.8 + (string - 1) * 0.3)
+            cr.move_to(x0(1) - 2, y(string))
+            cr.line_to(w - right, y(string))
+            cr.stroke()
+            draw_text(cr, names[string - 1], "Sans 9", left / 2, y(string), (*fg, 0.6))
+
+        info = theory.SCALES[self.scale]
+        note_names = theory.scale_names(self.root, self.scale)
+        rad = min(fw, sh) * 0.4
+        for string, f, iv in theory.fretboard_notes(self.root, self.scale, self.FRETS):
+            inside = any(a <= f <= b for _s, a, b in shown)
+            alpha = 1 if not self.shapes or inside else 0.25
+            color = "#bd93f9" if iv == 0 else "#ff79c6" if iv == info["blue"] else "#8be9fd"
+            cr.set_source_rgba(*hex_rgb(color), alpha)
+            cr.new_sub_path()
+            cr.arc(xc(f), y(string), rad, 0, 6.3)
+            cr.fill()
+            label = theory.degree(self.scale, iv) if self.degrees else note_names[(self.root + iv) % 12]
+            draw_text(cr, label, "Sans Bold %d" % (8 if len(label) > 1 else 9), xc(f), y(string),
+                      (0.16, 0.16, 0.21, alpha))
+
+
 class Player(Gtk.Revealer):
     """Barra di riproduzione: pulsanti grandi, forma d'onda cliccabile, tempo, volume."""
 
     def __init__(self, win):
-        # niente animazione: se la finestra non riceve frame (non in primo piano) resterebbe a metà
-        super().__init__(transition_type=Gtk.RevealerTransitionType.NONE, reveal_child=False)
+        # slide con durata 0: niente animazione (senza frame resterebbe a metà) e, da nascosto, altezza 0.
+        # Con NONE o CROSSFADE il Revealer nascosto occupa comunque tutta l'altezza del player.
+        super().__init__(transition_type=Gtk.RevealerTransitionType.SLIDE_UP, transition_duration=0,
+                         reveal_child=False)
         self.win = win
         self.media = None
         outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -1404,10 +1594,111 @@ class MainWindow(Adw.ApplicationWindow):
         self.changed()
 
     # ------------------------------------------------------------------ pagina Sezioni
+    def _build_scales_page(self):
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12, margin_start=18, margin_end=18,
+                      margin_top=14, margin_bottom=18)
+        title = Gtk.Label(label="🎸 Scale sulla tastiera", xalign=0)
+        title.add_css_class("title-2")
+        box.append(title)
+        scales = list(theory.SCALES)
+        self.f_key = GridPicker(sf.KEYS, note_rows(sf.KEYS), fmt=lambda i: "Tonalità: " + sf.KEYS[i])
+        self.f_key.set_tooltip_text("La nota di partenza della scala (la «casa»): blues in A = scala di A")
+        self.f_key.set_selected(sf.KEYS.index("A"))
+        steps = lambda n: " ".join(theory.degree(n, st) for st in theory.SCALES[n]["steps"])
+        self.f_scale = MenuRow("Scala", scales, [
+            ("🎷  Pentatoniche e blues", scales[:4]), ("🎼  Maggiore e minori", [scales[4], scales[5]] + scales[10:]),
+            ("🌈  Modi", scales[6:10])], item_label=lambda n: "%s   %s" % (n, steps(n)), button_label=lambda n: n)
+        self.f_scale.set_selected(scales.index("Blues minore"))
+        self.f_labels = MenuRow("Etichette", ["Note", "Gradi"], [], top=["Note", "Gradi"],
+                                item_label=lambda n: {"Note": "Note — A, C, D…",
+                                                      "Gradi": "Gradi — 1, b3, 5…: valgono in ogni tonalità"}[n],
+                                button_label=lambda n: "Etichette: " + n)
+        # tutte le opzioni su una riga: dei MenuRow si usa solo il pulsante-menu (il valore resta nella riga)
+        options = Gtk.Box(spacing=6)
+        options.append(self.f_key)
+        for row in (self.f_scale, self.f_labels):
+            row.remove(row.button)
+            row.button.set_tooltip_text(row.get_title())
+            options.append(row.button)
+        self.f_boxes = ""  # box CAGED selezionati, adiacenti, in ordine lungo il manico ("" = tutti)
+
+        def pick_box(shape):
+            self.f_boxes = theory.toggle_box(self.f_boxes, shape) if shape else ""
+            sync()
+        chips = Gtk.Box(spacing=6)
+        lab = Gtk.Label(label="Box CAGED")
+        lab.add_css_class("heading")
+        lab.set_tooltip_text("Il manico diviso in 5 box, uno per forma d'accordo (C, A, G, E, D). Clic su un box "
+                             "per vederlo da solo, poi sui box accanto per allargare la zona; clic su un box "
+                             "all'estremità per toglierlo. Puoi cliccare anche le fasce sulla tastiera")
+        chips.append(lab)
+        self.f_chips = {}
+        for c in [""] + list(theory.CAGED):
+            b = Gtk.Button(label=c or "Tutti")
+            b.add_css_class("chip")
+            b.connect("clicked", lambda _b, c=c: pick_box(c))
+            chips.append(b)
+            self.f_chips[c] = b
+        self.f_range = Gtk.Label(xalign=0, hexpand=True, margin_start=6)
+        self.f_range.add_css_class("dim-label")
+        chips.append(self.f_range)
+        self.fretboard = Fretboard(on_box_click=pick_box)
+        card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        card.add_css_class("card")
+        card.append(self.fretboard)
+        self.f_info = Gtk.Label(xalign=0, wrap=True, use_markup=True)
+        self.f_legend = Gtk.Label(xalign=0, wrap=True, use_markup=True)
+        self.f_legend.add_css_class("dim-label")
+        box.append(options)
+        box.append(chips)
+        box.append(card)
+        box.append(self.f_info)
+        box.append(self.f_legend)
+
+        def sync(*_a):
+            key = sf.KEYS[self.f_key.get_selected()]
+            root = sf.KEYS.index(key)
+            scale = scales[self.f_scale.get_selected()]
+            self.fretboard.update(root, scale, self.f_boxes, self.f_labels.get_selected() == 1)
+            for c, b in self.f_chips.items():
+                (b.add_css_class if (c in self.f_boxes if c else not self.f_boxes) else
+                 b.remove_css_class)("suggested-action")
+            minor = "m" if theory.SCALES[scale]["minor"] else ""
+            shown = [(a, b) for sh, a, b in theory.caged_boxes(root, scale) if sh in self.f_boxes]
+            self.f_range.set_label(" + ".join(c + minor for c in self.f_boxes) +
+                                   ("   tasti %d–%d" % (min(a for a, _ in shown), max(b for _, b in shown))
+                                    if shown and len(shown) <= len(self.f_boxes) else "")
+                                   if self.f_boxes else "tutto il manico")
+            info = theory.SCALES[scale]
+            names = theory.scale_names(root, scale)
+            notes = "  ".join(names[(root + st) % 12] for st in info["steps"])
+            blue = info["blue"]
+            kind = "blue note" if scale.startswith("Blues") else "nota caratteristica"
+            self.f_info.set_label("<b>%s %s</b>:  %s%s\n<small>%s</small>" % (
+                names[root], scale.lower(), notes,
+                "   ·   %s <b>%s</b> (%s)" % (kind, names[(root + blue) % 12], theory.degree(scale, blue))
+                if blue is not None else "", GLib.markup_escape_text(SCALE_DESC[scale])))
+            self.f_legend.set_label(
+                "<span foreground='#bd93f9'>●</span> tonica   " +
+                ("<span foreground='#ff79c6'>●</span> %s   " % kind if blue is not None else "") +
+                "<span foreground='#8be9fd'>●</span> altre note della scala   ·   corda 1 (mi cantino) in alto")
+        for w in (self.f_key, self.f_scale, self.f_labels):
+            w.connect("notify::selected", sync)
+        sync()
+        return Gtk.ScrolledWindow(child=box, hscrollbar_policy=Gtk.PolicyType.AUTOMATIC, vexpand=True)
+
     def _build_sections_page(self):
         self.split = Adw.OverlaySplitView(min_sidebar_width=180, max_sidebar_width=280, sidebar_width_fraction=0.24,
                                           pin_sidebar=True)  # resta visibile dopo un restringimento
         side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        side_head = Gtk.Box(spacing=6, margin_start=14, margin_end=6, margin_top=6)
+        side_title = Gtk.Label(label="Sezioni", xalign=0, hexpand=True)
+        side_title.add_css_class("heading")
+        side_head.append(side_title)
+        hide = Gtk.Button(icon_name="go-previous-symbolic", tooltip_text="Chiudi l'elenco delle sezioni (F9)")
+        hide.connect("clicked", lambda _b: self.split.set_show_sidebar(False))
+        side_head.append(hide)
+        side.append(side_head)
         self.sec_list = Gtk.ListBox()
         self.sec_list.add_css_class("navigation-sidebar")
         self.sec_list.connect("row-selected", self._section_selected)
@@ -1472,41 +1763,6 @@ class MainWindow(Adw.ApplicationWindow):
         tools = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         tools.add_css_class("card")
         tools.add_css_class("builder")
-        builder = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=8,
-                              column_spacing=6, row_spacing=6, homogeneous=False)
-        self.c_root = GridPicker(sf.ROOTS, note_rows(sf.ROOTS), fmt=lambda i: "Tonica: " + sf.ROOTS[i])
-        self.c_root.set_selected(sf.ROOTS.index("A"))
-        self.c_root.set_tooltip_text("Tonica: la nota che dà il nome all'accordo (A in Am7). "
-                                     "Non è la tonalità del brano: vedi F1 › Tonalità")
-        qual_labels = [suf or "maggiore" for suf, _d in sf.QUALITY_CHOICES]
-        self.c_qual = GridPicker(qual_labels, [list(range(i, min(i + 4, len(qual_labels))))
-                                               for i in range(0, len(qual_labels), 4)],
-                                 tooltips=[d for _s, d in sf.QUALITY_CHOICES],
-                                 fmt=lambda i: "Tipo: %s" % sf.QUALITY_CHOICES[i][1])
-        self.c_qual.set_tooltip_text("Tipo di accordo")
-        bass_labels = ["tonica"] + ["/" + r for r in sf.ROOTS]
-        self.c_bass = GridPicker(bass_labels, [[0]] + note_rows(sf.ROOTS, offset=1), columns_hint=7,
-                                 fmt=lambda i: "Basso: " + ("tonica" if i == 0 else sf.ROOTS[i - 1]))
-        self.c_bass.set_tooltip_text("Basso diverso dalla tonica (accordo slash, es. D/F#)")
-        self.c_preview = Gtk.Label(width_chars=7)
-        self.c_preview.add_css_class("title-4")
-        for dd in (self.c_root, self.c_qual, self.c_bass):
-            dd.connect("notify::selected", lambda *_: (self.c_preview.set_label(self.built_chord()),
-                                                       self.rebuild_palette()))
-            builder.append(dd)
-        self.c_preview.set_tooltip_text("Trascina l'accordo su una battuta")
-        self.c_preview.add_css_class("chip")
-        self.c_preview.add_css_class("chip-main")
-        drag_source(self.c_preview, lambda: "chord:" + self.built_chord())
-        builder.append(self.c_preview)
-        add_new = Gtk.Button(label="Nuova battuta")
-        add_new.add_css_class("suggested-action")
-        add_new.connect("clicked", lambda _b: self.add_bar(self.built_chord()))
-        add_in = Gtk.Button(label="Aggiungi alla battuta", tooltip_text="Aggiunge l'accordo alla battuta selezionata")
-        add_in.connect("clicked", lambda _b: self.append_to_focused(self.built_chord()))
-        builder.append(add_new)
-        builder.append(add_in)
-        tools.append(builder)
         quick = Gtk.Box(spacing=6)
         dup = icon_button("edit-copy-symbolic", "Duplica la battuta selezionata (Ctrl+Shift+D)",
                           self.duplicate_focused_bar)
@@ -1524,22 +1780,35 @@ class MainWindow(Adw.ApplicationWindow):
         quick.append(clear)
         tools.append(quick)
         chords.append(tools)
-        pal = Gtk.Box(spacing=8)
-        pal_label = Gtk.Label(label="🎨 Tavolozza")
+        pal_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        pal = Gtk.Box(spacing=12)
+        pal_label = Gtk.Label(label="🎨 Tavolozza", valign=Gtk.Align.START, margin_top=6)
         pal_label.add_css_class("heading")
-        pal_label.set_tooltip_text("Trascina un accordo su una battuta per metterlo lì; clic = aggiungilo alla battuta selezionata")
+        pal_label.set_tooltip_text("Clic = aggiungi alla battuta selezionata · trascina su una battuta per metterlo lì")
         pal.append(pal_label)
+        # le 12 note sempre a disposizione (accordo maggiore: m, 7… si aggiungono scrivendo nella battuta),
+        # ognuna con la sua alterazione sotto, come nei menu Tonalità
+        notes = Gtk.Grid(column_spacing=4, row_spacing=4, valign=Gtk.Align.START)
+        for r, row in enumerate(note_rows(sf.KEYS)):
+            for c, i in enumerate(row):
+                if i is not None:
+                    notes.attach(self._palette_chip(sf.KEYS[i]), c, r, 1, 1)
+        pal.append(notes)
+        pal_box.append(pal)
+        used = Gtk.Box(spacing=12)
+        used_label = Gtk.Label(label="Usati nel brano", xalign=0, valign=Gtk.Align.START, margin_top=6)
+        used_label.add_css_class("dim-label")
+        used.append(used_label)
         self.palette = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=20,
-                                   column_spacing=4, row_spacing=4, hexpand=True)
-        pal.append(self.palette)
-        chords.append(pal)
+                                   column_spacing=4, row_spacing=4, hexpand=True, valign=Gtk.Align.START)
+        used.append(self.palette)
+        pal_box.append(used)
+        chords.append(pal_box)
         self.flow = Gtk.FlowBox(max_children_per_line=4, min_children_per_line=2, homogeneous=True,
                                 selection_mode=Gtk.SelectionMode.NONE, column_spacing=4, row_spacing=4,
                                 valign=Gtk.Align.START)
         self.flow.add_css_class("bar-grid")
         chords.append(self.flow)
-        self.c_preview.set_label(self.built_chord())
-
         g = Adw.PreferencesGroup(title="✨ Modelli di giro")
         g.set_tooltip_text("Riempie la sezione con un giro classico")
         self.t_name = deco(MenuRow("Modello", list(sf.TEMPLATES), TEMPLATE_GROUPS, button_label=lambda n: n,
@@ -1584,23 +1853,52 @@ class MainWindow(Adw.ApplicationWindow):
         chords_scroll = Gtk.ScrolledWindow(child=chords, hexpand=True, vexpand=True,
                                            hscrollbar_policy=Gtk.PolicyType.NEVER)
         chords_scroll.set_min_content_height(320)  # a finestra stretta gli accordi restano in primo piano
+        # colonna centrale a schede: Accordi | Scale (tastiera con le note e il sistema CAGED)
+        self.center_stack = Adw.ViewStack(vexpand=True)
+        self.center_stack.add_titled_with_icon(chords_scroll, "chords", "Accordi", "view-grid-symbolic")
+        self.center_stack.add_titled_with_icon(self._build_scales_page(), "scales", "Scale",
+                                               "applications-multimedia-symbolic")
+        center = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        # riga dei tab: a sinistra riapre l'elenco sezioni (se chiuso), a destra mostra/nasconde le impostazioni
+        tabs = Gtk.CenterBox(margin_top=6, margin_start=8, margin_end=8)
+        tabs.set_center_widget(Adw.ViewSwitcher(stack=self.center_stack, policy=Adw.ViewSwitcherPolicy.WIDE))
+        left = Gtk.Button(valign=Gtk.Align.CENTER, tooltip_text="Mostra l'elenco delle sezioni (F9)")
+        left.set_child(Adw.ButtonContent(icon_name="go-next-symbolic", label="Sezioni"))
+        left.connect("clicked", lambda _b: self.split.set_show_sidebar(True))
+        tabs.set_start_widget(left)
+        self.sidebar_toggle = left
+        # colonna destra come l'elenco a sinistra: titolo con → che la chiude, «← Impostazioni» la riapre
+        self.right_panel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        right_head = Gtk.Box(spacing=6, margin_start=6, margin_end=14, margin_top=6)
+        hide = Gtk.Button(icon_name="go-next-symbolic", tooltip_text="Chiudi le impostazioni (Shift+F9)")
+        hide.connect("clicked", lambda _b: self.right_panel.set_visible(False))
+        right_head.append(hide)
+        right_title = Gtk.Label(label="Impostazioni", xalign=1, hexpand=True)
+        right_title.add_css_class("heading")
+        right_head.append(right_title)
+        self.right_panel.append(right_head)
+        page.set_vexpand(True)
+        self.right_panel.append(page)
+        show = Gtk.Button(valign=Gtk.Align.CENTER, tooltip_text="Mostra le impostazioni della sezione (Shift+F9)")
+        show.set_child(Adw.ButtonContent(icon_name="go-previous-symbolic", label="Impostazioni"))
+        show.connect("clicked", lambda _b: self.right_panel.set_visible(True))
+        self.right_panel.bind_property("visible", show, "visible",
+                                       GObject.BindingFlags.INVERT_BOOLEAN | GObject.BindingFlags.SYNC_CREATE)
+        tabs.set_end_widget(show)
+        center.append(tabs)
+        center.append(self.center_stack)
         # divisore trascinabile: lo spazio in più va agli accordi, le impostazioni restano almeno 440 px
         self.editor_box = Gtk.Paned(orientation=Gtk.Orientation.HORIZONTAL, wide_handle=True,
-                                    start_child=chords_scroll, end_child=page,
+                                    start_child=center, end_child=self.right_panel,
                                     resize_start_child=True, resize_end_child=False,
                                     shrink_start_child=False, shrink_end_child=False)
         self.sec_stack.add_named(self.editor_box, "editor")
         self.sec_stack.add_named(empty, "empty")
         content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        toggle = Gtk.ToggleButton(halign=Gtk.Align.START, margin_start=8, margin_top=6,
-                                  tooltip_text="Mostra l'elenco delle sezioni")
-        toggle.set_child(Adw.ButtonContent(icon_name="sidebar-show-symbolic", label="Sezioni"))
-        self.split.bind_property("collapsed", toggle, "visible", GObject.BindingFlags.SYNC_CREATE)
-        # la fonte è il pannello (visibile all'avvio): il pulsante ne segue lo stato e lo comanda
+        # elenco chiuso (con ‹ in cima all'elenco, F9 o finestra stretta): «Sezioni ›» nella riga dei tab lo riapre
         self.split.set_show_sidebar(True)
-        self.split.bind_property("show-sidebar", toggle, "active",
-                                 GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
-        content.append(toggle)
+        self.split.bind_property("show-sidebar", self.sidebar_toggle, "visible",
+                                 GObject.BindingFlags.INVERT_BOOLEAN | GObject.BindingFlags.SYNC_CREATE)
         self.sec_stack.set_vexpand(True)
         content.append(self.sec_stack)
         self.split.set_content(content)
@@ -1614,12 +1912,6 @@ class MainWindow(Adw.ApplicationWindow):
             w.connect("notify::active", self._section_changed)
         self.s_swing.connect("notify::enable-expansion", self._section_changed)
         return self.split
-
-    def built_chord(self):
-        root = sf.ROOTS[self.c_root.get_selected()]
-        suf = sf.QUALITY_CHOICES[self.c_qual.get_selected()][0]
-        b = self.c_bass.get_selected()
-        return root + suf + ("/" + sf.ROOTS[b - 1] if b else "")
 
     @property
     def section(self):
@@ -1786,7 +2078,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.focused_bar = focus
 
     def rebuild_palette(self):
-        """Accordi trascinabili: quello costruito + quelli già usati nel brano."""
+        """Accordi già usati nel brano (le 12 note sono fisse, accanto)."""
         if not hasattr(self, "palette"):
             return
         self.palette.remove_all()
@@ -1798,11 +2090,14 @@ class MainWindow(Adw.ApplicationWindow):
                             and not sf.check_chord(tok) and tok not in seen:
                         seen.append(tok)
         for tok in seen[:24]:
-            chip = Gtk.Button(label=tok, tooltip_text="Clic: aggiungi alla battuta selezionata · trascina su una battuta")
-            chip.add_css_class("chip")
-            chip.connect("clicked", lambda _b, t=tok: self.append_to_focused(t))
-            drag_source(chip, lambda t=tok: "chord:" + t)
-            self.palette.append(chip)
+            self.palette.append(self._palette_chip(tok))
+
+    def _palette_chip(self, chord):
+        chip = Gtk.Button(label=chord, tooltip_text="Clic: aggiungi alla battuta selezionata · trascina su una battuta")
+        chip.add_css_class("chip")
+        chip.connect("clicked", lambda _b: self.append_to_focused(chord))
+        drag_source(chip, lambda: "chord:" + chord)
+        return chip
 
     def drop_on_bar(self, index, value):
         """Rilascio sulla battuta 'index': un accordo la sostituisce, una battuta trascinata si sposta lì."""
@@ -2572,6 +2867,9 @@ class App(Adw.Application):
                                 ("bar-dup", "<Control><Shift>d", win.duplicate_focused_bar),
                                 ("bar-del", "<Super>Delete", win.remove_focused_bar),
                                 ("guide", "F1", win.action_help),
+                                ("sidebar", "F9", lambda: win.split.set_show_sidebar(not win.split.get_show_sidebar())),
+                                ("settings-panel", "<Shift>F9", lambda: win.right_panel.set_visible(
+                                    not win.right_panel.get_visible())),
                                 ("quit", "<Control>q", win.close)):
             act = Gio.SimpleAction.new(name, None)
             act.connect("activate", lambda _a, _p, f=fn: f())

@@ -41,6 +41,98 @@ for _names, _q in [
 
 
 OPEN_STRINGS = [40, 45, 50, 55, 59, 64]  # corde 6..1: MI LA RE SOL SI mi
+
+# Scale per la tastiera della GUI: intervalli dalla tonica, nota caratteristica (blue note nei blues, la nota che
+# distingue il modo negli altri; None = nessuna), minor = box CAGED con forme minori (scale con la terza minore)
+SCALES = {
+    "Pentatonica minore": dict(steps=(0, 3, 5, 7, 10), blue=None, minor=True),
+    "Pentatonica maggiore": dict(steps=(0, 2, 4, 7, 9), blue=None, minor=False),
+    "Blues minore": dict(steps=(0, 3, 5, 6, 7, 10), blue=6, minor=True),
+    "Blues maggiore": dict(steps=(0, 2, 3, 4, 7, 9), blue=3, minor=False),
+    "Maggiore (ionica)": dict(steps=(0, 2, 4, 5, 7, 9, 11), blue=None, minor=False),
+    "Minore naturale (eolia)": dict(steps=(0, 2, 3, 5, 7, 8, 10), blue=None, minor=True),
+    "Dorica": dict(steps=(0, 2, 3, 5, 7, 9, 10), blue=9, minor=True),
+    "Misolidia": dict(steps=(0, 2, 4, 5, 7, 9, 10), blue=10, minor=False),
+    "Lidia": dict(steps=(0, 2, 4, 6, 7, 9, 11), blue=6, minor=False),
+    "Frigia": dict(steps=(0, 1, 3, 5, 7, 8, 10), blue=1, minor=True),
+    "Minore armonica": dict(steps=(0, 2, 3, 5, 7, 8, 11), blue=11, minor=True),
+    "Minore melodica": dict(steps=(0, 2, 3, 5, 7, 9, 11), blue=11, minor=True),
+}
+DEGREES = {0: "1", 1: "b2", 2: "2", 3: "b3", 4: "3", 5: "4", 6: "b5", 7: "5", 8: "b6", 9: "6", 10: "b7", 11: "7"}
+SHARP_FOUR = {"Lidia"}  # qui l'intervallo 6 è una quarta aumentata (#4), non la b5 del blues
+
+
+def degree(scale, iv):
+    return "#4" if iv == 6 and scale in SHARP_FOUR else DEGREES[iv]
+
+
+# box CAGED: (forma, primo, ultimo tasto) rispetto alla tonica sulla 6a corda, in ordine lungo il manico.
+# Le forme minori (Em, Dm, Cm, Am, Gm) cadono sugli stessi box di quelle maggiori della relativa maggiore.
+CAGED_MAJOR = (("E", -1, 2), ("D", 1, 5), ("C", 4, 7), ("A", 6, 9), ("G", 9, 12))
+CAGED_MINOR = (("E", 0, 3), ("D", 2, 5), ("C", 4, 8), ("A", 7, 10), ("G", 9, 12))
+KEY_NAMES = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
+MINOR_KEY_NAMES = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B"]  # C# minore, non Db minore
+
+
+def scale_names(root, scale):
+    """Nomi delle note della scala: ogni grado ha la sua lettera (b5 di A = Eb, #4 di A = D#)."""
+    info = SCALES[scale]
+    root_name = (MINOR_KEY_NAMES if info["minor"] else KEY_NAMES)[root]
+    letters = "CDEFGAB"
+    first = letters.index(root_name[0])
+    names = {}
+    for st in info["steps"]:
+        n = int(degree(scale, st).lstrip("b#"))
+        letter = letters[(first + n - 1) % 7]
+        diff = (root + st - NOTE_PC[letter]) % 12
+        names[(root + st) % 12] = letter + {0: "", 1: "#", 2: "##", 11: "b", 10: "bb"}[diff]
+    return names
+
+
+def caged_boxes(root, scale, frets=15):
+    """Box CAGED visibili tra il tasto 0 e 'frets': [(forma, primo, ultimo)] ordinati lungo il manico."""
+    shapes = CAGED_MINOR if SCALES[scale]["minor"] else CAGED_MAJOR
+    r6 = (root - OPEN_STRINGS[0]) % 12
+    boxes = []
+    for k in (-12, 0, 12):
+        for shape, lo, hi in shapes:
+            a, b = r6 + lo + k, r6 + hi + k
+            if a >= -1 and b <= frets + 1:
+                boxes.append((shape, max(a, 0), min(b, frets)))
+    return sorted(boxes, key=lambda x: x[1])
+
+
+CAGED = "CAGED"  # ordine dei box salendo lungo il manico (ciclico: dopo D torna C)
+
+
+def toggle_box(selected, shape):
+    """Selezione di box adiacenti (stringa in ordine CAGED ciclico, "" = tutti): clic su 'shape'.
+
+    Box accanto alla selezione = si aggiunge; box a un'estremità = si toglie; altrimenti resta solo lui.
+    """
+    if not selected:
+        return shape
+    i = CAGED.index(shape)
+    start = next(j for j in range(5) if CAGED[j] in selected and CAGED[j - 1] not in selected) \
+        if len(selected) < 5 else i
+    arc = "".join(CAGED[(start + k) % 5] for k in range(len(selected)))  # selezione in ordine lungo il manico
+    if shape in arc:
+        if len(arc) == 1:
+            return ""
+        return arc[1:] if shape == arc[0] else arc[:-1] if shape == arc[-1] else shape
+    if CAGED[(i + 1) % 5] == arc[0]:
+        return shape + arc
+    if CAGED[i - 1] == arc[-1]:
+        return arc + shape
+    return shape
+
+
+def fretboard_notes(root, scale, frets=15):
+    """Note della scala sul manico: [(corda 6..1, tasto, intervallo dalla tonica)]."""
+    steps = set(SCALES[scale]["steps"])
+    return [(6 - i, f, (op + f - root) % 12) for i, op in enumerate(OPEN_STRINGS)
+            for f in range(frets + 1) if (op + f - root) % 12 in steps]
+
 # forme aperte (tasti corda 6..1, x = muta), cercate per (tonica, qualità, basso) dopo la trasposizione
 OPEN_SHAPES = {
     "C": "x32010", "A": "x02220", "G": "320003", "E": "022100", "D": "xx0232",

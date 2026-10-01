@@ -344,24 +344,37 @@ valore fuori scala.
 **🧩 Sezioni**: il cuore dell'editor, su tre colonne affiancate.
 - **a sinistra** l'elenco delle sezioni, ognuna col suo colore e l'emoji dello stile (🤘 rock, 🎷 blues, 🕺 rockabilly,
   🤠 country, 🎺 jazz), con **Nuova** e i pulsanti per duplicare, riordinare ed eliminare;
-- **al centro gli accordi**:
-  - scegli **tonica** e **basso** da una griglia di note (naturali, diesis, bemolle) e il **tipo** da una griglia
-    (m, 7, maj7, sus4…), poi **Nuova battuta** o **Aggiungi alla battuta**; il pulsante ⓘ mostra una tabella
-    con esempi di battute e di accordi (Do Re Mi = C D E);
-  - la **🎨 tavolozza** mostra gli accordi già usati nel brano: **trascinali su una battuta** per metterli lì,
-    o **cliccali** per aggiungerli alla battuta selezionata (se nessuna è selezionata, ne crea una nuova);
+- **al centro due schede, Accordi e Scale**. In **Accordi**:
+  - scrivi gli accordi direttamente nelle battute; il pulsante ⓘ mostra una tabella con esempi di battute e di
+    accordi (Do Re Mi = C D E);
+  - la **🎨 tavolozza** ha sempre le **12 note** (le naturali sopra, sotto ognuna la sua alterazione: Db sotto C,
+    F# sotto F…) e, sotto, gli accordi **già usati nel brano**: **cliccali** per aggiungerli alla battuta selezionata
+    (se nessuna è selezionata, ne crea una nuova) o **trascinali su una battuta** per metterli lì. Una nota è un
+    accordo maggiore: per m, 7, maj7… aggiungi il suffisso scrivendo nella battuta;
   - le battute sono una **griglia compatta** (4 per riga) col bordo nel colore della sezione. Trascina la maniglia
     `⠿` per **spostare una battuta**, usa il **tasto destro** per duplicarla, inserirne una prima/dopo, svuotarla o
     eliminarla, e il `＋` in fondo per aggiungerne (ci puoi trascinare sopra un accordo). Passando col mouse leggi
     la battuta (*Em 2 tempi · D 1 · C 1*); se c'è un errore la cella diventa rossa e spiega cosa correggere;
+  
+  In **Scale** c'è una **tastiera** (tasti 0–15, corda 1 in alto) con le note della scala scelta, in qualsiasi
+  tonalità: pentatonica minore e maggiore, **blues minore** (1 b3 4 b5 5 b7) e **maggiore** (1 2 b3 3 5 6), maggiore,
+  minore naturale, armonica e melodica, e i modi dorico, misolidio, lidio e frigio. La tonica è viola, la blue note
+  (o la nota caratteristica del modo) rosa. Il manico è diviso nei 5 box del **sistema CAGED** (forme C, A, G, E, D,
+  minori nelle scale minori), ognuno col suo colore: clicca un box (o la sua fascia sulla tastiera) per vederlo da
+  solo, poi i box accanto per unirli (es. Em + Dm = tasti 5–10). Le etichette possono essere **note** o **gradi**.
+  Per avere più spazio: **←** in cima all'elenco delle sezioni lo chiude (**Sezioni →** lo riapre, oppure `F9`),
+  allo stesso modo **→** in cima alla colonna di destra la chiude (**← Impostazioni** la riapre, oppure `Shift+F9`);
 - **a destra** le impostazioni della sezione (nome, ripetizioni, groove; tra le avanzate dinamica, swing, rullata,
   strumenti) e i
   **modelli di giro**: 12-bar blues, 8-bar, blues minore, I-IV-V, anni '50, pop-rock… Sono scritti a gradi
   (I, IV, V) e la **Tonalità** li trasforma in accordi veri: 12-bar blues in A = A7, D7, E7; in E = E7, A7, B7.
   **Sostituisci accordi** cancella le battute della sezione e ci mette il giro, **Aggiungi in coda** lo mette dopo.
   Nessuno dei due traspone: per spostare un brano già scritto c'è **Trasposizione** (Brano ▸ Avanzate).
-  **Tonica ≠ tonalità**: la *tonica* è la nota che dà il nome a un accordo (A in Am7, scelta nel costruttore);
-  la *tonalità* è la «casa» di tutto il giro (blues in A: accordi A7, D7, E7 con toniche diverse, tonalità una sola).
+  **Tonica ≠ tonalità**: la *tonica* è la nota su cui è costruito **un accordo** (A in A7, D in D7: la scrivi nella
+  battuta); la *tonalità* è la «casa» di **tutto il brano**. Il 12-bar blues in A
+  (`A7 A7 A7 A7 | D7 D7 A7 A7 | E7 D7 A7 E7`) ha tre toniche, A, D ed E, ma una sola tonalità: A, perché gira
+  intorno ad A7 e finisce lì. Cambiando la tonica cambi un accordo; cambiando la tonalità del modello cambi tutto
+  il giro (in E: E7, A7, B7). Esempio completo nella guida (F1 › Tonalità).
 
 Il **groove** si sceglie da un menu diviso per stile (🤘 Rock ▸, 🎷 Blues ▸, 🕺 Rockabilly ▸, 🤠 Country ▸, 🎺 Jazz ▸, 🪩 Funk ▸, 🌴 Reggae ▸, 🎤 Soul ▸) con la
 descrizione di ogni voce; le altre scelte (chitarra, ampli, rullata…) sono menu a tendina compatti.
@@ -409,6 +422,7 @@ si chiude male o scegli "Non salvare" per sbaglio, alla riapertura ti propone di
 | `Ctrl+T` / `Ctrl+D` | nuova sezione / duplica sezione |
 | `Ctrl+B` o `Super+N` / `Ctrl+Shift+D` | nuova battuta / duplica battuta |
 | `Super+Canc` | elimina la battuta selezionata |
+| `F9` / `Shift+F9` | mostra / nasconde l'elenco delle sezioni / la colonna delle impostazioni |
 | `Invio` (in una battuta) | passa alla battuta successiva (la crea se serve) |
 | `Spazio` | play / pausa |
 | `B` | riparti da capo |

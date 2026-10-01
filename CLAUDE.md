@@ -40,7 +40,7 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 - `songfile.py` — modello dell'editor, senza GTK: `SONG_DEFAULTS`, `from_song_dict`/`to_song_dict`/`to_yaml`
   (solo valori non di default, `chords` come blocco `|`), `check_bar`/`describe_bar` (messaggi e lettura
   "Em 2 tempi · D 1 · C 1"), `TEMPLATES` a gradi (I, IV, V:7, vi:m…) → `template_bars(nome, tonalità)`.
-- `gui.py` — Adw.Application: schede Brano (+ ordine sezioni) / Sezioni (3 colonne: elenco | accordi | impostazioni+modelli;
+- `gui.py` — Adw.Application: schede Brano (+ ordine sezioni) / Sezioni (3 colonne: elenco | Accordi/Scale (`center_stack`) | impostazioni+modelli;
   `Adw.OverlaySplitView` con `pin_sidebar`, si chiude solo < 600sp; colonne impilate < 820sp) / YAML.
   Solo le impostazioni base in vista: il resto passa da `self.advanced(widget)` ed è mostrato dall'azione stateful
   `app.advanced` (pulsanti "Avanzate", ricordata in `data_dir()/gui.json`). Spiegazioni nei tooltip, non nei sottotitoli.
@@ -48,7 +48,12 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
   barra menu File, Sezione, Brano, Riproduzione, Aiuto. Render in un thread con `cli.render(song_dict, out)`.
   Widget: `MenuRow` (pulsante-menu con sottomenu: `GrooveRow`, `ChoiceRow`, modelli), `GridPicker`/`PickerRow`
   (griglie note/tipi), `BarCell` (griglia battute; drag & drop con payload stringa 'chord:X' / 'bar:N', tasto destro),
-  tavolozza accordi. Tutti espongono `selected` + get/set_selected come Adw.ComboRow (niente Gtk.DropDown/ComboRow).
+  tavolozza accordi (niente costruttore: gli accordi si scrivono a mano o dalla tavolozza), `Fretboard` (DrawingArea:
+  scala + box CAGED da `theory.SCALES`/`caged_boxes`/`fretboard_notes`; più box adiacenti = stringa in ordine CAGED
+  ciclico gestita da `theory.toggle_box`, chip + clic sulle fasce). Nomi note per lettera di grado (`scale_names`).
+  Pannelli richiudibili: ← in cima all'elenco / «Sezioni →» nella riga dei tab / F9 (`split.show-sidebar`);
+  colonna destra uguale e speculare: → in `right_panel` / «← Impostazioni» / Shift+F9 (`right_panel.visible`). Opzioni scale su una riga: dei MenuRow
+  si usa solo `.button` (il gruppo d'azioni `row.` è inserito anche sul pulsante). Tutti espongono `selected` + get/set_selected come Adw.ComboRow (niente Gtk.DropDown/ComboRow).
   Player: `Player` (Gtk.MediaFile, forma d'onda PNG da ffmpeg `showwavespic`, linee sezioni) + `ChordStrip`
   (ScrolledWindow orizzontale, battute larghe quanto il testo, numero battuta in piccolo, autoscroll salvo scroll manuale),
   dati da `song_bars()` (`num` = battuta 1…, None per conteggio/finale; `local`/`size` = battuta nella sezione, a destra
@@ -105,7 +110,8 @@ presente se quello estratto non è installato. `backingtrack remove <pack>` libe
   (le immagini del README in `docs/gui-*.jpg` sono fatte così, finestra forzata 1280×820 con `set_size_request`).
 - `Gtk.MediaFile` ha `is_prepared()`, non `get_prepared()`; il seek prima di `is_prepared()` viene ignorato.
 - Nei test automatici la finestra non riceve frame: le animazioni (Revealer, OverlaySplitView) restano a metà.
-  Il player usa Revealer senza transizione; per le schermate impostare `gtk-enable-animations` a False.
+  Il player usa Revealer SLIDE_UP con durata 0 (con NONE/CROSSFADE il Revealer nascosto occupa tutta l'altezza
+  del figlio e copre la pagina); per le schermate impostare `gtk-enable-animations` a False.
 - Esempi nel menu: `pyproject` installa `examples/` come `backingtrack/examples` (package-dir); `EXAMPLES` cerca
   prima nel pacchetto, poi nel repo.
 - Il CSS ha uno stile proprio per pulsanti, menu (`.picker`), spinbutton, liste e switch (selettori `window …`),
