@@ -7,6 +7,7 @@ from pathlib import Path
 
 import numpy as np
 
+from .i18n import _
 from .errors import SongError
 from .render import SR
 
@@ -135,7 +136,7 @@ def write_wav16(path, x):
 def _ffmpeg():
     exe = shutil.which("ffmpeg")
     if not exe:
-        raise SongError("ffmpeg non trovato nel PATH (vedi README, Installazione)")
+        raise SongError(_("ffmpeg non trovato nel PATH (vedi README, Installazione)"))
     return exe
 
 
@@ -143,7 +144,7 @@ def _run(cmd):
     p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,
                        stdin=subprocess.DEVNULL)
     if p.returncode != 0:
-        raise SongError("ffmpeg ha fallito:\n%s" % p.stderr[-2500:])
+        raise SongError(_("ffmpeg ha fallito:\n%s") % p.stderr[-2500:])
 
 
 def mix(buses, out_wav, tmp, mp3=None, stems_dir=None, loudness=-16.0, cab_dir=None):
@@ -153,7 +154,7 @@ def mix(buses, out_wav, tmp, mp3=None, stems_dir=None, loudness=-16.0, cab_dir=N
     raw = ["-f", "f32le", "-ar", str(SR), "-ac", "2"]
     names = [b for b in buses if rms(buses[b]) > 0]
     if not names:
-        raise SongError("niente da mixare")
+        raise SongError(_("niente da mixare"))
 
     # 1) catene per bus (ampli, EQ, compressione, slapback), un processo ffmpeg per bus in parallelo
     def process(i, name):

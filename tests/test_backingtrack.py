@@ -295,3 +295,51 @@ class TestScales(unittest.TestCase):
         self.assertEqual(sug("C G Am F")[0], ("C", "Maggiore (ionica)"))
         self.assertEqual(sug("Am Bb")[0], ("A", "Frigia"))
         self.assertEqual(sug(""), [])
+
+
+class TestTranslations(unittest.TestCase):
+    """Ogni testo passato a _() o mostrato dalla GUI deve avere la traduzione inglese, con gli stessi segnaposto."""
+
+    def test_every_text_is_translated(self):
+        import ast
+        import re
+        from backingtrack import songfile, theory
+        from backingtrack.grooves import GROOVES
+        from backingtrack.locale_en import EN, GROOVES_EN
+        texts = set()
+        for f in Path("backingtrack").glob("*.py"):
+            for n in ast.walk(ast.parse(f.read_text(encoding="utf-8"))):
+                if isinstance(n, ast.Call) and getattr(n.func, "id", "") == "_" and n.args \
+                        and isinstance(n.args[0], ast.Constant):
+                    texts.add(n.args[0].value)
+        texts |= set(theory.SCALES) | set(songfile.TEMPLATES)
+        try:
+            from backingtrack import gui
+        except ImportError:
+            gui = None
+        if gui is not None and gui.Gtk is not None:
+            for title, _icon, items in gui.HELP:
+                texts.add(title)
+                for kind, body in items:
+                    pairs = body if kind == "code" else [(kind, body)] if kind not in ("p", "h") else [("", body)]
+                    for left, right in pairs:
+                        texts |= {left, right} - {"", "code"}
+            texts |= set(gui.SCALE_DESC.values()) | {gui.SWING_HINT} | {g for g, _n in gui.TEMPLATE_GROUPS}
+        placeholders = lambda s: re.findall(r"%[-0-9.]*[sdgf%]", s)
+        missing = sorted(t for t in texts if t not in EN and re.search(r"[a-zà-ù]{3}", t)
+                         and not re.fullmatch(r"[A-G0-9#b/ .%+·×–NC]*|[A-Za-z]+\+[A-Za-z0-9+ ]*", t))
+        self.assertEqual(missing, [])
+        for it, en in EN.items():
+            self.assertEqual(placeholders(it), placeholders(en), it)
+        self.assertEqual(set(GROOVES), set(GROOVES_EN))
+
+    def test_switch_language(self):
+        from backingtrack import i18n, songfile
+        try:
+            i18n.set_lang("en")
+            self.assertEqual(songfile.check_bar("%", True)[:3], "'%'")
+            self.assertIn("previous", songfile.check_bar("%", True))
+            i18n.set_lang("it")
+            self.assertIn("precedente", songfile.check_bar("%", True))
+        finally:
+            i18n.set_lang(None)

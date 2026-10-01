@@ -6,6 +6,7 @@ import re
 
 import yaml
 
+from .i18n import _
 from .errors import SongError
 from .grooves import GROOVES
 from .song import build_timeline
@@ -99,7 +100,7 @@ def describe_bar(text, first=False):
         return None
     toks = text.split()
     if toks == ["%"]:
-        return "ripete la battuta precedente"
+        return _("ripete la battuta precedente")
     step = 4 / len(toks)
     parts = []
     for t in toks:
@@ -108,7 +109,7 @@ def describe_bar(text, first=False):
         else:
             parts.append([("pausa" if t.upper() in ("N.C.", "NC") else t), step])
     if len(parts) == 1:
-        return "%s per tutta la battuta" % parts[0][0]
+        return _("%s per tutta la battuta") % parts[0][0]
     out = ["%s %s %s" % (parts[0][0], _beats(parts[0][1]), "tempo" if parts[0][1] == 1 else "tempi")]
     out += ["%s %s" % (n, _beats(d)) for n, d in parts[1:]]
     return " · ".join(out)
@@ -118,17 +119,17 @@ def check_bar(text, first=False):
     """Valida il testo di una battuta ('A7', 'C . G .', '%', 'N.C.'). None = ok, altrimenti un messaggio chiaro."""
     toks = text.split()
     if not toks:
-        return "battuta vuota: scrivi un accordo (es. A7), '%' per ripetere la precedente o 'N.C.' per una pausa"
+        return _("battuta vuota: scrivi un accordo (es. A7), '%' per ripetere la precedente o 'N.C.' per una pausa")
     if toks == ["%"]:
-        return ("'%' ripete la battuta precedente, ma questa è la prima della sezione: scrivi un accordo"
+        return (_("'%' ripete la battuta precedente, ma questa è la prima della sezione: scrivi un accordo")
                 if first else None)
     if "%" in toks:
-        return "'%' deve stare da solo nella battuta (ripete tutta la battuta precedente)"
+        return _("'%' deve stare da solo nella battuta (ripete tutta la battuta precedente)")
     if len(toks) > 4:
-        return "al massimo 4 simboli per battuta, uno per tempo (es. 'C G Am F')"
+        return _("al massimo 4 simboli per battuta, uno per tempo (es. 'C G Am F')")
     if toks[0] in HOLD:
-        return ("'%s' prolunga l'accordo precedente, quindi non può aprire la battuta. "
-                "Esempio: 'Em . D C' = Em per 2 tempi, D per 1, C per 1" % toks[0])
+        return (_("'%s' prolunga l'accordo precedente, quindi non può aprire la battuta. "
+                "Esempio: 'Em . D C' = Em per 2 tempi, D per 1, C per 1") % toks[0])
     for t in toks:
         if t in HOLD or t.upper() in ("N.C.", "NC"):
             continue
@@ -141,12 +142,12 @@ def check_bar(text, first=False):
 def chord_hint(token):
     """Suggerimento per un simbolo sbagliato."""
     if token[:1].islower() and token[:1].upper() in NOTE_PC:
-        return ": la tonica va maiuscola (es. '%s')" % (token[0].upper() + token[1:])
+        return _(": la tonica va maiuscola (es. '%s')") % (token[0].upper() + token[1:])
     if token[:1] == "H":
-        return ": in notazione inglese il Si è B (es. 'B7')"
+        return _(": in notazione inglese il Si è B (es. 'B7')")
     if token[:1].upper() not in NOTE_PC:
-        return ": un accordo inizia con una nota A B C D E F G (es. 'Am', 'F#7', 'Bb')"
-    return ": tipi validi: m, 7, maj7, m7, 5, 6, 9, sus4, dim, aug… (es. 'Am7', 'Dsus4')"
+        return _(": un accordo inizia con una nota A B C D E F G (es. 'Am', 'F#7', 'Bb')")
+    return _(": tipi validi: m, 7, maj7, m7, 5, 6, 9, sus4, dim, aug… (es. 'Am7', 'Dsus4')")
 
 
 def split_bars(chords):
@@ -158,27 +159,27 @@ def validate(song):
     errors = []
     names = [s.get("name", "") for s in song.get("sections", [])]
     if not names:
-        errors.append("aggiungi almeno una sezione")
+        errors.append(_("aggiungi almeno una sezione"))
     for i, sec in enumerate(song.get("sections", [])):
         name = sec.get("name") or ""
         if not name.strip():
-            errors.append("sezione %d: manca il nome" % (i + 1))
+            errors.append(_("sezione %d: manca il nome") % (i + 1))
         elif names.count(name) > 1:
-            errors.append("sezione '%s': nome ripetuto" % name)
+            errors.append(_("sezione '%s': nome ripetuto") % name)
         bars = sec.get("bars", [])
         if not bars:
-            errors.append("sezione '%s': nessuna battuta" % name)
+            errors.append(_("sezione '%s': nessuna battuta") % name)
         for j, bar in enumerate(bars):
             err = check_bar(bar, j == 0)
             if err:
-                errors.append("sezione '%s', battuta %d: %s" % (name, j + 1, err))
+                errors.append(_("sezione '%s', battuta %d: %s") % (name, j + 1, err))
     if song.get("ending_chord"):
         err = check_chord(song["ending_chord"])
         if err:
-            errors.append("accordo finale: %s" % err)
+            errors.append(_("accordo finale: %s") % err)
     for item in song.get("arrangement") or []:
         if item["section"] not in names:
-            errors.append("arrangiamento: la sezione '%s' non esiste" % item["section"])
+            errors.append(_("arrangiamento: la sezione '%s' non esiste") % item["section"])
     if not errors:
         try:
             build_timeline(to_song_dict(song))
@@ -191,7 +192,8 @@ def validate(song):
 
 def new_song():
     song = {k: v for k, v in SONG_DEFAULTS.items()}
-    song["sections"] = [dict(SECTION_DEFAULTS, name="Strofa", repeat=2,
+    song["title"] = _(song["title"])
+    song["sections"] = [dict(SECTION_DEFAULTS, name=_("Strofa"), repeat=2,
                              bars=template_bars("12-bar blues (quick change)", "A"))]
     song["tempo"] = 100
     song["arrangement"] = []
@@ -205,7 +207,7 @@ def from_song_dict(data):
     song["sections"] = []
     for i, sec in enumerate(data.get("sections") or []):
         s = {k: sec.get(k, v) for k, v in SECTION_DEFAULTS.items()}
-        s["name"] = str(sec.get("name", "Sezione %d" % (i + 1)))
+        s["name"] = str(sec.get("name", _("Sezione %d") % (i + 1)))
         s["bars"] = split_bars(sec.get("chords"))
         song["sections"].append(s)
     song["arrangement"] = []

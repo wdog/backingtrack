@@ -2,59 +2,63 @@
   <img src="docs/logo.jpg" alt="backingtrack" width="820">
 </p>
 
+<p align="center"><b>🇬🇧 English</b> · <a href="README.it.md">🇮🇹 Italiano</a></p>
+
 <p align="center">
-  <b>Scrivi gli accordi, scegli il groove, suona sopra.</b><br>
-  Backing track con chitarra ritmica e batteria <i>campionate da strumenti veri</i>, generate da un semplice file YAML
-  o da un editor grafico.
+  <b>Write the chords, pick the groove, play along.</b><br>
+  Backing tracks with rhythm guitar and drums <i>sampled from real instruments</i>, generated from a simple YAML file
+  or from a graphical editor.
 </p>
 
 <p align="center">
   <img alt="Python" src="https://img.shields.io/badge/python-3.8%2B-3776AB?logo=python&logoColor=white">
   <img alt="Platform" src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-555">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
-  <img alt="Styles" src="https://img.shields.io/badge/stili-rock%20%7C%20blues%20%7C%20rockabilly%20%7C%20country%20%7C%20jazz%20%7C%20funk%20%7C%20reggae%20%7C%20soul-F5A623">
-  <img alt="Grooves" src="https://img.shields.io/badge/groove-125-8E44AD">
-  <img alt="Examples" src="https://img.shields.io/badge/esempi-84%20brani-C0392B">
+  <img alt="Styles" src="https://img.shields.io/badge/styles-rock%20%7C%20blues%20%7C%20rockabilly%20%7C%20country%20%7C%20jazz%20%7C%20funk%20%7C%20reggae%20%7C%20soul-F5A623">
+  <img alt="Grooves" src="https://img.shields.io/badge/grooves-125-8E44AD">
+  <img alt="Examples" src="https://img.shields.io/badge/examples-84%20songs-C0392B">
+  <img alt="Languages" src="https://img.shields.io/badge/lang-English%20%7C%20Italiano-2E86C1">
 </p>
 
 ---
 
-## 📑 Indice
+## 📑 Contents
 
-- [✨ Caratteristiche](#-caratteristiche)
-- [📦 Installazione](#-installazione)
-- [🚀 Avvio rapido](#-avvio-rapido)
-- [🖥️ Editor grafico](#️-editor-grafico)
-- [📖 Documentazione](#-documentazione)
-- [🛠️ Sviluppo](#️-sviluppo)
-- [🙏 Crediti e licenze](#-crediti-e-licenze)
-
----
-
-## ✨ Caratteristiche
-
-- 🎸 **Chitarre vere**: Gretsch hollowbody (default), Epiphone, Fender solid body e chitarra acustica, campionate
-  nota per nota con più dinamiche e round robin, più i veri colpi **staccato** per palm mute e chop. Voicing barré,
-  aperti, jazz e triadi; pennate giù/su, bicordi boogie, boom-chick. Ogni corda suona una nota alla volta.
-- 🔊 **Ampli e casse vere**: 5 suoni (clean, blues, twang, crunch, high gain) su vere casse Marshall 4×12 riprodotte
-  con le loro *impulse response*; chitarra **doppiata L/R** nel rock, **slapback** nel rockabilly.
-- 🥁 **Batteria acustica campionata** (Salamander Drumkit): hi-hat aperto/chiuso, ghost note, variazioni ogni 4
-  battute, **rullate** a fine sezione, piatto sugli attacchi.
-- 🎻 **Basso opzionale**: contrabbasso o basso elettrico, con walking, root-fifth, ottavi, reggae, tumbao…
-- 🎚️ **125 groove** in 8 stili (rock, blues, rockabilly, country, jazz, funk, reggae, soul), anche diversi sezione
-  per sezione; **sezioni ripetibili** e scaletta (`[Intro, Strofa x2, Rit]`).
-- 🧑‍🎤 **Suona umano**: micro-timing, dinamica variabile, swing regolabile. **Mix automatico** con EQ, compressione,
-  riverbero a convoluzione e loudness costante.
-- 🖥️ **Editor grafico** (GTK 4): griglia delle battute con drag & drop, tavolozza con le 12 note, modelli di giro in
-  ogni tonalità, **player** con forma d'onda, striscia degli accordi e **loop da battuta a battuta**.
-- 🎸 **Scale sulla tastiera**: 14 scale e i box blues di B.B. King e Albert King, **sistema CAGED**, **scale
-  suggerite** dagli accordi della sezione e **note dell'accordo in tempo reale** mentre la base suona.
-- 📤 **Output**: WAV, MP3, **MIDI** per la tua DAW e **stems** separati. ⚡ 2 minuti di brano in circa 5 secondi.
-- 📚 **84 brani di esempio** con le progressioni di classici blues, rock, rockabilly, country, jazz, funk, reggae e soul.
+- [✨ Features](#-features)
+- [📦 Installation](#-installation)
+- [🚀 Quick start](#-quick-start)
+- [🖥️ Graphical editor](#️-graphical-editor)
+- [📖 Documentation](#-documentation)
+- [🛠️ Development](#️-development)
+- [🙏 Credits and licenses](#-credits-and-licenses)
 
 ---
 
-## 📦 Installazione
+## ✨ Features
+
+- 🎸 **Real guitars**: Gretsch hollowbody (default), Epiphone, Fender solid body and an acoustic guitar, sampled note
+  by note with several dynamics and round robins, plus real **staccato** hits for palm mutes and chops. Barre, open,
+  jazz and triad voicings; down/up strums, boogie double stops, boom-chick. Every string plays one note at a time.
+- 🔊 **Real amps and cabinets**: 5 sounds (clean, blues, twang, crunch, high gain) through real Marshall 4×12
+  cabinets reproduced with their *impulse responses*; **double-tracked L/R** guitar in rock, **slapback** in rockabilly.
+- 🥁 **Sampled acoustic drums** (Salamander Drumkit): open/closed hi-hat, ghost notes, variations every 4 bars,
+  **fills** at the end of sections, crash on downbeats.
+- 🎻 **Optional bass**: double bass or electric bass, with walking, root-fifth, eighths, reggae, tumbao…
+- 🎚️ **125 grooves** in 8 styles (rock, blues, rockabilly, country, jazz, funk, reggae, soul), also different section
+  by section; **repeatable sections** and set list (`[Intro, Verse x2, Chorus]`).
+- 🧑‍🎤 **Sounds human**: micro-timing, varying dynamics, adjustable swing. **Automatic mix** with EQ, compression,
+  convolution reverb and steady loudness.
+- 🖥️ **Graphical editor** (GTK 4): bar grid with drag & drop, palette with the 12 notes, progression templates in
+  every key, **player** with waveform, chord strip and **bar-to-bar loop**.
+- 🎸 **Scales on the fretboard**: 14 scales and the B.B. King and Albert King blues boxes, **CAGED system**, **scales
+  suggested** from the section's chords and **chord tones in real time** while the track plays.
+- 🌐 **English and Italian**: interface, guide, messages and documentation; language picked from the Help menu (🇬🇧 / 🇮🇹).
+- 📤 **Output**: WAV, MP3, **MIDI** for your DAW and separate **stems**. ⚡ 2 minutes of song in about 5 seconds.
+- 📚 **84 example songs** with the progressions of blues, rock, rockabilly, country and jazz classics.
+
+---
+
+## 📦 Installation
 
 **Linux / macOS**
 
@@ -68,36 +72,36 @@ curl -fsSL https://raw.githubusercontent.com/wdog/backingtrack/main/install.sh |
 irm https://raw.githubusercontent.com/wdog/backingtrack/main/install.ps1 | iex
 ```
 
-Lo script controlla Python, installa ffmpeg se manca, installa `backingtrack`, su Linux aggiunge la voce nel menu
-applicazioni e scarica i campioni (~300 MB, una volta sola). Rilanciarlo = aggiornare.
-Installazione manuale, aggiornamenti, diagnosi e disinstallazione: **[docs/installazione.md](docs/installazione.md)**.
+The script checks Python, installs ffmpeg if missing, installs `backingtrack`, adds an application menu entry on Linux
+and downloads the samples (~300 MB, only once). Running it again = updating.
+Manual install, updates, diagnostics and uninstalling: **[docs/en/installation.md](docs/en/installation.md)**.
 
 ---
 
-## 🚀 Avvio rapido
+## 🚀 Quick start
 
 ```sh
 backingtrack examples/blues/sweet_home_chicago.yaml
 ```
 
 ```
-♪ Sweet Home Chicago (progressione) | 125 BPM | 52 battute | 1:45
+♪ Sweet Home Chicago (progressione) | 125 BPM | 52 bars | 1:45
    Intro        x1  [blues]             | B7 | A7 | E7 | B7 |
    Strofa       x4  [blues]             | E7 | A7 | E7 | E7 | A7 | A7 | E7 | E7 | B7 | A7 | E7 | B7 |
    WAV   out/sweet_home_chicago.wav
    MIDI  out/sweet_home_chicago.mid   (4.8s)
 ```
 
-Il risultato è in `out/`. Aprilo con qualsiasi player e suonaci sopra. 🎶
+The result is in `out/`. Open it with any player and play along. 🎶
 
-Un brano è un file YAML di poche righe:
+A song is a YAML file of a few lines:
 
 ```yaml
-title: Il mio blues
+title: My blues
 tempo: 90
 groove: blues
 sections:
-  - name: Strofa
+  - name: Verse
     repeat: 2
     chords: |
       | A7 | D7 | A7 | A7 |
@@ -105,130 +109,135 @@ sections:
       | E7 | D7 | A7 | E7 |
 ```
 
-Passo passo: **[docs/tutorial.md](docs/tutorial.md)** · tutte le chiavi: **[docs/formato.md](docs/formato.md)**.
+Step by step: **[docs/en/tutorial.md](docs/en/tutorial.md)** · every key: **[docs/en/format.md](docs/en/format.md)**.
 
 ---
 
-## 🖥️ Editor grafico
+## 🖥️ Graphical editor
 
 ```sh
-backingtrack gui [mio_brano.yaml]
+backingtrack gui [my_song.yaml]
 ```
 
-<p align="center"><img src="docs/gui-sezioni.jpg" alt="editor: pagina Sezioni" width="900"></p>
+<p align="center"><img src="docs/gui-sezioni-en.jpg" alt="editor: Sections page" width="900"></p>
 
-Tre schede: **Brano** (tempo, groove, scaletta), **Sezioni** (accordi, scale sulla tastiera, modelli di giro) e
-**YAML**. **Genera e ascolta** (`Alt+G`) crea l'audio e lo suona subito nel player integrato; `F1` apre la guida.
-Tutto l'editor, schermata per schermata: **[docs/gui.md](docs/gui.md)**.
+Three tabs: **Song** (tempo, groove, set list), **Sections** (chords, scales on the fretboard, progression templates)
+and **YAML**. **Render & play** (`Alt+G`) creates the audio and plays it right away in the built-in player; `F1` opens
+the guide; **Help ▸ Language / Lingua** switches between 🇬🇧 English and 🇮🇹 Italiano.
+The whole editor, screen by screen: **[docs/en/gui.md](docs/en/gui.md)**.
 
 ---
 
-## 📖 Documentazione
+## 📖 Documentation
 
-| Pagina | Cosa contiene |
+| Page | Contents |
 |---|---|
-| [📦 Installazione](docs/installazione.md) | installer, installazione manuale, campioni, aggiornare, diagnosi, disinstallare |
-| [🖥️ Editor grafico](docs/gui.md) | schede, accordi e tavolozza, scale e CAGED, player, scorciatoie |
-| [🎓 Tutorial ed esempi](docs/tutorial.md) | la prima backing track passo passo, esempi di brani completi |
-| [📝 Formato della canzone](docs/formato.md) | chiavi del YAML, come si legge una battuta, accordi supportati |
-| [🥁 Groove](docs/groove.md) | i 125 groove, stile per stile |
-| [📚 Brani di esempio](docs/brani.md) | gli 84 brani inclusi |
-| [⌨️ Comandi](docs/comandi.md) | tutte le opzioni della riga di comando |
-| [❓ FAQ](docs/faq.md) | problemi comuni |
-| [⚙️ Come funziona](docs/sviluppo.md) | la pipeline audio e la struttura del codice |
+| [📦 Installation](docs/en/installation.md) | installer, manual install, samples, updating, diagnostics, uninstalling |
+| [🖥️ Graphical editor](docs/en/gui.md) | tabs, chords and palette, scales and CAGED, player, shortcuts, language |
+| [🎓 Tutorial and examples](docs/en/tutorial.md) | your first backing track step by step, complete song examples |
+| [📝 Song format](docs/en/format.md) | YAML keys, how to read a bar, supported chords |
+| [🥁 Grooves](docs/en/grooves.md) | the 125 grooves, style by style |
+| [📚 Example songs](docs/en/songs.md) | the 84 included songs |
+| [⌨️ Commands](docs/en/commands.md) | every command-line option |
+| [❓ FAQ](docs/en/faq.md) | common problems |
+| [⚙️ How it works](docs/en/development.md) | the audio pipeline, translations and the code structure |
+
+Italian documentation: [README.it.md](README.it.md) and [docs/it/](docs/it/installazione.md).
 
 ---
 
-## 🛠️ Sviluppo
+## 🛠️ Development
 
 ```sh
 git clone git@github.com:wdog/backingtrack.git && cd backingtrack
-pipx install -e --system-site-packages .        # il comando usa direttamente i file del repo
-python3 -m unittest discover tests               # test (non servono i campioni)
-python3 -m backingtrack render examples/*/*.yaml --dry-run   # valida tutti gli esempi
+pipx install -e --system-site-packages .        # the command uses the repo files directly
+python3 -m unittest discover tests               # tests (no samples needed)
+python3 -m backingtrack render examples/*/*.yaml --dry-run   # validate every example
+python3 docs/make_docs.py                        # regenerate groove/song tables and doc navigation
 ```
 
-Pipeline: `song.py` (YAML → battute) → `arranger.py` (battute → note su 6 corde) → `render.py` + `sfz.py` (note →
-campioni) → `mixer.py` (ampli, casse, mix con ffmpeg). Dettagli in [docs/sviluppo.md](docs/sviluppo.md).
+Pipeline: `song.py` (YAML → bars) → `arranger.py` (bars → notes on 6 strings) → `render.py` + `sfz.py` (notes →
+samples) → `mixer.py` (amp, cabinets, mix with ffmpeg). Details in [docs/en/development.md](docs/en/development.md).
 
-### 🥁 Creare un groove
+### 🥁 Creating a groove
 
-Un groove è una voce del dizionario `GROOVES` in [`backingtrack/grooves.py`](backingtrack/grooves.py) e descrive
-**una battuta di 4/4**: cosa fa la chitarra, cosa fa la batteria, il basso e il suono.
+A groove is an entry of the `GROOVES` dictionary in [`backingtrack/grooves.py`](backingtrack/grooves.py) and describes
+**one 4/4 bar**: what the guitar does, what the drums do, the bass and the sound.
 
 ```python
-"funk/disco": g("Disco funk: cassa in quattro, hi-hat aperto in levare",   # descrizione (menu e --help)
-                "clean",                                    # ampli: clean blues twang crunch high
-                pat("dudUdudUdudUdudU", 92, 70, dur=0.22),  # chitarra: 16 caratteri = sedicesimi
-                DISCO_BEAT,                                 # batteria: [(beat, nota GM, velocity)]
-                FUNK_TURN,                                  # variazione ogni 4 battute
-                bass="octave",                              # stile del basso
-                double=True,                                # chitarra doppiata L/R
-                voicing="triad"),                           # forma degli accordi
+"funk/disco": g("Disco funk: cassa in quattro, hi-hat aperto in levare",   # description (menus and --help)
+                "clean",                                    # amp: clean blues twang crunch high
+                pat("dudUdudUdudUdudU", 92, 70, dur=0.22),  # guitar: 16 characters = sixteenths
+                DISCO_BEAT,                                 # drums: [(beat, GM note, velocity)]
+                FUNK_TURN,                                  # variation every 4 bars
+                bass="octave",                              # bass style
+                double=True,                                # double-tracked guitar L/R
+                voicing="triad"),                           # chord shape
 ```
 
-**Chitarra** — `pat("...")` scrive il ritmo come testo: 8 caratteri = ottavi, 12 = terzine, 16 = sedicesimi
-(gli spazi si ignorano). Maiuscola = forte, minuscola = piano.
+**Guitar** — `pat("...")` writes the rhythm as text: 8 characters = eighths, 12 = triplets, 16 = sixteenths
+(spaces are ignored). Uppercase = loud, lowercase = soft.
 
-| Carattere | Colpo | Carattere | Colpo |
+| Character | Hit | Character | Hit |
 |---|---|---|---|
-| `D` / `U` | pennata giù / su | `X` | chop (corde alte stoppate) |
-| `M` / `N` | giù / su stoppate (palm mute) | `P` / `p` | power chord / power chord stoppato |
-| `J` | accordo jazz a 4 note | `B` / `F` | tonica / quinta al basso |
-| `.` | pausa | `-` | tiene la nota precedente |
+| `D` / `U` | down / up strum | `X` | chop (muted high strings) |
+| `M` / `N` | muted down / up (palm mute) | `P` / `p` | power chord / muted power chord |
+| `J` | 4-note jazz chord | `B` / `F` | root / fifth in the bass |
+| `.` | rest | `-` | holds the previous note |
 
-Per i bicordi boogie c'è `boogie("55665566")` (tonica + 5a/6a/7a). In alternativa si scrive la lista degli eventi:
-`(beat, tipo, velocity[, durata])`, con beat da 0 a 4 (`.5` = levare, spostato dallo swing; `T1`/`T2` = terzine).
+For boogie double stops there is `boogie("55665566")` (root + 5th/6th/7th). Otherwise write the event list:
+`(beat, type, velocity[, length])`, with beats from 0 to 4 (`.5` = offbeat, moved by the swing; `T1`/`T2` = triplets).
 
-**Batteria** — lista di `(beat, nota, velocity)` con le costanti `KICK`, `SNARE`, `STICK`, `HH`, `OHH`, `PEDAL`, `LT`,
-`MT`, `HT`, `CRASH`, `RIDE`, `BELL` e gli aiuti `hat8()`, `hat16()`, `hits(nota, [beat])`. Si usano solo note
-presenti nel kit Salamander (niente cowbell o clap: c'è `BELL`, la campana del ride).
+**Drums** — a list of `(beat, note, velocity)` with the constants `KICK`, `SNARE`, `STICK`, `HH`, `OHH`, `PEDAL`, `LT`,
+`MT`, `HT`, `CRASH`, `RIDE`, `BELL` and the helpers `hat8()`, `hat16()`, `hits(note, [beats])`. Use only notes present
+in the Salamander kit (no cowbell or clap: there is `BELL`, the ride bell).
 
-**Altri parametri** di `g()`: `turn` (variazione ogni 4 battute) e `fill` (rullata di fine sezione), `bass` (`eighths`
+**Other parameters** of `g()`: `turn` (variation every 4 bars) and `fill` (end-of-section fill), `bass` (`eighths`
 `rootfifth` `stop` `slow` `walk` `two` `octave` `funk` `reggae` `quarters` `dotted` `tumbao`), `swing` (0–1),
-`double`, `slap` (slapback), `voicing` (`barre` `open` `jazz` `triad`), `mute_len` (durata delle stoppate).
+`double`, `slap` (slapback), `voicing` (`barre` `open` `jazz` `triad`), `mute_len` (length of muted hits).
 
-Poi: il nome col prefisso dello stile (`funk/…`) lo mette nel menu giusto della GUI; `python3 -m unittest discover
-tests` controlla che tutti i groove si arrangino senza errori; aggiorna la tabella in [docs/groove.md](docs/groove.md).
-Un **nuovo stile** richiede anche `STYLE_EMOJI`/`STYLE_NAMES` in `gui.py` e il logo (`docs/make_images.py`).
+Then: the name with the style prefix (`funk/…`) puts it in the right GUI menu; add the English description to
+`GROOVES_EN` in `backingtrack/locale_en.py`; `python3 -m unittest discover tests` checks that every groove arranges
+without errors and is translated; `python3 docs/make_docs.py` regenerates the groove tables in both languages.
+A **new style** also needs `STYLE_EMOJI`/`STYLE_NAMES` in `gui.py` and the logo (`docs/make_images.py`).
 
-### 🧰 Software e librerie usati
+### 🧰 Software and libraries used
 
-Il codice di backingtrack è sotto licenza **MIT** (vedi [LICENSE](LICENSE)). Usa questi programmi e librerie, non
-inclusi nel repository:
+backingtrack's code is under the **MIT** license (see [LICENSE](LICENSE)). It uses these programs and libraries, not
+included in the repository:
 
-| Software | A cosa serve | Licenza |
+| Software | Used for | License |
 |---|---|---|
-| [Python 3.8+](https://www.python.org) | tutto il programma | PSF License |
-| [NumPy](https://numpy.org) | motore di campionamento, mix, riverbero | BSD-3-Clause |
-| [PyYAML](https://pyyaml.org) | lettura e scrittura dei brani | MIT |
-| [FFmpeg](https://ffmpeg.org) | ampli e casse (convoluzione), EQ, compressori, limiter, MP3, FLAC, forma d'onda | LGPL 2.1+ (GPL in alcune build) |
-| [GTK 4](https://www.gtk.org) | interfaccia grafica | LGPL 2.1+ |
-| [libadwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/) | componenti dell'interfaccia | LGPL 2.1+ |
-| [PyGObject](https://pygobject.gnome.org) | GTK da Python | LGPL 2.1+ |
-| [Pillow](https://python-pillow.org) | solo per generare logo e diagrammi (`docs/make_images.py`) | MIT-CMU (HPND) |
-| [SFZ](https://sfzformat.com) | formato aperto degli strumenti campionati | specifica aperta |
+| [Python 3.8+](https://www.python.org) | the whole program | PSF License |
+| [NumPy](https://numpy.org) | sampling engine, mix, reverb | BSD-3-Clause |
+| [PyYAML](https://pyyaml.org) | reading and writing songs | MIT |
+| [FFmpeg](https://ffmpeg.org) | amps and cabinets (convolution), EQ, compressors, limiter, MP3, FLAC, waveform | LGPL 2.1+ (GPL in some builds) |
+| [GTK 4](https://www.gtk.org) | graphical interface | LGPL 2.1+ |
+| [libadwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/) | interface components | LGPL 2.1+ |
+| [PyGObject](https://pygobject.gnome.org) | GTK from Python | LGPL 2.1+ |
+| [Pillow](https://python-pillow.org) | only to generate logo and diagrams (`docs/make_images.py`) | MIT-CMU (HPND) |
+| [SFZ](https://sfzformat.com) | open format for sampled instruments | open specification |
 
-I **campioni** si scaricano con `backingtrack setup` direttamente dagli autori:
+The **samples** are downloaded with `backingtrack setup` straight from their authors:
 
-| Libreria | Strumento | Autore | Licenza |
+| Library | Instrument | Author | License |
 |---|---|---|---|
-| [Black & Green Guitars](https://github.com/sfzinstruments/karoryfer.black-and-green-guitars) | chitarra Gretsch (default) | Karoryfer Samples | CC0 1.0 |
-| [Emilyguitar](https://github.com/sfzinstruments/karoryfer.emilyguitar) | chitarra Epiphone (opzionale) | Karoryfer Samples / D. Smolken | CC0 1.0 |
-| [Electric Guitar FSBS](https://github.com/freepats/electric-guitar-FSBS-direct) | chitarra Fender (opzionale) | FreePats | CC0 1.0 |
-| [FSS Steel-String Guitar](https://freepats.zenvoid.org/Guitar/steel-acoustic-guitar.html) | chitarra acustica (opzionale) | FreePats / FlameStudios | GPL 3+ con eccezione per i brani |
-| [Jester's Emerald](https://www.jester-dyne-productions.com/emerald-ir-pack/) e [Brutal IR](https://www.jester-dyne-productions.com/brutal-ir-pack/) | casse per chitarra (IR) | Jester Dyne Productions | gratuite, anche per uso commerciale |
-| [Salamander Drumkit](https://github.com/studiorack/salamander-drumkit) | batteria | Alexander Holm | CC-BY-SA 3.0 |
-| [Double bass (Rubner 1958)](https://github.com/sfzinstruments/dsmolken.double-bass) | contrabbasso (opzionale) | D. Smolken | CC0 1.0 |
-| [Sneakybass](https://github.com/sfzinstruments/karoryfer.sneakybass) | contrabbasso leggero (opzionale) | D. Smolken | CC0 1.0 |
-| [Black & Blue Basses](https://github.com/sfzinstruments/karoryfer.black-and-blue-basses) | basso elettrico (opzionale) | Karoryfer Samples | CC0 1.0 |
+| [Black & Green Guitars](https://github.com/sfzinstruments/karoryfer.black-and-green-guitars) | Gretsch guitar (default) | Karoryfer Samples | CC0 1.0 |
+| [Emilyguitar](https://github.com/sfzinstruments/karoryfer.emilyguitar) | Epiphone guitar (optional) | Karoryfer Samples / D. Smolken | CC0 1.0 |
+| [Electric Guitar FSBS](https://github.com/freepats/electric-guitar-FSBS-direct) | Fender guitar (optional) | FreePats | CC0 1.0 |
+| [FSS Steel-String Guitar](https://freepats.zenvoid.org/Guitar/steel-acoustic-guitar.html) | acoustic guitar (optional) | FreePats / FlameStudios | GPL 3+ with an exception for songs |
+| [Jester's Emerald](https://www.jester-dyne-productions.com/emerald-ir-pack/) and [Brutal IR](https://www.jester-dyne-productions.com/brutal-ir-pack/) | guitar cabinets (IR) | Jester Dyne Productions | free, commercial use allowed |
+| [Salamander Drumkit](https://github.com/studiorack/salamander-drumkit) | drums | Alexander Holm | CC-BY-SA 3.0 |
+| [Double bass (Rubner 1958)](https://github.com/sfzinstruments/dsmolken.double-bass) | double bass (optional) | D. Smolken | CC0 1.0 |
+| [Sneakybass](https://github.com/sfzinstruments/karoryfer.sneakybass) | light double bass (optional) | D. Smolken | CC0 1.0 |
+| [Black & Blue Basses](https://github.com/sfzinstruments/karoryfer.black-and-blue-basses) | electric bass (optional) | Karoryfer Samples | CC0 1.0 |
 
 ---
 
-## 🙏 Crediti e licenze
+## 🙏 Credits and licenses
 
-Codice: **MIT**. Se pubblichi brani fatti con la batteria Salamander, cita l'autore: *"Drums: Salamander Drumkit by
-Alexander Holm (CC-BY-SA 3.0)"*. Le licenze di tutti i componenti sono nella tabella qui sopra.
+Code: **MIT**. If you publish songs made with the Salamander drums, credit the author: *"Drums: Salamander Drumkit by
+Alexander Holm (CC-BY-SA 3.0)"*. The licenses of every component are in the table above.
 
-I brani in `examples/` riportano solo progressioni di accordi, che non sono tutelate da copyright; i titoli servono
-solo a riconoscerle.
+The songs in `examples/` contain only chord progressions, which are not protected by copyright; the titles are there
+only to recognize them.

@@ -1,6 +1,7 @@
 """Accordi: parsing dei simboli e voicing chitarristici."""
 import re
 
+from .i18n import _
 from .errors import SongError
 
 NOTE_PC = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
@@ -198,19 +199,19 @@ def suggest_scales(tokens):
                 out.append((root, n, why))
 
     if ivs <= {0, 5, 7} and any(k == "dom" for _i, k in rel) and all(k in ("dom", "maj", "5") for _i, k in rel):
-        add(["Blues minore", "Blues maggiore", "Misolidia", "B.B. King box", "Albert King box"], "blues: I7 IV7 V7")
+        add(["Blues minore", "Blues maggiore", "Misolidia", "B.B. King box", "Albert King box"], _("blues: I7 IV7 V7"))
     if k0 == "min" and has(5, "dom"):
-        add(["Dorica", "Pentatonica minore", "Blues minore"], "vamp dorico: i7 e IV7")
+        add(["Dorica", "Pentatonica minore", "Blues minore"], _("vamp dorico: i7 e IV7"))
     if k0 == "min" and has(1, "maj"):
-        add(["Frigia"], "vamp frigio: i e bII")
+        add(["Frigia"], _("vamp frigio: i e bII"))
     if k0 in ("maj", "dom") and has(10, "maj", "dom"):
-        add(["Misolidia", "Pentatonica maggiore", "Blues maggiore"], "rock modale: I e bVII")
+        add(["Misolidia", "Pentatonica maggiore", "Blues maggiore"], _("rock modale: I e bVII"))
     if k0 in ("maj", "dom") and has(2, "maj"):
-        add(["Lidia"], "vamp lidio: I e II maggiore")
+        add(["Lidia"], _("vamp lidio: I e II maggiore"))
     if k0 == "min" and has(7, "dom") and not has(5, "dom"):
-        add(["Minore armonica", "Pentatonica minore"], "minore col V7")
+        add(["Minore armonica", "Pentatonica minore"], _("minore col V7"))
     if k0 == "min" and ivs <= {0, 3, 5, 7, 8, 10}:
-        add(["Blues minore", "Pentatonica minore", "Minore naturale (eolia)"], "giro minore")
+        add(["Blues minore", "Pentatonica minore", "Minore naturale (eolia)"], _("giro minore"))
     # ripiego: la tonalità maggiore che contiene più accordi (triadi diatoniche; una settima su un grado della scala
     # conta anche se non è diatonica: è una dominante secondaria, es. D7 in C). Basta che ne contenga i 2/3.
     diatonic = {0: "maj", 2: "min", 4: "min", 5: "maj", 7: "maj", 9: "min", 11: "dim"}
@@ -223,9 +224,9 @@ def suggest_scales(tokens):
         key = max(range(12), key=lambda k: (score(k), -((k - tonic) % 12)))
         if score(key)[0] * 3 >= len(chords) * 2:
             if (tonic - key) % 12 == 9 or k0 == "min":
-                add(["Minore naturale (eolia)", "Pentatonica minore", "Blues minore"], "accordi della scala minore")
+                add(["Minore naturale (eolia)", "Pentatonica minore", "Blues minore"], _("accordi della scala minore"))
             else:
-                add(["Maggiore (ionica)", "Pentatonica maggiore", "Blues maggiore"], "accordi della scala maggiore",
+                add(["Maggiore (ionica)", "Pentatonica maggiore", "Blues maggiore"], _("accordi della scala maggiore"),
                     root=key)
     return out[:5]
 
@@ -260,7 +261,7 @@ class Chord:
     def __init__(self, token, transpose=0):
         m = CHORD_RE.match(token)
         if not m or m.group(3) not in QUALITIES:
-            raise SongError("accordo non riconosciuto: '%s'" % token)
+            raise SongError(_("accordo non riconosciuto: '%s'") % token)
         letter, acc, qual, bass = m.groups()
         self.root = (NOTE_PC[letter] + {"#": 1, "b": -1, "": 0}[acc] + transpose) % 12
         self.bass = self.root

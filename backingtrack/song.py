@@ -4,6 +4,7 @@ from pathlib import Path
 
 import yaml
 
+from .i18n import _
 from .errors import SongError
 from .grooves import get_groove
 from .theory import Chord
@@ -13,9 +14,9 @@ def load_song(path):
     try:
         song = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
     except (OSError, yaml.YAMLError) as e:
-        raise SongError("impossibile leggere %s: %s" % (path, e))
+        raise SongError(_("impossibile leggere %s: %s") % (path, e))
     if not isinstance(song, dict):
-        raise SongError("il file YAML deve contenere una mappa (title, tempo, sections, ...)")
+        raise SongError(_("il file YAML deve contenere una mappa (title, tempo, sections, ...)"))
     return song
 
 
@@ -26,7 +27,7 @@ def parse_bars(text, transpose, where):
     for n, cell in enumerate(cells, 1):
         if cell == "%":
             if prev is None:
-                raise SongError("%s, battuta %d: '%%' senza battuta precedente" % (where, n))
+                raise SongError(_("%s, battuta %d: '%%' senza battuta precedente") % (where, n))
             bars.append(prev)
             continue
         toks = cell.split()
@@ -35,7 +36,7 @@ def parse_bars(text, transpose, where):
         for i, t in enumerate(toks):
             if t in (".", "-", "/"):
                 if not segs:
-                    raise SongError("%s, battuta %d: '%s' a inizio battuta" % (where, n, t))
+                    raise SongError(_("%s, battuta %d: '%s' a inizio battuta") % (where, n, t))
                 s, d, c = segs[-1]
                 segs[-1] = (s, d + step, c)
             elif t.upper() in ("N.C.", "NC"):
@@ -44,11 +45,11 @@ def parse_bars(text, transpose, where):
                 try:
                     segs.append((i * step, step, Chord(t, transpose)))
                 except SongError as e:
-                    raise SongError("%s, battuta %d: %s" % (where, n, e)) from None
+                    raise SongError(_("%s, battuta %d: %s") % (where, n, e)) from None
         bars.append(segs)
         prev = segs
     if not bars:
-        raise SongError("%s: nessuna battuta" % where)
+        raise SongError(_("%s: nessuna battuta") % where)
     return bars
 
 
@@ -67,15 +68,15 @@ def build_timeline(song, groove_override=None):
     sections = {}
     for i, sec in enumerate(song.get("sections") or []):
         if not isinstance(sec, dict):
-            raise SongError("sezione %d: deve essere una mappa con name e chords" % (i + 1))
-        name = str(sec.get("name", "Sezione %d" % (i + 1)))
+            raise SongError(_("sezione %d: deve essere una mappa con name e chords") % (i + 1))
+        name = str(sec.get("name", _("Sezione %d") % (i + 1)))
         if "chords" not in sec:
-            raise SongError("sezione '%s': manca 'chords'" % name)
+            raise SongError(_("sezione '%s': manca 'chords'") % name)
         groove_name = groove_override or sec.get("groove", default_groove)
         get_groove(groove_name)
         sections[name] = dict(
             name=name,
-            bars=parse_bars(sec["chords"], transpose, "sezione '%s'" % name),
+            bars=parse_bars(sec["chords"], transpose, _("sezione '%s'") % name),
             repeat=int(sec.get("repeat", 1)),
             groove=groove_name,
             swing=sec.get("swing"),
@@ -85,14 +86,14 @@ def build_timeline(song, groove_override=None):
             drums=sec.get("drums", True),
         )
     if not sections:
-        raise SongError("nessuna sezione definita (chiave 'sections')")
+        raise SongError(_("nessuna sezione definita (chiave 'sections')"))
 
     order = []
     for item in song.get("arrangement") or []:
         m = re.match(r"^(.*?)\s*[x×*]\s*(\d+)$", str(item).strip())
         name, reps = (m.group(1), int(m.group(2))) if m else (str(item).strip(), None)
         if name not in sections:
-            raise SongError("arrangement: la sezione '%s' non esiste (%s)" % (name, ", ".join(sections)))
+            raise SongError(_("arrangement: la sezione '%s' non esiste (%s)") % (name, ", ".join(sections)))
         order.append((sections[name], reps if reps is not None else sections[name]["repeat"]))
     if not order:
         order = [(s, s["repeat"]) for s in sections.values()]

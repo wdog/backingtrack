@@ -1,8 +1,20 @@
 # ❓ FAQ e problemi comuni
 
-[⬅ README](../README.md) · [Installazione](installazione.md) · [Editor grafico](gui.md) · [Tutorial ed esempi](tutorial.md) · [Formato](formato.md) · [Groove](groove.md) · [Brani](brani.md) · [Comandi](comandi.md) · [FAQ](faq.md) · [Sviluppo](sviluppo.md)
-
-## ❓ FAQ e problemi comuni
+<!-- nav -->
+<p align="center">
+  <a href="../../README.it.md">🏠 Home</a> ·
+  <a href="installazione.md">📦 Installazione</a> ·
+  <a href="gui.md">🖥️ Editor grafico</a> ·
+  <a href="tutorial.md">🎓 Tutorial</a> ·
+  <a href="formato.md">📝 Formato</a> ·
+  <a href="groove.md">🥁 Groove</a> ·
+  <a href="brani.md">📚 Brani</a> ·
+  <a href="comandi.md">⌨️ Comandi</a> ·
+  <b>❓ FAQ</b> ·
+  <a href="sviluppo.md">⚙️ Sviluppo</a>
+</p>
+<p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/faq.md">🇬🇧 English</a></p>
+<!-- /nav -->
 
 <details>
 <summary><b>"campioni '...' non installati"</b></summary>
@@ -22,6 +34,13 @@ Installa ffmpeg (vedi [Installazione](installazione.md)) e riapri il terminale. 
 Lancia `backingtrack doctor` e guarda la riga **GUI**. Di solito mancano GTK 4 e libadwaita (il comando per
 installarli è nel riepilogo finale). Se sono installati ma il programma non li vede, è stato installato con pipx
 senza `--system-site-packages`: `backingtrack update` o l'installer lo reinstallano nel modo giusto.
+</details>
+
+<details>
+<summary><b>Come cambio lingua?</b></summary>
+
+Nell'editor: **Aiuto ▸ Lingua / Language** (🇮🇹 Italiano · 🇬🇧 English); l'editor si riavvia e tiene il brano.
+Da riga di comando: `BACKINGTRACK_LANG=it` o `BACKINGTRACK_LANG=en`.
 </details>
 
 <details>
@@ -55,3 +74,9 @@ Cambia `seed` nel file: cambiano round robin, micro-timing e dinamiche.
 
 Rilancia `backingtrack setup` (o `backingtrack update`): i pacchetti già completi vengono saltati.
 </details>
+
+<!-- foot -->
+---
+
+<p align="center"><a href="comandi.md">⬅ Precedente: ⌨️ Comandi</a> · <a href="#">⬆ Inizio pagina</a> · <a href="sviluppo.md">Successiva: ⚙️ Sviluppo ➡</a></p>
+<!-- /foot -->

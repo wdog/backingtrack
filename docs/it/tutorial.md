@@ -1,6 +1,20 @@
 # 🎓 Tutorial ed esempi
 
-[⬅ README](../README.md) · [Installazione](installazione.md) · [Editor grafico](gui.md) · [Tutorial ed esempi](tutorial.md) · [Formato](formato.md) · [Groove](groove.md) · [Brani](brani.md) · [Comandi](comandi.md) · [FAQ](faq.md) · [Sviluppo](sviluppo.md)
+<!-- nav -->
+<p align="center">
+  <a href="../../README.it.md">🏠 Home</a> ·
+  <a href="installazione.md">📦 Installazione</a> ·
+  <a href="gui.md">🖥️ Editor grafico</a> ·
+  <b>🎓 Tutorial</b> ·
+  <a href="formato.md">📝 Formato</a> ·
+  <a href="groove.md">🥁 Groove</a> ·
+  <a href="brani.md">📚 Brani</a> ·
+  <a href="comandi.md">⌨️ Comandi</a> ·
+  <a href="faq.md">❓ FAQ</a> ·
+  <a href="sviluppo.md">⚙️ Sviluppo</a>
+</p>
+<p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/tutorial.md">🇬🇧 English</a></p>
+<!-- /nav -->
 
 ## 🎓 Tutorial: la tua prima backing track
 
@@ -171,3 +185,9 @@ sections:
 # genera tutti i blues a 80 BPM, solo batteria e basso, in mp3
 backingtrack render examples/blues/*.yaml --tempo 80 --mute guitar --bass --mp3 -o studio/
 ```
+
+<!-- foot -->
+---
+
+<p align="center"><a href="gui.md">⬅ Precedente: 🖥️ Editor grafico</a> · <a href="#">⬆ Inizio pagina</a> · <a href="formato.md">Successiva: 📝 Formato ➡</a></p>
+<!-- /foot -->

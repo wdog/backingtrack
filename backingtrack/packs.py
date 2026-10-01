@@ -12,6 +12,7 @@ import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+from .i18n import _
 from .errors import SongError
 
 # GM -> (tasto Salamander, CC4 hi-hat)
@@ -88,7 +89,7 @@ def bass_pack(value):
         return "bass"
     if value in BASS_PACKS:
         return value
-    raise SongError("bass: '%s' sconosciuto (usa true/false o %s)" % (value, ", ".join(BASS_PACKS)))
+    raise SongError(_("bass: '%s' sconosciuto (usa true/false o %s)") % (value, ", ".join(BASS_PACKS)))
 DEFAULT_PACKS = [n for n, p in PACKS.items() if p.get("default")]
 
 
@@ -124,7 +125,7 @@ def is_installed(name):
 def sfz_path(name, key="sfz"):
     if not is_installed(name):
         hint = "" if PACKS[name].get("default") else " " + name
-        raise SongError("campioni '%s' non installati. Esegui:  backingtrack setup%s" % (name, hint))
+        raise SongError(_("campioni '%s' non installati. Esegui:  backingtrack setup%s") % (name, hint))
     rel = PACKS[name].get(key)
     return pack_dir(name) / rel if rel else None
 
@@ -222,7 +223,7 @@ def _install_selective(name, info, dest, full, progress):
     import json
     tree = json.loads(_fetch("https://api.github.com/repos/%s/git/trees/HEAD?recursive=1" % info["repo"]))
     if tree.get("truncated"):
-        raise OSError("elenco file incompleto")
+        raise OSError(_("elenco file incompleto"))
     files = {x["path"]: x.get("size", 0) for x in tree["tree"] if x["type"] == "blob"}
     raw = "https://raw.githubusercontent.com/%s/HEAD/" % info["repo"]
 
@@ -238,7 +239,7 @@ def _install_selective(name, info, dest, full, progress):
     audio = {p for p in files if p.lower().endswith((".wav", ".flac"))}
     needed = sorted(_needed_samples(dict(info, rr=None) if full else info, dest, audio))
     total = sum(files[p] for p in needed)
-    print("  %d campioni, %d MB" % (len(needed), total >> 20))
+    print(_("  %d campioni, %d MB") % (len(needed), total >> 20))
     done = [0, 0]
 
     def get_sample(path):
@@ -259,10 +260,10 @@ def install(name, force=False, full=False, progress=print_progress):
     """progress(fatti, totale, (file, file_totali) | None): byte scaricati, chiamata dal thread del download."""
     info = PACKS[name]
     if is_installed(name) and not force:
-        print("✓ %s già installato" % name)
+        print(_("✓ %s già installato") % name)
         return
     size = info["size_mb"] if full else info.get("light_mb", info["size_mb"])
-    print("↓ %s: %s (%s, %s, ~%d MB)" % (name, info["title"], info["author"], info["license"], size))
+    print(_("↓ %s: %s (%s, %s, ~%d MB)") % (name, _(info["title"]), info["author"], _(info["license"]), size))
     dest = pack_dir(name)
     if dest.exists():
         shutil.rmtree(dest)
@@ -275,7 +276,7 @@ def install(name, force=False, full=False, progress=print_progress):
             _install_selective(name, info, dest, full, progress)
         except (OSError, ValueError) as e:
             shutil.rmtree(dest, ignore_errors=True)
-            raise SongError("download di '%s' non riuscito: %s. Riprova più tardi." % (name, e))
+            raise SongError(_("download di '%s' non riuscito: %s. Riprova più tardi.") % (name, e))
     else:
         zips = _install_zip(name, info, dest, progress)
     _finish(name, info, dest, zips)
@@ -290,7 +291,7 @@ def _install_zip(name, info, dest, progress):
             print("  %s" % url)
             _download(url, zpath, progress)
         zips.append(zpath)
-    print("  estraggo...")
+    print(_("  estraggo..."))
     for zpath in zips:
         for filename, is_dir, opener in _archive_members(zpath):
             rel = filename.split("/", 1)[1] if "/" in filename else ""
@@ -324,14 +325,14 @@ def _finish(name, info, dest, zips):
     if flacs:
         ffmpeg = shutil.which("ffmpeg")
         if not ffmpeg:
-            raise SongError("serve ffmpeg per convertire i campioni FLAC (vedi README)")
-        print("  converto %d campioni FLAC..." % len(flacs))
+            raise SongError(_("serve ffmpeg per convertire i campioni FLAC (vedi README)"))
+        print(_("  converto %d campioni FLAC...") % len(flacs))
         with ThreadPoolExecutor(os.cpu_count() or 4) as ex:
             list(ex.map(lambda f: _flac_to_wav(ffmpeg, f), flacs))
     (dest / ".installed").write_text("%s\n%s\n" % (info.get("repo") or info["urls"][0][1], info["license"]))
     for zpath in zips:
         zpath.unlink()
-    print("✓ %s installato in %s" % (name, dest))
+    print(_("✓ %s installato in %s") % (name, dest))
 
 
 def disk_mb(name):
@@ -342,7 +343,7 @@ def disk_mb(name):
 def remove(name):
     d = pack_dir(name)
     if not d.exists():
-        print("· %s non installato" % name)
+        print(_("· %s non installato") % name)
         return
     mb = disk_mb(name)
     shutil.rmtree(d)
@@ -352,6 +353,6 @@ def remove(name):
 def status():
     rows = []
     for name, info in PACKS.items():
-        state = "installato %4.0f MB" % disk_mb(name) if is_installed(name) else "mancante"
-        rows.append((name, state, info["title"], info["license"]))
+        state = _("installato %4.0f MB") % disk_mb(name) if is_installed(name) else _("mancante")
+        rows.append((name, state, _(info["title"]), _(info["license"])))
     return rows

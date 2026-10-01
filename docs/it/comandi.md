@@ -1,8 +1,20 @@
 # 🖥️ Riferimento comandi
 
-[⬅ README](../README.md) · [Installazione](installazione.md) · [Editor grafico](gui.md) · [Tutorial ed esempi](tutorial.md) · [Formato](formato.md) · [Groove](groove.md) · [Brani](brani.md) · [Comandi](comandi.md) · [FAQ](faq.md) · [Sviluppo](sviluppo.md)
-
-## 🖥️ Riferimento comandi
+<!-- nav -->
+<p align="center">
+  <a href="../../README.it.md">🏠 Home</a> ·
+  <a href="installazione.md">📦 Installazione</a> ·
+  <a href="gui.md">🖥️ Editor grafico</a> ·
+  <a href="tutorial.md">🎓 Tutorial</a> ·
+  <a href="formato.md">📝 Formato</a> ·
+  <a href="groove.md">🥁 Groove</a> ·
+  <a href="brani.md">📚 Brani</a> ·
+  <b>⌨️ Comandi</b> ·
+  <a href="faq.md">❓ FAQ</a> ·
+  <a href="sviluppo.md">⚙️ Sviluppo</a>
+</p>
+<p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/commands.md">🇬🇧 English</a></p>
+<!-- /nav -->
 
 ```
 backingtrack <file.yaml>                  scorciatoia per "render"
@@ -27,3 +39,12 @@ backingtrack grooves                       elenco dei groove
 backingtrack new <file.yaml>               crea un file canzone di partenza
 backingtrack doctor                        diagnosi completa, con cosa fare se manca qualcosa
 ```
+
+I messaggi seguono la lingua del sistema (italiano se inizia con `it`, altrimenti inglese). Per sceglierla:
+`BACKINGTRACK_LANG=it` o `BACKINGTRACK_LANG=en`, es. `BACKINGTRACK_LANG=en backingtrack doctor`.
+
+<!-- foot -->
+---
+
+<p align="center"><a href="brani.md">⬅ Precedente: 📚 Brani</a> · <a href="#">⬆ Inizio pagina</a> · <a href="faq.md">Successiva: ❓ FAQ ➡</a></p>
+<!-- /foot -->

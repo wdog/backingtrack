@@ -6,7 +6,11 @@ Guida per Claude Code su questo repository.
 
 `backingtrack`: CLI Python che genera backing track (chitarra ritmica + batteria, contrabbasso opzionale)
 da un file YAML con tempo, groove, sezioni ripetibili e accordi. Stili: rock, blues, rockabilly, country, jazz, funk, reggae, soul (≥15 groove ciascuno).
-Lingua di UI, messaggi di errore, commenti e documentazione: **italiano**.
+Codice e commenti in **italiano**; UI, messaggi e documentazione in **italiano e inglese**: testi scritti in italiano
+avvolti in `_()` (`i18n.py`), traduzioni in `locale_en.py` (`EN`, `GROOVES_EN`); un test fallisce se ne manca una.
+Le costanti di modulo (HELP, SCALE_DESC…) restano grezze e si traducono dove vengono mostrate (mai `_()` a livello di
+modulo o nei default degli argomenti). Lingua GUI: Aiuto › Lingua (gui.json `lang`, riavvio con la bozza);
+CLI: `BACKINGTRACK_LANG` o lingua di sistema.
 
 ## Comandi
 
@@ -85,13 +89,10 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
   poi `backingtrack setup`. Variabili: `BT_BASS`, `BT_NO_SAMPLES`, `BT_YES`, `BT_REF`, `BT_SRC` (sorgente locale per test:
   `HOME=/tmp/h BT_SRC=$PWD BT_NO_SAMPLES=1 bash install.sh`).
 - `install.ps1`: equivalente Windows (`irm ... | iex`), venv in `%LOCALAPPDATA%\backingtrack`.
-- Documentazione: `README.md` corto (caratteristiche, installazione rapida, avvio, sviluppo: come creare un groove,
-  software e licenze) + `docs/*.md` una pagina per argomento (installazione, gui, tutorial, formato, groove, brani,
-  comandi, faq, sviluppo). `docs/groove.md` (tabelle da `GROOVES`, una tendina per stile) e `docs/brani.md` vanno
-  tenute allineate a `GROOVES` e `examples/`; `docs/gui.md` ai controlli della GUI.
-
-## Campioni
-
+- Documentazione: `README.md` (inglese) e `README.it.md` (italiano), corti; il resto in `docs/en/` e `docs/it/`
+  (una pagina per argomento, stessi contenuti). `python3 docs/make_docs.py` genera le tabelle di groove e brani dai dati
+  e la barra di navigazione (bandiere, avanti/indietro) di ogni pagina: rilanciarlo dopo ogni modifica. Screenshot
+  `docs/gui-{brano,sezioni,scale,guida}-{it,en}.jpg`.
 - chitarra (default `gretsch`): Karoryfer Black & Green Guitars, Gretsch "green" (CC0), DI, ogni semitono;
   `Programs/04-green_twang.sfz` + `05-green_staccato.sfz` per le note stoppate (`muted="real"`).
   Alternativa `epiphone` = Emilyguitar (CC0), palm mute simulato. Scelta con `guitar:` nel YAML.

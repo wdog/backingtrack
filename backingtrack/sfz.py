@@ -15,6 +15,7 @@ from pathlib import Path
 
 import numpy as np
 
+from .i18n import _
 from .errors import SongError
 
 NOTE_NAMES = {"c": 0, "d": 2, "e": 4, "f": 5, "g": 7, "a": 9, "b": 11}
@@ -32,7 +33,7 @@ def note_number(v):
 
 def _read_text(path, defines, root, depth=0):
     if depth > 16:
-        raise SongError("SFZ: troppi #include annidati")
+        raise SongError(_("SFZ: troppi #include annidati"))
     text = Path(path).read_text(encoding="utf-8", errors="replace")
     text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
     out = []
@@ -139,7 +140,7 @@ def read_wav(path):
     with open(path, "rb") as f:
         buf = f.read()
     if buf[:4] != b"RIFF" or buf[8:12] != b"WAVE":
-        raise ValueError("non è un file WAV")
+        raise ValueError(_("non è un file WAV"))
     pos, fmt, data = 12, None, None
     while pos + 8 <= len(buf):
         cid, size = buf[pos:pos + 4], struct.unpack("<I", buf[pos + 4:pos + 8])[0]
@@ -154,7 +155,7 @@ def read_wav(path):
             data = body
         pos += 8 + size + (size & 1)
     if fmt is None or data is None:
-        raise ValueError("WAV senza fmt/data")
+        raise ValueError(_("WAV senza fmt/data"))
     tag, ch, sr, bits = fmt
     width = bits // 8
     data = data[: len(data) - len(data) % (width * ch)]
@@ -236,7 +237,7 @@ class Instrument:
                 r.sample = alt
             self.regions.append(r)
         if not self.regions:
-            raise SongError("SFZ senza campioni utilizzabili: %s" % sfz_file)
+            raise SongError(_("SFZ senza campioni utilizzabili: %s") % sfz_file)
         self.by_key = {}
         for r in self.regions:
             for k in range(r.lokey, r.hikey + 1):
@@ -306,7 +307,7 @@ class Instrument:
             try:
                 self._cache[key] = read_wav(key)
             except (ValueError, OSError) as e:
-                raise SongError("campione illeggibile %s: %s" % (key, e))
+                raise SongError(_("campione illeggibile %s: %s") % (key, e))
         data, sr = self._cache[key]
         end = region.end if region.end else data.shape[1]
         if region.offset >= end:

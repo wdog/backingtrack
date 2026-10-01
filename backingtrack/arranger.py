@@ -2,6 +2,7 @@
 import random
 from collections import namedtuple
 
+from .i18n import _
 from .errors import SongError
 from .grooves import CRASH, HH, KICK, PEDAL, RIDE, STICK, get_groove
 from .song import chord_at
@@ -22,7 +23,7 @@ class Arranger:
         self.song = song
         self.tempo = float(tempo or song.get("tempo", 120))
         if not 30 <= self.tempo <= 320:
-            raise SongError("tempo fuori range (30-320 BPM): %g" % self.tempo)
+            raise SongError(_("tempo fuori range (30-320 BPM): %g") % self.tempo)
         self.rng = random.Random(song.get("seed", 1))
         self.humanize = float(song.get("humanize", 1.0))
         self.strum_ms = float(song.get("strum_ms", 14))
@@ -75,7 +76,7 @@ class Arranger:
         elif base in ("R5", "R6", "R7"):
             notes = chord.dyad({"R5": 7, "R6": 9, "R7": 10}[base])
         else:
-            raise SongError("evento chitarra sconosciuto '%s'" % kind)
+            raise SongError(_("evento chitarra sconosciuto '%s'") % kind)
         t1 = min(t1, t0 + PPQ * mute_len) if muted else t1 - PPQ * 0.02
         # pennata più forte = più veloce
         spread = self.ms_ticks(self.strum_ms * (1.35 - vel / 127 * 0.5) * (0.7 if up else 1.0))
@@ -157,7 +158,7 @@ class Arranger:
             amp = amp_override or g["amp"]
             voicing = song.get("voicing") or g.get("voicing", "barre")
             if voicing not in VOICINGS:
-                raise SongError("voicing '%s' sconosciuto (usa %s)" % (voicing, ", ".join(VOICINGS)))
+                raise SongError(_("voicing '%s' sconosciuto (usa %s)") % (voicing, ", ".join(VOICINGS)))
             double = song.get("double", g.get("double", False))
             slap = song.get("slapback", g.get("slap", False))
             takes = [("guitar", guitar_bus(amp, "L", slap)), ("guitar2", guitar_bus(amp, "R", slap))] \

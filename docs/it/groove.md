@@ -1,11 +1,23 @@
 # 🥁 Groove disponibili
 
-[⬅ README](../README.md) · [Installazione](installazione.md) · [Editor grafico](gui.md) · [Tutorial ed esempi](tutorial.md) · [Formato](formato.md) · [Groove](groove.md) · [Brani](brani.md) · [Comandi](comandi.md) · [FAQ](faq.md) · [Sviluppo](sviluppo.md)
-
-## 🥁 Groove disponibili
+<!-- nav -->
+<p align="center">
+  <a href="../../README.it.md">🏠 Home</a> ·
+  <a href="installazione.md">📦 Installazione</a> ·
+  <a href="gui.md">🖥️ Editor grafico</a> ·
+  <a href="tutorial.md">🎓 Tutorial</a> ·
+  <a href="formato.md">📝 Formato</a> ·
+  <b>🥁 Groove</b> ·
+  <a href="brani.md">📚 Brani</a> ·
+  <a href="comandi.md">⌨️ Comandi</a> ·
+  <a href="faq.md">❓ FAQ</a> ·
+  <a href="sviluppo.md">⚙️ Sviluppo</a>
+</p>
+<p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/grooves.md">🇬🇧 English</a></p>
+<!-- /nav -->
 
 125 groove in 8 stili. Colonne: ampli, swing (0 = dritto, 1 = terzinato), basso (`--bass`) e descrizione;
-🎧 = chitarra doppiata L/R, 🔁 = slapback.
+🎧 = chitarra doppiata L/R, 🔁 = slapback. Un groove si sceglie con `groove:` nel brano, anche sezione per sezione.
 
 <details>
 <summary><b>🤘 Rock</b> — 16 groove</summary>
@@ -74,7 +86,7 @@
 | `rockabilly/hillbilly` | twang 🔁 | 0.5 | walk | boogie 5-6 su batteria country, mezzo swing |
 | `rockabilly/shuffle` | twang 🔁 | 1 | walk | solo chop su 2 e 4, spazio al contrabbasso |
 | `rockabilly/sun` | twang 🔁 | 0.3 | rootfifth | tonica, accordo e quinta con levare stoppati |
-| `rockabilly/chuck` | crunch | 0 | eighths | Rock'n'roll alla Chuck Berry: boogie 5-6 dritto e crunch |
+| `rockabilly/chuck` | crunch | 0 | eighths | boogie 5-6 dritto e crunch |
 | `rockabilly/jungle` | twang 🔁 | 1 | walk | timpano a ottavi, accordi lunghi su 1 e 3 |
 
 </details>
@@ -119,7 +131,7 @@
 | `jazz/fast` | clean | 1 | walk | comping rado e corto (1, 2&, 3&), ride e bombe sul rullante |
 | `jazz/brushes` | clean | 1 | walk | comping in quarti morbido e walking |
 | `jazz/afro` | clean | 0 | two | campana a 12, accordi sulle terzine, basso in due |
-| `jazz/basie` | clean | 1 | walk | Jazz shuffle alla Count Basie: quarti di chitarra, rullante su 2 e 4 |
+| `jazz/basie` | clean | 1 | walk | quarti di chitarra, rullante su 2 e 4 |
 | `jazz/modal` | clean | 1 | walk | due accordi in levare lasciati suonare (stile So What) |
 | `jazz/funk` | clean | 0 | funk | accordi corti a sedicesimi, batteria funk |
 | `jazz/gypsy` | clean | 1 | two | la pompe, basso corto su 1 e 3 e chop forte su 2 e 4 |
@@ -179,7 +191,7 @@
 | Groove | Ampli | Swing | Basso | Descrizione |
 |---|---|---|---|---|
 | `soul` | clean | 0 | eighths | chop sul 2 e 4, rullante su tutti i tempi |
-| `soul/ballad` | clean | 0 | slow | Soul ballad 12/8 (doo-wop): accordi sulle terzine, ride, basso lento |
+| `soul/ballad` | clean | 0 | slow | accordi sulle terzine, ride, basso lento |
 | `soul/memphis` | clean | 0 | dotted | stab corti sul 2 e 4 (stile Steve Cropper) |
 | `soul/gospel` | clean | 0 | slow | accordo lungo e chop sulle terzine, ride |
 | `soul/northern` | clean | 0 | eighths | cassa in quattro, rullante su tutti i tempi, uptempo |
@@ -196,4 +208,8 @@
 
 </details>
 
-`backingtrack grooves` mostra l'elenco aggiornato.
+<!-- foot -->
+---
+
+<p align="center"><a href="formato.md">⬅ Precedente: 📝 Formato</a> · <a href="#">⬆ Inizio pagina</a> · <a href="brani.md">Successiva: 📚 Brani ➡</a></p>
+<!-- /foot -->

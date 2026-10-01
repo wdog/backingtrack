@@ -1,6 +1,20 @@
 # 📦 Installazione, aggiornamento e diagnosi
 
-[⬅ README](../README.md) · [Installazione](installazione.md) · [Editor grafico](gui.md) · [Tutorial ed esempi](tutorial.md) · [Formato](formato.md) · [Groove](groove.md) · [Brani](brani.md) · [Comandi](comandi.md) · [FAQ](faq.md) · [Sviluppo](sviluppo.md)
+<!-- nav -->
+<p align="center">
+  <a href="../../README.it.md">🏠 Home</a> ·
+  <b>📦 Installazione</b> ·
+  <a href="gui.md">🖥️ Editor grafico</a> ·
+  <a href="tutorial.md">🎓 Tutorial</a> ·
+  <a href="formato.md">📝 Formato</a> ·
+  <a href="groove.md">🥁 Groove</a> ·
+  <a href="brani.md">📚 Brani</a> ·
+  <a href="comandi.md">⌨️ Comandi</a> ·
+  <a href="faq.md">❓ FAQ</a> ·
+  <a href="sviluppo.md">⚙️ Sviluppo</a>
+</p>
+<p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/installation.md">🇬🇧 English</a></p>
+<!-- /nav -->
 
 ## 📦 Installazione
 
@@ -114,7 +128,7 @@ fa la stessa cosa.
 | Comando | A cosa serve |
 |---|---|
 | `backingtrack update` | aggiorna alla versione `main` |
-| `backingtrack update --ref v1.1` | installa un branch o un tag preciso |
+| `backingtrack update --ref v1.2.0` | installa un branch o un tag preciso |
 | `backingtrack update --src ~/backingtrack` | aggiorna da una copia locale: utile per provare le modifiche prima di pubblicarle |
 
 Se lavori sul codice (cartella con `.git`), `update` ti ricorda di usare `git pull` e si limita ai campioni.
@@ -143,10 +157,10 @@ backingtrack doctor
 ```
 
 ```
-♪ backingtrack 1.0.0  — diagnosi
+♪ backingtrack 1.2.0  — diagnosi
 
 Programma
-  ✓ versione     1.0.0
+  ✓ versione     1.2.0
   ✓ installato   pipx (~/.local/share/pipx/venvs/backingtrack)
   ✓ python       3.12.3
 
@@ -169,6 +183,8 @@ Tutto pronto! 🎸
 Controlla programma, dipendenze (anche la GUI), campioni, **rilegge alcuni file a caso** per scoprire campioni
 rovinati e mostra le cartelle usate. Se qualcosa non va, chiude con l'elenco numerato di **cosa fare**, con il comando
 giusto per il tuo sistema.
+
+La lingua dei messaggi segue il sistema; per sceglierla usa `BACKINGTRACK_LANG=it` o `BACKINGTRACK_LANG=en`.
 
 ### 🗑️ Disinstallare
 
@@ -193,3 +209,9 @@ rm -rf ~/.local/share/backingtrack ~/.cache/backingtrack
 
 Su Windows togli anche `%LOCALAPPDATA%\backingtrack\venv\Scripts` dalla variabile PATH dell'utente.
 Per liberare spazio senza disinstallare: `backingtrack remove bass` (o un altro pacchetto).
+
+<!-- foot -->
+---
+
+<p align="center"><a href="#">⬆ Inizio pagina</a> · <a href="gui.md">Successiva: 🖥️ Editor grafico ➡</a></p>
+<!-- /foot -->

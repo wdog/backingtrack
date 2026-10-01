@@ -1,6 +1,20 @@
 # 🖥️ Editor grafico
 
-[⬅ README](../README.md) · [Installazione](installazione.md) · [Editor grafico](gui.md) · [Tutorial ed esempi](tutorial.md) · [Formato](formato.md) · [Groove](groove.md) · [Brani](brani.md) · [Comandi](comandi.md) · [FAQ](faq.md) · [Sviluppo](sviluppo.md)
+<!-- nav -->
+<p align="center">
+  <a href="../../README.it.md">🏠 Home</a> ·
+  <a href="installazione.md">📦 Installazione</a> ·
+  <b>🖥️ Editor grafico</b> ·
+  <a href="tutorial.md">🎓 Tutorial</a> ·
+  <a href="formato.md">📝 Formato</a> ·
+  <a href="groove.md">🥁 Groove</a> ·
+  <a href="brani.md">📚 Brani</a> ·
+  <a href="comandi.md">⌨️ Comandi</a> ·
+  <a href="faq.md">❓ FAQ</a> ·
+  <a href="sviluppo.md">⚙️ Sviluppo</a>
+</p>
+<p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/gui.md">🇬🇧 English</a></p>
+<!-- /nav -->
 
 ```sh
 backingtrack gui                 # nuovo brano
@@ -9,12 +23,15 @@ backingtrack gui mio_brano.yaml  # apri un brano
 
 Su Linux l'installer aggiunge anche la voce **backingtrack** nel menu delle applicazioni.
 
-<p align="center"><img src="gui-sezioni.jpg" alt="editor: pagina Sezioni" width="900"></p>
+<p align="center"><img src="../gui-sezioni-it.jpg" alt="editor: pagina Sezioni" width="900"></p>
 
 La finestra ha tre schede (**Brano**, **Sezioni**, **YAML**) e mostra solo l'essenziale: il pulsante **⚙ Avanzate**
 (o Brano ▸ Impostazioni avanzate) apre le impostazioni di dettaglio, e la scelta viene ricordata. Le spiegazioni
 stanno nei tooltip: passa col mouse su una voce per leggerle. Tema scuro in stile [Dracula](https://draculatheme.com),
 con accento viola e rosa.
+
+**🌐 Lingua**: Aiuto ▸ Lingua / Language ▸ 🇮🇹 Italiano · 🇬🇧 English. L'editor si riavvia nella lingua scelta e
+riprende il brano da dove eri (modifiche non salvate comprese). La prima volta usa la lingua del sistema.
 
 ## 🎵 Brano
 
@@ -26,7 +43,7 @@ menu e non si può inserire un valore fuori scala.
 Il **groove** si sceglie da un menu diviso per stile (🤘 Rock, 🎷 Blues, 🕺 Rockabilly, 🤠 Country, 🎺 Jazz,
 🪩 Funk, 🌴 Reggae, 🎤 Soul), con una breve descrizione di ogni voce; quella completa compare sotto il menu.
 
-<p align="center"><img src="gui-brano.jpg" alt="editor: pagina Brano" width="700"></p>
+<p align="center"><img src="../gui-brano-it.jpg" alt="editor: pagina Brano" width="700"></p>
 
 ## 🧩 Sezioni
 
@@ -58,6 +75,8 @@ colonne si impilano.
 - Pulsanti rapidi: duplica, `+ %` (ripeti la battuta precedente), `+ N.C.` (pausa), `+ vuota`, **Svuota**.
 
 ### 🎸 Scale
+
+<p align="center"><img src="../gui-scale-it.jpg" alt="scheda Scale: tastiera con box CAGED e scale suggerite" width="900"></p>
 
 Una **tastiera** (tasti 0–15, corda 1 in alto come nelle tablature) con le note della scala scelta, in qualsiasi
 tonalità:
@@ -136,7 +155,7 @@ solo dopo la prima generazione:
 **Aiuto ▸ Guida** (`F1`) spiega ogni parte della finestra: Inizio, Brano, Sezioni, Accordi, Tonalità, Scale,
 Player e Tasti.
 
-<p align="center"><img src="gui-guida.jpg" alt="guida integrata: pagina Tonalità" width="640"></p>
+<p align="center"><img src="../gui-guida-it.jpg" alt="guida integrata: pagina Tonalità" width="640"></p>
 
 ## 💾 Salvataggio e bozza automatica
 
@@ -163,3 +182,9 @@ Il menu **File ▸ Apri esempio** carica al volo uno dei brani inclusi.
 
 Spazio, B, S e L funzionano quando **non** stai scrivendo in un campo: così puoi digitare `Bb` o `Dsus4` senza
 problemi.
+
+<!-- foot -->
+---
+
+<p align="center"><a href="installazione.md">⬅ Precedente: 📦 Installazione</a> · <a href="#">⬆ Inizio pagina</a> · <a href="tutorial.md">Successiva: 🎓 Tutorial ➡</a></p>
+<!-- /foot -->

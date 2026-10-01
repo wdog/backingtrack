@@ -1,8 +1,20 @@
 # 📝 Formato della canzone
 
-[⬅ README](../README.md) · [Installazione](installazione.md) · [Editor grafico](gui.md) · [Tutorial ed esempi](tutorial.md) · [Formato](formato.md) · [Groove](groove.md) · [Brani](brani.md) · [Comandi](comandi.md) · [FAQ](faq.md) · [Sviluppo](sviluppo.md)
-
-## 📝 Formato della canzone
+<!-- nav -->
+<p align="center">
+  <a href="../../README.it.md">🏠 Home</a> ·
+  <a href="installazione.md">📦 Installazione</a> ·
+  <a href="gui.md">🖥️ Editor grafico</a> ·
+  <a href="tutorial.md">🎓 Tutorial</a> ·
+  <b>📝 Formato</b> ·
+  <a href="groove.md">🥁 Groove</a> ·
+  <a href="brani.md">📚 Brani</a> ·
+  <a href="comandi.md">⌨️ Comandi</a> ·
+  <a href="faq.md">❓ FAQ</a> ·
+  <a href="sviluppo.md">⚙️ Sviluppo</a>
+</p>
+<p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/format.md">🇬🇧 English</a></p>
+<!-- /nav -->
 
 ### Chiavi principali
 
@@ -90,3 +102,9 @@ Tonica `A`…`G` con `#` o `b`, poi uno di questi suffissi, e un basso opzionale
 | alterati | `7#9`, `7b9`, `7#5`, `aug`, `+`, `dim`, `°` |
 | sospesi | `sus2`, `sus4` |
 | power chord | `5` |
+
+<!-- foot -->
+---
+
+<p align="center"><a href="tutorial.md">⬅ Precedente: 🎓 Tutorial</a> · <a href="#">⬆ Inizio pagina</a> · <a href="groove.md">Successiva: 🥁 Groove ➡</a></p>
+<!-- /foot -->
