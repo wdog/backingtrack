@@ -236,6 +236,9 @@ CSS = ("""
         --dialog-fg-color: #f8f8f2; --success-color: #50fa7b; --warning-color: #ffb86c;
         --error-color: #ff5555; --destructive-color: #ff5555; }
 window, .background { background-color: #282a36; color: #f8f8f2; }
+popover.background { background-color: transparent; }  /* .background colpisce anche i popup: solo contents è pieno */
+menubar > item { border: none; border-radius: 6px; padding: 4px 10px; }
+menubar > item:selected { background-color: alpha(#bd93f9, 0.28); color: #f8f8f2; box-shadow: none; border: none; }
 headerbar, .navigation-sidebar, popover > contents { background-color: #21222c; color: #f8f8f2; }
 selection { background-color: alpha(#bd93f9, 0.35); }
 :root { --accent-bg-color: #bd93f9; --accent-fg-color: #282a36; --accent-color: #caa9fa; }
@@ -1143,6 +1146,7 @@ class Player(Gtk.Revealer):
         # Con NONE o CROSSFADE il Revealer nascosto occupa comunque tutta l'altezza del player.
         super().__init__(transition_type=Gtk.RevealerTransitionType.SLIDE_UP, transition_duration=0,
                          reveal_child=False)
+        self.set_visible(False)  # anche nascosto il Revealer chiede la larghezza minima del player: via del tutto
         self.win = win
         self.media = None
         outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -1202,6 +1206,7 @@ class Player(Gtk.Revealer):
         loop.append(Gtk.Label(label="–"))
         loop.append(self.loop_to)
         box.append(loop)
+        self.loop_box = loop
 
         # forma d'onda + avanzamento disegnato sopra
         self.wave = Gtk.Picture(content_fit=Gtk.ContentFit.FILL, can_shrink=True, hexpand=True)
@@ -1230,7 +1235,9 @@ class Player(Gtk.Revealer):
         self.volume.connect("value-changed", lambda sc: self.media and self.media.set_volume(sc.get_value()))
         vol.append(self.volume)
         box.append(vol)
-        box.append(self._button("folder-open-symbolic", "Apri la cartella dei file generati", win.open_output_dir))
+        self.vol_box = vol
+        self.folder_btn = self._button("folder-open-symbolic", "Apri la cartella dei file generati", win.open_output_dir)
+        box.append(self.folder_btn)
         outer.append(box)
         self.strip = ChordStrip(self)
         outer.append(self.strip)
@@ -1257,6 +1264,7 @@ class Player(Gtk.Revealer):
         self.media.connect("notify::playing", self._update_icon)
         self.title.set_label(title)
         self.wave.set_filename(str(wave_png) if wave_png else None)
+        self.set_visible(True)
         self.set_reveal_child(True)
         self.media.play()
 
@@ -1441,6 +1449,10 @@ class MainWindow(Adw.ApplicationWindow):
         bp.add_setter(switcher, "policy", Adw.ViewSwitcherPolicy.NARROW)
         bp.add_setter(self.render_label, "label", "Genera")
         bp.add_setter(keycap, "visible", False)
+        # finestra affiancata (es. metà di uno schermo 1366): elenco sezioni a scomparsa, player più corto
+        bp.add_setter(self.split, "collapsed", True)
+        bp.add_setter(self.player.vol_box, "visible", False)
+        bp.add_setter(self.player.folder_btn, "visible", False)
         self.add_breakpoint(bp)
         bp_small = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 600sp"))
         bp_small.add_setter(self.split, "collapsed", True)
@@ -1448,6 +1460,9 @@ class MainWindow(Adw.ApplicationWindow):
         bp_small.add_setter(switcher, "policy", Adw.ViewSwitcherPolicy.NARROW)
         bp_small.add_setter(self.render_label, "label", "Genera")
         bp_small.add_setter(keycap, "visible", False)
+        bp_small.add_setter(self.player.vol_box, "visible", False)
+        bp_small.add_setter(self.player.folder_btn, "visible", False)
+        bp_small.add_setter(self.player.loop_box, "visible", False)
         self.add_breakpoint(bp_small)
 
         self.set_advanced(load_prefs().get("advanced", False))
