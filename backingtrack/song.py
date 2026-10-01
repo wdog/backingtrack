@@ -99,7 +99,7 @@ def build_timeline(song, groove_override=None):
 
     timeline = []
     for sec, reps in order:
-        for _ in range(reps):
+        for _rep in range(reps):
             for i, segs in enumerate(sec["bars"]):
                 timeline.append(dict(sec=sec, segs=segs, index=i,
                                      first=i == 0, last=i == len(sec["bars"]) - 1))

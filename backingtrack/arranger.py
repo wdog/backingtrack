@@ -178,7 +178,7 @@ class Arranger:
                         end_beat = beat + ev[3]
                     else:
                         end_beat = events[k + 1][0] if k + 1 < len(events) else 4
-                    for s, _, _ in segs:  # non suonare oltre un cambio accordo
+                    for s, _d, _c in segs:  # non suonare oltre un cambio accordo
                         if beat < s < end_beat:
                             end_beat = s
                     t0 = tick + self.swing(beat, swing) * PPQ
