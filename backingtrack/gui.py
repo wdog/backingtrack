@@ -144,9 +144,10 @@ HELP = [
         ("Pentatoniche e blues", "pentatonica minore e maggiore (5 note), blues minore (+ b5) e maggiore (+ b3)"),
         ("Maggiore e minori", "maggiore, minore naturale, armonica (7 maggiore) e melodica (6 e 7 maggiori)"),
         ("Modi", "dorica (minore con la 6), misolidia (maggiore con la b7), lidia (#4), frigia (b2)"),
-        ("code", [("● viola", "tonica: la nota «casa», dove le frasi si chiudono bene"),
+        ("code", [("● viola, grande", "tonica: la nota «casa», dove le frasi si chiudono bene"),
                   ("● rosa", "blue note nei blues; nei modi la nota caratteristica, quella che dà il colore"),
-                  ("● azzurro", "le altre note della scala")]),
+                  ("● azzurro pieno", "terza e quinta: le note dell'accordo, sicure su cui fermarsi"),
+                  ("○ azzurro vuoto", "le altre note della scala: di passaggio")]),
         ("h", "Sistema CAGED"),
         ("p", "Gli accordi aperti C, A, G, E e D, spostati lungo il manico, dividono la tastiera in <b>5 box</b> "
               "che si incastrano: ogni box è una posizione in cui la mano suona la scala senza spostarsi. "
@@ -157,6 +158,21 @@ HELP = [
                       "unirli (es. Em + Dm = tasti 5–10); clic su quello all'estremità per toglierlo. "
                       "Si possono cliccare anche le fasce colorate sulla tastiera"),
         ("Etichette", "Note (A, C, D…) o Gradi (1, b3, 4…): i gradi valgono in ogni tonalità"),
+        ("h", "Box blues"),
+        ("B.B. King box", "1 2 b3 4 5 6 sulle tre corde alte, tonica sulla 2a corda (in A al 10° tasto): "
+                          "va bene su tutti gli accordi del blues. C'è anche la stessa forma una corda sotto"),
+        ("Albert King box", "1 b3 4 5 b7 in cima al 2° box della pentatonica minore (in A ai tasti 8–10): "
+                            "fatto per le tirate"),
+        ("h", "Scala suggerita"),
+        ("p", "In alto, «Suggerite per …» legge gli accordi della sezione aperta e propone le scale adatte: "
+              "un 12-bar in A dà A blues minore, maggiore, misolidia e i box blues; Am7–D7 dà A dorica; "
+              "A–G–D dà A misolidia; C–G–Am–F dà C maggiore. Un clic e la tastiera si imposta. La tonalità è "
+              "quella del primo accordo della sezione."),
+        ("h", "Segui gli accordi"),
+        ("p", "Accendi <b>Segui gli accordi</b> e premi play (il pulsante compare solo in questa modalità): "
+              "mentre la base suona, le note dell'accordo della battuta corrente hanno un anello giallo, quelle "
+              "fuori scala (es. il C# di A7 sulla blues minore) un pallino giallo, il resto si attenua. "
+              "Accanto al play: l'accordo e le sue note."),
     ]),
     ("Player", "▶️", [
         ("Forma d'onda", "le sezioni a colori; clic = salta lì"),
@@ -303,6 +319,19 @@ viewswitcher button:checked { color: #caa9fa; box-shadow: inset 0 -3px #bd93f9; 
 .bar-handle { opacity: 0.35; font-size: 1.1em; padding: 0 2px; }
 .bar-handle:hover { opacity: 0.9; }
 .bar-add { min-height: 34px; font-size: 1.2em; }
+/* scheda Scale: compatta, con le scale suggerite in evidenza */
+.scales-page .chip, .scales-page button.picker, .scales-page menubutton.picker > button { min-height: 22px; padding: 1px 8px; }
+.suggest { padding: 6px 8px; border-radius: 10px;
+           background-image: linear-gradient(135deg, alpha(#bd93f9, 0.28), alpha(#ff79c6, 0.18));
+           box-shadow: inset 0 0 0 1px alpha(#bd93f9, 0.55); }
+.suggest-title { font-weight: 800; color: #f8f8f2; }
+.bt-main .suggest button.chip { background-color: alpha(#282a36, 0.55); }
+.bt-main .suggest button.chip:hover { background-color: #bd93f9; color: #282a36; }
+/* tavolozza: note naturali chiare, alterazioni (tasti neri) un po' più scure */
+.bt-main button.chip.note-nat { background-color: alpha(#bd93f9, 0.22); }
+.bt-main button.chip.note-nat:hover { background-color: alpha(#bd93f9, 0.40); }
+.bt-main button.chip.note-acc { background-color: alpha(#191a21, 0.85); color: alpha(#f8f8f2, 0.85); }
+.bt-main button.chip.note-acc:hover { background-color: alpha(#bd93f9, 0.30); color: #f8f8f2; }
 .chip { padding: 2px 10px; min-height: 26px; min-width: 22px; border-radius: 8px; font-weight: bold; }
 toggle-group { background: alpha(currentColor, 0.08); border-radius: 10px; padding: 3px; }
 toggle-group > toggle { padding: 4px 11px; margin: 0 1px; border-radius: 8px; font-weight: 600; min-height: 24px; }
@@ -1023,8 +1052,13 @@ SCALE_DESC = {
     "Frigia": "minore con la b2: spagnolo, flamenco, metal",
     "Minore armonica": "minore con la 7 maggiore: neoclassico, gipsy, sopra il V7 in minore",
     "Minore melodica": "minore con 6 e 7 maggiori: jazz",
+    "Albert King box": "1 b3 4 5 b7 sulle corde alte, in cima al 2° box della pentatonica minore: "
+                       "tirate lunghe sulla b3 e sulla 4",
+    "B.B. King box": "1 2 b3 4 5 6 in una posizione, tonica sulla 2a corda: va su tutti gli accordi del blues. "
+                     "Tira la b3 verso la 3",
 }
-CAGED_COLORS = {"C": "#ffb86c", "A": "#50fa7b", "G": "#f1fa8c", "E": "#8be9fd", "D": "#ff5555"}
+CAGED_COLORS = {"C": "#ffb86c", "A": "#50fa7b", "G": "#f1fa8c", "E": "#8be9fd", "D": "#ff5555",
+                "BB": "#ff79c6", "BB giù": "#bd93f9", "AK": "#ffb86c", "AK giù": "#50fa7b"}
 
 
 def draw_text(cr, text, font, cx, cy, rgba):
@@ -1038,14 +1072,38 @@ def draw_text(cr, text, font, cx, cy, rgba):
     PangoCairo.show_layout(cr, layout)
 
 
+def scale_label(scale):
+    """Nome della scala dentro una frase: minuscolo, salvo i nomi propri (B.B. King)."""
+    return scale if scale.startswith(("B.B.", "Albert")) else scale.lower()
+
+
+def chord_tones(chord):
+    """{classe di altezza: (funzione, nome)} per tonica, terza, quinta e settima, coi nomi giusti (C# in A7)."""
+    if chord is None:
+        return {}
+    letters = "CDEFGAB"
+    first = letters.index(chord.name[0])
+    out = {chord.root: ("R", chord.name[:2] if chord.name[1:2] in ("#", "b") else chord.name[0])}
+    for iv, deg, name in ((chord.third, {3: 3, 4: 3, 5: 4, 2: 2}, {3: "b3", 4: "3", 5: "4", 2: "2"}),
+                          (chord.fifth, {7: 5, 6: 5, 8: 5}, {7: "5", 6: "b5", 8: "#5"}),
+                          (chord.seventh, {10: 7, 11: 7, 9: 6}, {10: "b7", 11: "7", 9: "6"})):
+        if iv is not None:
+            pc = (chord.root + iv) % 12
+            letter = letters[(first + deg.get(iv, 1) - 1) % 7]
+            acc = {0: "", 1: "#", 2: "##", 11: "b", 10: "bb"}.get((pc - theory.NOTE_PC[letter]) % 12, "?")
+            out[pc] = (name.get(iv, str(iv)), letter + acc)
+    return out
+
+
 class Fretboard(Gtk.DrawingArea):
     """Manico (corda 1 in alto, tasti 0-15) con le note di una scala e i box CAGED colorati."""
     FRETS = 15
 
     def __init__(self, on_box_click=None):
-        super().__init__(hexpand=True, content_height=265)
-        self.set_size_request(520, -1)
+        super().__init__(hexpand=True, content_height=235)
+        self.set_size_request(420, -1)
         self.root, self.scale, self.shapes, self.degrees = 9, "Blues minore", "", False
+        self.chord = None  # Chord che sta suonando (modalità «segui gli accordi»), None = solo la scala
         self.boxes_x = []  # (forma, x da, x a) dell'ultimo disegno, per il clic
         self.set_draw_func(self._draw)
         if on_box_click:  # clic su una fascia = seleziona/deseleziona quel box
@@ -1058,13 +1116,21 @@ class Fretboard(Gtk.DrawingArea):
         if hits:
             callback(min(hits)[1])
 
+    def set_chord(self, chord):
+        """True se è cambiato."""
+        if (chord and chord.name) != (self.chord and self.chord.name):
+            self.chord = chord
+            self.queue_draw()
+            return True
+        return False
+
     def update(self, root, scale, shapes, degrees):
         """shapes: box selezionati in ordine CAGED ("" = tutti)."""
         self.root, self.scale, self.shapes, self.degrees = root, scale, shapes, degrees
         self.queue_draw()
 
     def _draw(self, _area, cr, w, h):
-        left, right, top, bottom, open_w = 30, 12, 34, 36, 34
+        left, right, top, bottom, open_w = 28, 10, 32, 30, 30
         fw = (w - left - right - open_w) / self.FRETS
         sh = (h - top - bottom) / 5
 
@@ -1091,7 +1157,7 @@ class Fretboard(Gtk.DrawingArea):
             cr.set_source_rgba(r, g, bl, 0.8)
             cr.rectangle(xa + 1, 4 + lane * 13, xb - xa - 2, 2)
             cr.fill()
-            draw_text(cr, shape + ("m" if minor else ""), "Sans Bold 9", (xa + xb) / 2, 12 + lane * 13,
+            draw_text(cr, shape + ("m" if minor and len(shape) == 1 else ""), "Sans Bold 9", (xa + xb) / 2, 12 + lane * 13,
                       (r, g, bl, 1))
 
         fg = (0.97, 0.97, 0.95)
@@ -1125,17 +1191,61 @@ class Fretboard(Gtk.DrawingArea):
         info = theory.SCALES[self.scale]
         note_names = theory.scale_names(self.root, self.scale)
         rad = min(fw, sh) * 0.4
+        steps = info["steps"]
+        chord = {iv for iv in (3, 4, 7) if iv in steps and iv != info["blue"]}  # terza e quinta dell'accordo
+        dark = (0.16, 0.16, 0.21)
+        playing = chord_tones(self.chord)  # note dell'accordo che suona: {classe di altezza: funzione}
         for string, f, iv in theory.fretboard_notes(self.root, self.scale, self.FRETS):
             inside = any(a <= f <= b for _s, a, b in shown)
-            alpha = 1 if not self.shapes or inside else 0.25
-            color = "#bd93f9" if iv == 0 else "#ff79c6" if iv == info["blue"] else "#8be9fd"
-            cr.set_source_rgba(*hex_rgb(color), alpha)
+            alpha = 1 if not self.shapes or inside else 0.22
+            if playing and (self.root + iv) % 12 not in playing:
+                alpha *= 0.3  # mentre suona un accordo, le note fuori accordo passano in secondo piano
+            x, yy = xc(f), y(string)
+            # gerarchia: tonica (grande, alone, anello) > nota caratteristica > terza e quinta > altre (vuote)
+            if iv == 0:
+                r, fill, ring, text = rad * 1.15, "#bd93f9", 2.5, dark
+                cr.set_source_rgba(*hex_rgb("#bd93f9"), 0.35 * alpha)
+                cr.new_sub_path()
+                cr.arc(x, yy, r + 5, 0, 6.3)
+                cr.fill()
+            elif iv == info["blue"]:
+                r, fill, ring, text = rad * 1.05, "#ff79c6", 2, dark
+            elif iv in chord:
+                r, fill, ring, text = rad, "#8be9fd", 0, dark
+            else:
+                r, fill, ring, text = rad * 0.85, "#44475a", 0, hex_rgb("#8be9fd")
+            cr.set_source_rgba(*hex_rgb(fill), alpha)
             cr.new_sub_path()
-            cr.arc(xc(f), y(string), rad, 0, 6.3)
+            cr.arc(x, yy, r, 0, 6.3)
             cr.fill()
+            if ring or fill == "#44475a":  # anello chiaro sulle importanti, bordo azzurro sulle altre
+                cr.set_line_width(ring or 1.5)
+                cr.set_source_rgba(*(hex_rgb("#f8f8f2") if ring else hex_rgb("#8be9fd")), (0.9 if ring else 0.7) * alpha)
+                cr.new_sub_path()
+                cr.arc(x, yy, r, 0, 6.3)
+                cr.stroke()
             label = theory.degree(self.scale, iv) if self.degrees else note_names[(self.root + iv) % 12]
-            draw_text(cr, label, "Sans Bold %d" % (8 if len(label) > 1 else 9), xc(f), y(string),
-                      (0.16, 0.16, 0.21, alpha))
+            size = 9 if iv == 0 else 8 if len(label) > 1 else 9
+            draw_text(cr, label, "Sans Bold %d" % size, x, yy, (*text, alpha))
+            if playing and (self.root + iv) % 12 in playing and alpha > 0.5:  # anello giallo = nota dell'accordo
+                cr.set_source_rgba(*hex_rgb("#f1fa8c"), 1)
+                cr.set_line_width(3)
+                cr.new_sub_path()
+                cr.arc(x, yy, r + 4, 0, 6.3)
+                cr.stroke()
+        if playing:  # note dell'accordo fuori scala (es. C# di A7 sulla blues minore): pallino giallo
+            in_scale = {(self.root + st) % 12 for st in steps}
+            for i, op in enumerate(theory.OPEN_STRINGS):
+                for f in range(self.FRETS + 1):
+                    pc = (op + f) % 12
+                    if pc in playing and pc not in in_scale and \
+                            (not self.shapes or any(a <= f <= b for _s, a, b in shown)):
+                        cr.set_source_rgba(*hex_rgb("#f1fa8c"), 0.95)
+                        cr.new_sub_path()
+                        cr.arc(xc(f), y(6 - i), rad * 0.9, 0, 6.3)
+                        cr.fill()
+                        draw_text(cr, playing[pc][0] if self.degrees else playing[pc][1], "Sans Bold 8",
+                                  xc(f), y(6 - i), (*dark, 1))
 
 
 class Player(Gtk.Revealer):
@@ -1299,6 +1409,7 @@ class Player(Gtk.Revealer):
         self.progress.queue_draw()
         self.strip.update()
         self._update_pos()
+        self.win.follow_chord(m.get_timestamp() / 1e6 if m.get_playing() else None)
 
     def _update_pos(self):
         """Battuta e sezione correnti sotto il tempo: "Battuta 7 / 64 · Strofa 3 / 8"."""
@@ -1613,24 +1724,22 @@ class MainWindow(Adw.ApplicationWindow):
 
     # ------------------------------------------------------------------ pagina Sezioni
     def _build_scales_page(self):
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12, margin_start=18, margin_end=18,
-                      margin_top=14, margin_bottom=18)
-        title = Gtk.Label(label="🎸 Scale sulla tastiera", xalign=0)
-        title.add_css_class("title-2")
-        box.append(title)
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_start=12, margin_end=12,
+                      margin_top=6, margin_bottom=10)
+        box.add_css_class("scales-page")
         scales = list(theory.SCALES)
-        self.f_key = GridPicker(sf.KEYS, note_rows(sf.KEYS), fmt=lambda i: "Tonalità: " + sf.KEYS[i])
+        self.f_key = GridPicker(sf.KEYS, note_rows(sf.KEYS), fmt=lambda i: "🔑 " + sf.KEYS[i])
         self.f_key.set_tooltip_text("La nota di partenza della scala (la «casa»): blues in A = scala di A")
         self.f_key.set_selected(sf.KEYS.index("A"))
         steps = lambda n: " ".join(theory.degree(n, st) for st in theory.SCALES[n]["steps"])
         self.f_scale = MenuRow("Scala", scales, [
             ("🎷  Pentatoniche e blues", scales[:4]), ("🎼  Maggiore e minori", [scales[4], scales[5]] + scales[10:]),
-            ("🌈  Modi", scales[6:10])], item_label=lambda n: "%s   %s" % (n, steps(n)), button_label=lambda n: n)
+            ("🌈  Modi", scales[6:10]), ("🎸  Box blues", ["B.B. King box", "Albert King box"])], item_label=lambda n: "%s   %s" % (n, steps(n)), button_label=lambda n: n)
         self.f_scale.set_selected(scales.index("Blues minore"))
         self.f_labels = MenuRow("Etichette", ["Note", "Gradi"], [], top=["Note", "Gradi"],
                                 item_label=lambda n: {"Note": "Note — A, C, D…",
                                                       "Gradi": "Gradi — 1, b3, 5…: valgono in ogni tonalità"}[n],
-                                button_label=lambda n: "Etichette: " + n)
+                                button_label=lambda n: n)
         # tutte le opzioni su una riga: dei MenuRow si usa solo il pulsante-menu (il valore resta nella riga)
         options = Gtk.Box(spacing=6)
         options.append(self.f_key)
@@ -1638,13 +1747,30 @@ class MainWindow(Adw.ApplicationWindow):
             row.remove(row.button)
             row.button.set_tooltip_text(row.get_title())
             options.append(row.button)
+        # segui gli accordi: mentre la base suona, anello giallo sulle note dell'accordo della battuta corrente
+        self.f_follow = Gtk.ToggleButton(tooltip_text="Mentre la base suona, evidenzia le note dell'accordo che sta "
+                                                      "suonando: anello giallo sulle note della scala che ne fanno "
+                                                      "parte, pallino giallo su quelle fuori scala")
+        self.f_follow.set_child(Adw.ButtonContent(icon_name="media-playlist-repeat-song-symbolic",
+                                                  label="Segui accordi"))
+        self.f_follow.add_css_class("picker")
+        options.append(self.f_follow)
+        # solo in questa modalità: play/pausa della base direttamente dalla tastiera
+        self.f_play = Gtk.Button(icon_name="media-playback-start-symbolic", tooltip_text="Play / pausa (Spazio)")
+        self.f_play.add_css_class("suggested-action")
+        self.f_play.connect("clicked", lambda _b: self.play_toggle())
+        self.f_follow.bind_property("active", self.f_play, "visible", GObject.BindingFlags.SYNC_CREATE)
+        self.f_follow.connect("toggled", lambda _b: self.follow_chord(None))
+        options.append(self.f_play)
+        self.f_now = Gtk.Label(use_markup=True, margin_start=6)  # accordo che suona e le sue note
+        options.append(self.f_now)
         self.f_boxes = ""  # box CAGED selezionati, adiacenti, in ordine lungo il manico ("" = tutti)
 
         def pick_box(shape):
             self.f_boxes = theory.toggle_box(self.f_boxes, shape) if shape else ""
             sync()
-        chips = Gtk.Box(spacing=6)
-        lab = Gtk.Label(label="Box CAGED")
+        chips = Gtk.Box(spacing=4)
+        lab = Gtk.Label(label="CAGED")
         lab.add_css_class("heading")
         lab.set_tooltip_text("Il manico diviso in 5 box, uno per forma d'accordo (C, A, G, E, D). Clic su un box "
                              "per vederlo da solo, poi sui box accanto per allargare la zona; clic su un box "
@@ -1667,8 +1793,22 @@ class MainWindow(Adw.ApplicationWindow):
         self.f_info = Gtk.Label(xalign=0, wrap=True, use_markup=True)
         self.f_legend = Gtk.Label(xalign=0, wrap=True, use_markup=True)
         self.f_legend.add_css_class("dim-label")
+        self.f_legend.add_css_class("caption")
+        # scale suggerite dagli accordi della sezione aperta: un clic imposta tonalità e scala
+        self.f_suggest = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=6,
+                                     column_spacing=4, row_spacing=4, hexpand=True, valign=Gtk.Align.CENTER,
+                                     halign=Gtk.Align.START)
+        self.f_suggest_label = Gtk.Label(xalign=0, valign=Gtk.Align.CENTER)
+        self.f_suggest_label.add_css_class("suggest-title")
+        suggest = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        suggest.add_css_class("suggest")
+        suggest.append(self.f_suggest_label)
+        suggest.append(self.f_suggest)
+        self.f_suggest_row = suggest
+        box.append(suggest)
         box.append(options)
         box.append(chips)
+        self.f_chips_row = chips
         box.append(card)
         box.append(self.f_info)
         box.append(self.f_legend)
@@ -1677,6 +1817,10 @@ class MainWindow(Adw.ApplicationWindow):
             key = sf.KEYS[self.f_key.get_selected()]
             root = sf.KEYS.index(key)
             scale = scales[self.f_scale.get_selected()]
+            fixed = bool(theory.SCALES[scale].get("shapes"))  # B.B. King box: posizioni fisse, niente CAGED
+            self.f_chips_row.set_visible(not fixed)
+            if fixed:
+                self.f_boxes = ""
             self.fretboard.update(root, scale, self.f_boxes, self.f_labels.get_selected() == 1)
             for c, b in self.f_chips.items():
                 (b.add_css_class if (c in self.f_boxes if c else not self.f_boxes) else
@@ -1693,17 +1837,19 @@ class MainWindow(Adw.ApplicationWindow):
             blue = info["blue"]
             kind = "blue note" if scale.startswith("Blues") else "nota caratteristica"
             self.f_info.set_label("<b>%s %s</b>:  %s%s\n<small>%s</small>" % (
-                names[root], scale.lower(), notes,
+                names[root], scale_label(scale), notes,
                 "   ·   %s <b>%s</b> (%s)" % (kind, names[(root + blue) % 12], theory.degree(scale, blue))
                 if blue is not None else "", GLib.markup_escape_text(SCALE_DESC[scale])))
             self.f_legend.set_label(
                 "<span foreground='#bd93f9'>●</span> tonica   " +
                 ("<span foreground='#ff79c6'>●</span> %s   " % kind if blue is not None else "") +
-                "<span foreground='#8be9fd'>●</span> altre note della scala   ·   corda 1 (mi cantino) in alto")
+                "<span foreground='#8be9fd'>●</span> terza e quinta (note dell'accordo)   "
+                "<span foreground='#8be9fd'>○</span> altre note   ·   corda 1 (mi cantino) in alto")
         for w in (self.f_key, self.f_scale, self.f_labels):
             w.connect("notify::selected", sync)
         sync()
-        return Gtk.ScrolledWindow(child=box, hscrollbar_policy=Gtk.PolicyType.AUTOMATIC, vexpand=True)
+        self.f_scales = scales
+        return Gtk.ScrolledWindow(child=box, hscrollbar_policy=Gtk.PolicyType.NEVER, vexpand=True)
 
     def _build_sections_page(self):
         self.split = Adw.OverlaySplitView(min_sidebar_width=180, max_sidebar_width=280, sidebar_width_fraction=0.24,
@@ -1798,9 +1944,20 @@ class MainWindow(Adw.ApplicationWindow):
         quick.append(clear)
         tools.append(quick)
         chords.append(tools)
-        pal_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
-        pal = Gtk.Box(spacing=12)
-        pal_label = Gtk.Label(label="🎨 Tavolozza", valign=Gtk.Align.START, margin_top=6)
+        # una riga: a sinistra gli accordi già usati nel brano, a destra la tavolozza con le 12 note
+        pal_box = Gtk.Box(spacing=14)
+        used = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, hexpand=True)
+        used_label = Gtk.Label(label="Usati nel brano", xalign=0)
+        used_label.add_css_class("heading")
+        used.append(used_label)
+        self.palette = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=8,
+                                   column_spacing=4, row_spacing=4, hexpand=True, valign=Gtk.Align.START,
+                                   halign=Gtk.Align.START)
+        used.append(self.palette)
+        pal_box.append(used)
+        pal_box.append(Gtk.Separator(orientation=Gtk.Orientation.VERTICAL))
+        pal = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        pal_label = Gtk.Label(label="🎨 Tavolozza", xalign=0)
         pal_label.add_css_class("heading")
         pal_label.set_tooltip_text("Clic = aggiungi alla battuta selezionata · trascina su una battuta per metterlo lì")
         pal.append(pal_label)
@@ -1810,17 +1967,11 @@ class MainWindow(Adw.ApplicationWindow):
         for r, row in enumerate(note_rows(sf.KEYS)):
             for c, i in enumerate(row):
                 if i is not None:
-                    notes.attach(self._palette_chip(sf.KEYS[i]), c, r, 1, 1)
+                    chip = self._palette_chip(sf.KEYS[i])
+                    chip.add_css_class("note-acc" if r else "note-nat")  # alterazioni più scure, come i tasti neri
+                    notes.attach(chip, c, r, 1, 1)
         pal.append(notes)
         pal_box.append(pal)
-        used = Gtk.Box(spacing=12)
-        used_label = Gtk.Label(label="Usati nel brano", xalign=0, valign=Gtk.Align.START, margin_top=6)
-        used_label.add_css_class("dim-label")
-        used.append(used_label)
-        self.palette = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=20,
-                                   column_spacing=4, row_spacing=4, hexpand=True, valign=Gtk.Align.START)
-        used.append(self.palette)
-        pal_box.append(used)
         chords.append(pal_box)
         self.flow = Gtk.FlowBox(max_children_per_line=4, min_children_per_line=2, homogeneous=True,
                                 selection_mode=Gtk.SelectionMode.NONE, column_spacing=4, row_spacing=4,
@@ -2099,6 +2250,7 @@ class MainWindow(Adw.ApplicationWindow):
         """Accordi già usati nel brano (le 12 note sono fisse, accanto)."""
         if not hasattr(self, "palette"):
             return
+        self.update_scale_suggestions()
         self.palette.remove_all()
         seen = []
         for sec in self.song["sections"]:
@@ -2109,6 +2261,44 @@ class MainWindow(Adw.ApplicationWindow):
                         seen.append(tok)
         for tok in seen[:24]:
             self.palette.append(self._palette_chip(tok))
+
+    def follow_chord(self, t):
+        """Chiamata dal player a ogni tick: t = secondi (None = fermo). Aggiorna l'accordo sulla tastiera."""
+        if not hasattr(self, "fretboard"):
+            return
+        playing = self.player.media is not None and self.player.media.get_playing()
+        self.f_play.set_icon_name("media-playback-pause-symbolic" if playing else "media-playback-start-symbolic")
+        chord = None
+        if t is not None and self.f_follow.get_active() and self.player.strip.bars:
+            b = self.player.strip.bars[self.player.strip.current(t)]
+            beat = (t - b["start"]) / b["dur"] * 4 if b["num"] is not None else -1
+            name = next((c for s0, d, c in b["segs"] if s0 <= beat < s0 + d), None)
+            try:
+                chord = Chord(name) if name and name != "N.C." else None
+            except SongError:
+                chord = None
+        if self.fretboard.set_chord(chord):
+            tones = chord_tones(chord)
+            self.f_now.set_label("<span foreground='#f1fa8c' weight='bold' size='large'>♪ %s</span>  %s" % (
+                GLib.markup_escape_text(chord.name), "  ".join(n for _f, n in tones.values())) if chord else "")
+
+    def update_scale_suggestions(self):
+        """Chip «scala suggerita» per la sezione aperta (scheda Scale)."""
+        if not hasattr(self, "f_suggest"):
+            return
+        sec = self.section
+        tokens = [t for bar in (sec["bars"] if sec else []) for t in bar.split()]
+        found = theory.suggest_scales(tokens)
+        self.f_suggest.remove_all()
+        self.f_suggest_row.set_visible(bool(found))
+        self.f_suggest_label.set_label("✨ Suggerite per «%s»" % (sec["name"] or "sezione") if sec else "")
+        for root, scale, why in found:
+            name = theory.scale_names(root, scale)[root]
+            chip = Gtk.Button(label="%s %s" % (name, scale_label(scale)), tooltip_text="%s · %s" % (why, SCALE_DESC[scale]))
+            chip.add_css_class("chip")
+            chip.connect("clicked", lambda _b, r=root, sc=scale: (
+                self.f_key.set_selected(r), self.f_scale.set_selected(self.f_scales.index(sc))))
+            self.f_suggest.append(chip)
 
     def _palette_chip(self, chord):
         chip = Gtk.Button(label=chord, tooltip_text="Clic: aggiungi alla battuta selezionata · trascina su una battuta")
@@ -2368,6 +2558,7 @@ class MainWindow(Adw.ApplicationWindow):
         if self._loading:
             return
         self.dirty = True
+        self.update_scale_suggestions()
         if not self._refresh_id:
             self._refresh_id = GLib.timeout_add(200, self.refresh)
 

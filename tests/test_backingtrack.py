@@ -280,3 +280,18 @@ class TestScales(unittest.TestCase):
         self.assertEqual(t("ED", "A"), "A")       # non adiacente: ricomincia
         self.assertEqual(t("DC", "A"), "DCA")     # ciclico: dopo D viene C
         self.assertEqual(t("E", "E"), "")         # tolto l'ultimo = tutti
+
+    def test_blues_boxes_and_suggestions(self):
+        from backingtrack import theory
+        bb = dict(theory.shape_notes(9, "B.B. King box"))["BB"]
+        self.assertIn((2, 10, 0), bb)   # A: tonica sulla 2a corda, 10° tasto
+        self.assertIn((3, 11, 9), bb)   # la 6 (F#) sulla 3a corda, un tasto sopra
+        ak = dict(theory.shape_notes(9, "Albert King box"))["AK"]
+        self.assertEqual(sorted(f for _s, f, _i in ak), [8, 8, 9, 10, 10])
+        sug = lambda t: [(theory.KEY_NAMES[r], s) for r, s, _w in theory.suggest_scales(t.split())]
+        self.assertEqual(sug("A7 D7 A7 E7")[0], ("A", "Blues minore"))
+        self.assertEqual(sug("Am7 D7")[0], ("A", "Dorica"))
+        self.assertEqual(sug("A G D A")[0], ("A", "Misolidia"))
+        self.assertEqual(sug("C G Am F")[0], ("C", "Maggiore (ionica)"))
+        self.assertEqual(sug("Am Bb")[0], ("A", "Frigia"))
+        self.assertEqual(sug(""), [])

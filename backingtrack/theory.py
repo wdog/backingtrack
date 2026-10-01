@@ -57,6 +57,17 @@ SCALES = {
     "Frigia": dict(steps=(0, 1, 3, 5, 7, 8, 10), blue=1, minor=True),
     "Minore armonica": dict(steps=(0, 2, 3, 5, 7, 8, 11), blue=11, minor=True),
     "Minore melodica": dict(steps=(0, 2, 3, 5, 7, 9, 11), blue=11, minor=True),
+    # box di B.B. King: 1 2 b3 4 5 6 in una posizione sola; la b3 (rosa) è quella da tirare verso la 3
+    "B.B. King box": dict(steps=(0, 2, 3, 5, 7, 9), blue=3, minor=False, shapes="BB"),
+    # box di Albert King: 1 b3 4 5 b7 in cima al 2° box della pentatonica minore, fatto per le tirate
+    "Albert King box": dict(steps=(0, 3, 5, 7, 10), blue=3, minor=True, shapes="AK"),
+}
+# forme fisse: (nome, corda della tonica, [(corda, intervallo)]); corde 1 = mi cantino ... 6 = MI grave
+SHAPES = {
+    "BB": (("BB", 2, ((1, 5), (1, 7), (2, 0), (2, 2), (2, 3), (3, 9))),          # classico: tonica sulla 2a
+           ("BB giù", 3, ((2, 5), (2, 7), (3, 0), (3, 2), (3, 3), (4, 9)))),    # stesso box una corda sotto
+    "AK": (("AK", 2, ((3, 7), (2, 10), (2, 0), (1, 3), (1, 5))),                 # in A: tasti 8-10
+           ("AK giù", 3, ((4, 7), (3, 10), (3, 0), (2, 3), (2, 5)))),
 }
 DEGREES = {0: "1", 1: "b2", 2: "2", 3: "b3", 4: "3", 5: "4", 6: "b5", 7: "5", 8: "b6", 9: "6", 10: "b7", 11: "7"}
 SHARP_FOUR = {"Lidia"}  # qui l'intervallo 6 è una quarta aumentata (#4), non la b5 del blues
@@ -89,8 +100,33 @@ def scale_names(root, scale):
     return names
 
 
+def shape_notes(root, scale, frets=15):
+    """Scale a forma fissa: [(nome forma, [(corda, tasto, intervallo)])] per ogni posizione sul manico."""
+    out = []
+    for name, root_string, notes in SHAPES[SCALES[scale]["shapes"]]:
+        open_root = OPEN_STRINGS[6 - root_string]
+        for rf in range(frets + 1):
+            if (open_root + rf) % 12 != root:
+                continue
+            placed = []
+            for string, iv in notes:
+                op = OPEN_STRINGS[6 - string]
+                # tasto con quell'intervallo più vicino alla tonica (la mano resta in posizione)
+                f = min((f for f in range(rf - 4, rf + 5) if (op + f - root) % 12 == iv), key=lambda f: abs(f - rf))
+                placed.append((string, f, iv))
+            if all(0 <= f <= frets for _s, f, _iv in placed):
+                out.append((name, placed))
+    return out
+
+
 def caged_boxes(root, scale, frets=15):
-    """Box CAGED visibili tra il tasto 0 e 'frets': [(forma, primo, ultimo)] ordinati lungo il manico."""
+    """Box CAGED visibili tra il tasto 0 e 'frets': [(forma, primo, ultimo)] ordinati lungo il manico.
+
+    Per le scale a forma fissa (B.B. King box) ritorna le posizioni di quelle forme.
+    """
+    if SCALES[scale].get("shapes"):
+        return sorted(((n, min(f for _s, f, _i in ps), max(f for _s, f, _i in ps))
+                       for n, ps in shape_notes(root, scale, frets)), key=lambda x: x[1])
     shapes = CAGED_MINOR if SCALES[scale]["minor"] else CAGED_MAJOR
     r6 = (root - OPEN_STRINGS[0]) % 12
     boxes = []
@@ -127,8 +163,77 @@ def toggle_box(selected, shape):
     return shape
 
 
+def suggest_scales(tokens):
+    """Scale adatte a una sezione, dagli accordi: [(tonica, scala, motivo)], la migliore per prima.
+
+    La tonalità è quella del primo accordo (di solito il I). Prima i casi tipici (blues, vamp modali),
+    poi la tonalità maggiore che contiene tutti gli accordi.
+    """
+    # ponytail: tonica = primo accordo; un brano che parte sul IV viene letto male, basta un'analisi delle cadenze
+    chords = []
+    for t in tokens:
+        try:
+            chords.append(Chord(t))
+        except SongError:
+            pass
+    if not chords:
+        return []
+
+    def kind(c):
+        if c.third is None:
+            return "5"
+        if c.third == 3:
+            return "dim" if c.fifth == 6 else "min"
+        return "dom" if c.seventh == 10 else "maj"
+    tonic = chords[0].root
+    rel = {((c.root - tonic) % 12, kind(c)) for c in chords}
+    ivs = {iv for iv, _k in rel}
+    k0 = kind(chords[0])
+    has = lambda iv, *kinds: any(i == iv and k in kinds for i, k in rel)
+    out = []
+
+    def add(names, why, root=tonic):
+        for n in names:
+            if (root, n) not in [(r, s) for r, s, _w in out]:
+                out.append((root, n, why))
+
+    if ivs <= {0, 5, 7} and any(k == "dom" for _i, k in rel) and all(k in ("dom", "maj", "5") for _i, k in rel):
+        add(["Blues minore", "Blues maggiore", "Misolidia", "B.B. King box", "Albert King box"], "blues: I7 IV7 V7")
+    if k0 == "min" and has(5, "dom"):
+        add(["Dorica", "Pentatonica minore", "Blues minore"], "vamp dorico: i7 e IV7")
+    if k0 == "min" and has(1, "maj"):
+        add(["Frigia"], "vamp frigio: i e bII")
+    if k0 in ("maj", "dom") and has(10, "maj", "dom"):
+        add(["Misolidia", "Pentatonica maggiore", "Blues maggiore"], "rock modale: I e bVII")
+    if k0 in ("maj", "dom") and has(2, "maj"):
+        add(["Lidia"], "vamp lidio: I e II maggiore")
+    if k0 == "min" and has(7, "dom") and not has(5, "dom"):
+        add(["Minore armonica", "Pentatonica minore"], "minore col V7")
+    if k0 == "min" and ivs <= {0, 3, 5, 7, 8, 10}:
+        add(["Blues minore", "Pentatonica minore", "Minore naturale (eolia)"], "giro minore")
+    # ripiego: la tonalità maggiore che contiene più accordi (triadi diatoniche; una settima su un grado della scala
+    # conta anche se non è diatonica: è una dominante secondaria, es. D7 in C). Basta che ne contenga i 2/3.
+    diatonic = {0: "maj", 2: "min", 4: "min", 5: "maj", 7: "maj", 9: "min", 11: "dim"}
+
+    def fits(c, key):
+        iv = (c.root - key) % 12
+        return iv in diatonic and (kind(c) in (diatonic[iv], "5", "dom") or (kind(c) == "dim" and iv == 2))
+    if not out:
+        score = lambda key: (sum(fits(c, key) for c in chords), (tonic - key) % 12 in (0, 9))
+        key = max(range(12), key=lambda k: (score(k), -((k - tonic) % 12)))
+        if score(key)[0] * 3 >= len(chords) * 2:
+            if (tonic - key) % 12 == 9 or k0 == "min":
+                add(["Minore naturale (eolia)", "Pentatonica minore", "Blues minore"], "accordi della scala minore")
+            else:
+                add(["Maggiore (ionica)", "Pentatonica maggiore", "Blues maggiore"], "accordi della scala maggiore",
+                    root=key)
+    return out[:5]
+
+
 def fretboard_notes(root, scale, frets=15):
     """Note della scala sul manico: [(corda 6..1, tasto, intervallo dalla tonica)]."""
+    if SCALES[scale].get("shapes"):  # solo le note delle forme, non tutto il manico
+        return sorted({n for _name, ps in shape_notes(root, scale, frets) for n in ps})
     steps = set(SCALES[scale]["steps"])
     return [(6 - i, f, (op + f - root) % 12) for i, op in enumerate(OPEN_STRINGS)
             for f in range(frets + 1) if (op + f - root) % 12 in steps]

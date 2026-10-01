@@ -85,7 +85,10 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
   poi `backingtrack setup`. Variabili: `BT_BASS`, `BT_NO_SAMPLES`, `BT_YES`, `BT_REF`, `BT_SRC` (sorgente locale per test:
   `HOME=/tmp/h BT_SRC=$PWD BT_NO_SAMPLES=1 bash install.sh`).
 - `install.ps1`: equivalente Windows (`irm ... | iex`), venv in `%LOCALAPPDATA%\backingtrack`.
-- README: indice in cima; le tabelle groove (generate da `GROOVES`, una tendina per stile) ed elenco brani vanno tenute allineate a `GROOVES` e `examples/`.
+- Documentazione: `README.md` corto (caratteristiche, installazione rapida, avvio, sviluppo: come creare un groove,
+  software e licenze) + `docs/*.md` una pagina per argomento (installazione, gui, tutorial, formato, groove, brani,
+  comandi, faq, sviluppo). `docs/groove.md` (tabelle da `GROOVES`, una tendina per stile) e `docs/brani.md` vanno
+  tenute allineate a `GROOVES` e `examples/`; `docs/gui.md` ai controlli della GUI.
 
 ## Campioni
 
@@ -139,7 +142,7 @@ Nuovo stile = prefisso del nome + `STYLE_EMOJI`/`STYLE_NAMES` in gui.py + logo (
 Batteria: solo note in `SALAMANDER_MAP` (niente cowbell/clap: si usa `BELL` 53 = campana del ride).
 Tipi evento chitarra: `D U C P B B5 R5 R6 R7 J` (J = voicing jazz a 4 note, `Chord.jazz`).
   Voicing di D/U/C: `Chord.voicing(barre|open|jazz|triad)`, default del groove (`voicing=`), il brano lo cambia con
-  `voicing:`; forme aperte in `theory.OPEN_SHAPES` (open ripiega sul barré) + suffisso `m` (stoppato). Aggiornare la tabella groove nel README.
+  `voicing:`; forme aperte in `theory.OPEN_SHAPES` (open ripiega sul barré) + suffisso `m` (stoppato). Aggiornare la tabella in `docs/groove.md`.
 
 ## Aggiungere un ampli
 
@@ -159,4 +162,4 @@ Da fare / verificare:
 
 Preferenze dell'utente sulla GUI: niente tendine strette (Adw.ComboRow/Gtk.DropDown) né pulsanti segmentati;
 sì a pulsanti-menu con sottomenu e griglie; battute compatte a griglia col colore sezione; gli piace la barra del player.
-Aggiornare sempre README (e CLAUDE.md) quando cambia qualcosa di visibile.
+Aggiornare sempre README/docs (e CLAUDE.md) quando cambia qualcosa di visibile.
