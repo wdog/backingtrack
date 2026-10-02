@@ -124,7 +124,7 @@ and then updates the program from GitHub, keeping GUI support. Running the insta
 | Command | What it does |
 |---|---|
 | `backingtrack update` | update to the `main` version |
-| `backingtrack update --ref v1.2.0` | install a specific branch or tag |
+| `backingtrack update --ref v1.3.0` | install a specific branch or tag |
 | `backingtrack update --src ~/backingtrack` | update from a local copy: handy to test changes before publishing them |
 
 If you work on the code (folder with `.git`), `update` reminds you to use `git pull` and only handles the samples.
@@ -154,11 +154,11 @@ backingtrack doctor
 
 ```
 ╭──────────────────────────────────────────────────────────────╮
-│  ♪ backingtrack 1.2.0  ·  diagnostics                        │
+│  ♪ backingtrack 1.3.0  ·  diagnostics                        │
 ╰──────────────────────────────────────────────────────────────╯
 
 ◆ Program ──────────────────────────────────────────────────────
-  ✓ version     1.2.0
+  ✓ version     1.3.0
   ✓ installed   pipx (~/.local/share/pipx/venvs/backingtrack)
   ✓ python      3.12.3
 

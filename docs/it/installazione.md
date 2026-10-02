@@ -124,7 +124,7 @@ fa la stessa cosa.
 | Comando | A cosa serve |
 |---|---|
 | `backingtrack update` | aggiorna alla versione `main` |
-| `backingtrack update --ref v1.2.0` | installa un branch o un tag preciso |
+| `backingtrack update --ref v1.3.0` | installa un branch o un tag preciso |
 | `backingtrack update --src ~/backingtrack` | aggiorna da una copia locale: utile per provare le modifiche prima di pubblicarle |
 
 Se lavori sul codice (cartella con `.git`), `update` ti ricorda di usare `git pull` e si limita ai campioni.
@@ -154,11 +154,11 @@ backingtrack doctor
 
 ```
 ╭──────────────────────────────────────────────────────────────╮
-│  ♪ backingtrack 1.2.0  ·  diagnosi                           │
+│  ♪ backingtrack 1.3.0  ·  diagnosi                           │
 ╰──────────────────────────────────────────────────────────────╯
 
 ◆ Programma ────────────────────────────────────────────────────
-  ✓ versione    1.2.0
+  ✓ versione    1.3.0
   ✓ installato  pipx (~/.local/share/pipx/venvs/backingtrack)
   ✓ python      3.12.3
 

@@ -170,7 +170,7 @@ Nuova chiave in `mixer.AMPS` (catena ffmpeg su segnale mono DI a -20 dBFS RMS) e
 
 ## Stato e prossimi passi (02/10/2026)
 
-Stato: pubblicato su github.com/wdog/backingtrack, release v1.1.0 e v1.2.0 (inglese/italiano). `main` allineato.
+Stato: pubblicato su github.com/wdog/backingtrack, release v1.1.0, v1.2.0 (inglese/italiano) e v1.3.0 (doc it/en allineate, output CLI moderno). `main` allineato.
 Installazione locale: pipx editable con `--system-site-packages` (il comando `backingtrack` usa i file del repo).
 
 Da fare / idee:
