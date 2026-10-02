@@ -75,6 +75,8 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 - `mixer.py` — ffmpeg: catena per bus in parallelo (ampli `AMPS`, EQ, comp, slapback), numpy bilancia le
   famiglie (`LEVELS`) e prepara la mandata; ffmpeg fa riverbero a convoluzione (`afir` con IR generata),
   glue compressor, gain di loudness e `alimiter`.
+- `term.py` — output terminale di doctor/update/setup/remove: palette Dracula truecolor, `banner`, `section`, `row`,
+  `bar`, riquadri `done`/`todo`; colori solo su TTY e senza `NO_COLOR`.
 - `packs.py` — pacchetti campioni (`PACKS`). Repo GitHub: download **selettivo** file per file da
   raw.githubusercontent (API tree → SFZ → `_needed_samples` → solo campioni usati, max `rr` round robin;
   `setup --full` = senza limite). MAI usare gli zip di GitHub: applicano `.gitattributes` (`eol=crlf`) e

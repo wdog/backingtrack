@@ -1,22 +1,9 @@
 """Traduzioni inglesi: testo italiano (come scritto nel codice) -> inglese. Generato e poi curato a mano."""
 # flake8: noqa
-EN = {'\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml': '\n'
-                                                                          'Ready. Try:  backingtrack '
-                                                                          'examples/blues/sweet_home_chicago.yaml',
- '\n• installazione di sviluppo (%s): aggiorna il codice con  git pull': '\n'
-                                                                         '• development install (%s): update the '
-                                                                         'code with  git pull',
- '\n♪ programma: aggiorno da %s': '\n♪ program: updating from %s',
- '   tasti %d–%d': '   frets %d–%d',
- '  %d campioni, %d MB': '  %d samples, %d MB',
+EN = { '   tasti %d–%d': '   frets %d–%d',
  '  (%d/%d file)': '  (%d/%d files)',
- '  converto %d campioni FLAC...': '  converting %d FLAC samples...',
- '  estraggo...': '  extracting...',
  '  poi  pipx reinstall --system-site-packages backingtrack': '  then  pipx reinstall --system-site-packages '
                                                               'backingtrack',
- '  prova:  backingtrack examples/blues/sweet_home_chicago.yaml': '  try:  backingtrack '
-                                                                  'examples/blues/sweet_home_chicago.yaml',
- '  — diagnosi': '  — diagnostics',
  ' · non salvato (puoi generare lo stesso)': ' · not saved (you can render anyway)',
  '%d batt.': '%d bars',
  '%d battute': '%d bars',
@@ -386,7 +373,6 @@ EN = {'\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml': '
  "C'è una bozza di «%s» del %s che non era stata salvata.": 'There is an unsaved draft of "%s" from %s.',
  'CAGED': 'CAGED',
  'Campioni': 'Samples',
- 'Campioni  ': 'Samples  ',
  'Campioni installati': 'Samples installed',
  'Campioni mancanti': 'Samples missing',
  'Cancella le battute della sezione e mette il giro scelto nella tonalità scelta. Non traspone: per cambiare tonalità a un brano usa Trasposizione': 'Clears '
@@ -1227,7 +1213,6 @@ EN = {'\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml': '
                                                                                                                                                                                                                                     'on '
                                                                                                                                                                                                                                     'the '
                                                                                                                                                                                                                                     'fretboard',
- 'Tutto pronto! 🎸': 'All set! 🎸',
  'Ultima battuta del loop': 'Last bar of the loop',
  'Umanizzazione': 'Humanize',
  'Un accordo (boogie)': 'One chord (boogie)',
@@ -1658,22 +1643,14 @@ EN = {'\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml': '
  "voicing '%s' sconosciuto (usa %s)": "unknown voicing '%s' (use %s)",
  'vuoto = quello del brano': "empty = the song's",
  "«.» prolunga l'accordo prima: Em 2 tempi, D 1, C 1": '"." extends the previous chord: Em 2 beats, D 1, C 1',
- '· %s non installato': '· %s not installed',
- '↓ %s: %s (%s, %s, ~%d MB)': '↓ %s: %s (%s, %s, ~%d MB)',
  '○ azzurro vuoto': '○ hollow light blue',
  '● azzurro pieno': '● filled light blue',
  '● rosa': '● pink',
  '● viola, grande': '● purple, big',
  '♪ %s | %g BPM | %d battute | %d:%02d': '♪ %s | %g BPM | %d bars | %d:%02d',
- '♪ campioni': '♪ samples',
  '⚠ %d da correggere': '⚠ %d to fix',
  "⚠ sezione '%s' inesistente": "⚠ section '%s' does not exist",
- '✓ %s già installato': '✓ %s already installed',
- '✓ %s installato in %s': '✓ %s installed in %s',
  '✓ Pronto · ': '✓ Ready · ',
- '✓ fatto. Le novità sono nel README: https://github.com/wdog/backingtrack#readme': "✓ done. What's new is in the "
-                                                                                    'README: '
-                                                                                    'https://github.com/wdog/backingtrack#readme',
  '✨ Modelli di giro': '✨ Progression templates',
  '✨ Suggerite per «%s»': '✨ Suggested for "%s"',
  '🌈  Modi': '🌈  Modes',
@@ -1694,7 +1671,28 @@ EN = {'\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml': '
  '🤘  Rock': '🤘  Rock',
  '🧑\u200d🎤 Esecuzione': '🧑\u200d🎤 Performance',
  '🧩 Sezione': '🧩 Section',
- '🧱 Struttura': '🧱 Structure'}
+ '🧱 Struttura': '🧱 Structure',
+ '%.0f MB in totale': '%.0f MB total',
+ '%.0f MB liberati': '%.0f MB freed',
+ '%d campioni, %d MB': '%d samples, %d MB',
+ 'Aggiornato!': 'Updated!',
+ 'Campioni aggiornati': 'Samples up to date',
+ 'Pronto!': 'Ready!',
+ 'aggiornamento': 'update',
+ 'campioni': 'samples',
+ 'converto %d campioni FLAC...': 'converting %d FLAC samples...',
+ 'diagnosi': 'diagnostics',
+ 'estraggo...': 'extracting...',
+ 'già installato': 'already installed',
+ 'il codice si aggiorna con  git pull': 'update the code with  git pull',
+ 'non installato': 'not installed',
+ 'novità nel README: https://github.com/wdog/backingtrack#readme': "what's new: https://github.com/wdog/backingtrack#readme",
+ 'prova:  backingtrack examples/blues/sweet_home_chicago.yaml': 'try:  backingtrack examples/blues/sweet_home_chicago.yaml',
+ 'rimosso': 'removed',
+ 'scarico ~%d MB': 'downloading ~%d MB',
+ 'sorgente': 'source',
+ 'sviluppo': 'development',
+ 'Tutto pronto! 🎸': 'All set! 🎸'}
 
 GROOVES_EN = {'blues': 'Blues: 5-6 boogie shuffle (Jimmy Reed style)',
  'blues/7': 'Blues: 5-6-b7-6 boogie shuffle',

@@ -153,27 +153,32 @@ backingtrack doctor
 ```
 
 ```
-♪ backingtrack 1.2.0  — diagnosi
+╭──────────────────────────────────────────────────────────────╮
+│  ♪ backingtrack 1.2.0  ·  diagnosi                           │
+╰──────────────────────────────────────────────────────────────╯
 
-Programma
-  ✓ versione     1.2.0
-  ✓ installato   pipx (~/.local/share/pipx/venvs/backingtrack)
-  ✓ python       3.12.3
+◆ Programma ────────────────────────────────────────────────────
+  ✓ versione    1.2.0
+  ✓ installato  pipx (~/.local/share/pipx/venvs/backingtrack)
+  ✓ python      3.12.3
 
-Dipendenze
-  ✓ ffmpeg       6.1.1
-  ✓ numpy        1.26.4
-  ✓ PyYAML       6.0.1
-  ✓ GUI          GTK 4.14 · libadwaita 1.5  backingtrack gui
+◆ Dipendenze ───────────────────────────────────────────────────
+  ✓ ffmpeg      6.1.1
+  ✓ numpy       1.26.4
+  ✓ PyYAML      6.0.1
+  ✓ GUI         GTK 4.14 · libadwaita 1.5  backingtrack gui
 
-Campioni  ~/.local/share/backingtrack/packs
-  ✓ gretsch        175 MB  Black & Green Guitars  376 file
-  ✓ drums          144 MB  Salamander Drumkit  209 file
-  ✓ cabs             2 MB  Jester's Emerald + Brutal IR  21 file
-  · bass         non installato  opzionale: backingtrack setup bass
-    totale       321 MB
+◆ Campioni ──────────────────────────────────── 321 MB in totale
+      ~/.local/share/backingtrack/packs
+  ✓ gretsch     ━━━━━━━━  175 MB  Black & Green Guitars  376 file
+  ✓ drums       ━━━━━━━─  144 MB  Salamander Drumkit  209 file
+  ✓ cabs        ────────    2 MB  Jester's Emerald + Brutal IR  21 file
+  · bass        non installato  Contrabbasso Rubner 1958 pizzicato (per --bass)
 
-Tutto pronto! 🎸
+╭──────────────────────────────────────────────────────────────╮
+│  ✓ Tutto pronto! 🎸                                          │
+│  prova:  backingtrack examples/blues/sweet_home_chicago.yaml │
+╰──────────────────────────────────────────────────────────────╯
 ```
 
 Controlla programma, dipendenze (anche la GUI), campioni, **rilegge alcuni file a caso** per scoprire campioni

@@ -153,27 +153,32 @@ backingtrack doctor
 ```
 
 ```
-♪ backingtrack 1.2.0  — diagnostics
+╭──────────────────────────────────────────────────────────────╮
+│  ♪ backingtrack 1.2.0  ·  diagnostics                        │
+╰──────────────────────────────────────────────────────────────╯
 
-Program
-  ✓ version      1.2.0
-  ✓ installed    pipx (~/.local/share/pipx/venvs/backingtrack)
-  ✓ python       3.12.3
+◆ Program ──────────────────────────────────────────────────────
+  ✓ version     1.2.0
+  ✓ installed   pipx (~/.local/share/pipx/venvs/backingtrack)
+  ✓ python      3.12.3
 
-Dependencies
-  ✓ ffmpeg       6.1.1
-  ✓ numpy        1.26.4
-  ✓ PyYAML       6.0.1
-  ✓ GUI          GTK 4.14 · libadwaita 1.5  backingtrack gui
+◆ Dependencies ─────────────────────────────────────────────────
+  ✓ ffmpeg      6.1.1
+  ✓ numpy       1.26.4
+  ✓ PyYAML      6.0.1
+  ✓ GUI         GTK 4.14 · libadwaita 1.5  backingtrack gui
 
-Samples  ~/.local/share/backingtrack/packs
-  ✓ gretsch        175 MB  Black & Green Guitars  376 files
-  ✓ drums          144 MB  Salamander Drumkit  209 files
-  ✓ cabs             2 MB  Jester's Emerald + Brutal IR  21 files
-  · bass         not installed  optional: backingtrack setup bass
-    total        321 MB
+◆ Samples ───────────────────────────────────────── 321 MB total
+      ~/.local/share/backingtrack/packs
+  ✓ gretsch     ━━━━━━━━  175 MB  Black & Green Guitars  376 files
+  ✓ drums       ━━━━━━━─  144 MB  Salamander Drumkit  209 files
+  ✓ cabs        ────────    2 MB  Jester's Emerald + Brutal IR  21 files
+  · bass        not installed  Rubner 1958 double bass, pizzicato (for --bass)
 
-All set! 🎸
+╭──────────────────────────────────────────────────────────────╮
+│  ✓ All set! 🎸                                               │
+│  try:  backingtrack examples/blues/sweet_home_chicago.yaml   │
+╰──────────────────────────────────────────────────────────────╯
 ```
 
 It checks the program, the dependencies (GUI included) and the samples, **re-reads a few random files** to catch

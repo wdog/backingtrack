@@ -7,7 +7,7 @@ import tempfile
 import time
 from pathlib import Path
 
-from . import __version__, packs
+from . import __version__, packs, term
 from .arranger import Arranger
 from .errors import SongError
 from .grooves import GROOVES
@@ -194,15 +194,19 @@ def cmd_setup(args):
     unknown = [n for n in names if n not in packs.PACKS]
     if unknown:
         raise SongError(_("pacchetti sconosciuti: %s (disponibili: %s)") % (", ".join(unknown), ", ".join(packs.PACKS)))
+    term.banner(_("campioni"))
+    term.section(_("Campioni"), str(packs.data_dir() / "packs"))
     for n in names:
         packs.install(n, force=args.force or args.full, full=args.full)
-    print(_("\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml"))
+    term.done(_("Pronto!"), _("prova:  backingtrack examples/blues/sweet_home_chicago.yaml"))
 
 
 def cmd_remove(args):
     for n in args.packs:
         if n not in packs.PACKS:
             raise SongError(_("pacchetto sconosciuto: %s") % n)
+    print()
+    for n in args.packs:
         packs.remove(n)
 
 
@@ -212,13 +216,16 @@ REPO_URL = "https://github.com/wdog/backingtrack.git"
 def cmd_update(args):
     """Scarica i campioni mancanti (quelli presenti restano) e aggiorna il programma."""
     names = list(packs.DEFAULT_PACKS) + [n for n in packs.PACKS if n not in packs.DEFAULT_PACKS and packs.is_installed(n)]
-    print(_("♪ campioni"))
+    term.banner(_("aggiornamento"))
+    term.section(_("Campioni"), str(packs.data_dir() / "packs"))
     for n in names:
         packs.install(n)  # salta i pacchetti già installati
 
+    term.section(_("Programma"))
     src = Path(__file__).resolve().parent.parent
     if (src / ".git").exists() and not (args.force or args.src):
-        print(_("\n• installazione di sviluppo (%s): aggiorna il codice con  git pull") % src)
+        term.row(term.DOT, _("sviluppo"), str(src))
+        term.done(_("Campioni aggiornati"), _("il codice si aggiorna con  git pull"))
         return
     if args.src:
         spec = str(Path(args.src).resolve())
@@ -226,17 +233,18 @@ def cmd_update(args):
         spec = "git+%s@%s" % (REPO_URL, args.ref)
     else:
         spec = "https://github.com/wdog/backingtrack/archive/%s.zip" % args.ref
-    print(_("\n♪ programma: aggiorno da %s") % spec)
+    term.row(term.DOWN, _("sorgente"), spec)
     if "pipx" in sys.prefix and shutil.which("pipx"):
         # reinstallazione completa: mantiene --system-site-packages (serve alla GUI per vedere GTK)
         subprocess.run(["pipx", "uninstall", "backingtrack"], stdout=subprocess.DEVNULL)
         cmd = ["pipx", "install", "--system-site-packages", spec]
     else:
         cmd = [sys.executable, "-m", "pip", "install", "--quiet", "--upgrade", spec]
-    if subprocess.run(cmd).returncode != 0:
+    term.note(" ".join(cmd[:3]) + " …")
+    if subprocess.run(cmd, stdout=subprocess.DEVNULL).returncode != 0:
         raise SongError(_("aggiornamento non riuscito. Riprova o usa l'installer:  "
                         "curl -fsSL https://raw.githubusercontent.com/wdog/backingtrack/main/install.sh | bash"))
-    print(_("✓ fatto. Le novità sono nel README: https://github.com/wdog/backingtrack#readme"))
+    term.done(_("Aggiornato!"), _("novità nel README: https://github.com/wdog/backingtrack#readme"))
 
 
 def _install_hint(what):
@@ -279,26 +287,18 @@ def _dir_mb(path):
 
 def cmd_doctor(_args):
     import random
-    tty = sys.stdout.isatty()
-    c = (lambda code, t: "\033[%sm%s\033[0m" % (code, t)) if tty else (lambda code, t: t)
-    ok_s, bad_s, warn_s, dim = c("32", "✓"), c("31", "✗"), c("33", "!"), (lambda t: c("2", t))
-    todo = []
+    line, todo = term.row, []
+    ok_s, bad_s, warn_s = term.OK, term.BAD, term.WARN
 
-    def head(title):
-        print("\n" + c("1;38;5;214", title))
-
-    def line(mark, label, value, extra=""):
-        print("  %s %-12s %s%s" % (mark, label, value, ("  " + dim(extra)) if extra else ""))
-
-    print(c("1;38;5;214", "♪ backingtrack %s" % __version__) + dim(_("  — diagnosi")))
-
-    head(_("Programma"))
+    term.banner(_("diagnosi"))
+    term.section(_("Programma"))
     line(ok_s, _("versione"), __version__)
     line(ok_s, _("installato"), _install_kind())
     line(ok_s, "python", sys.version.split()[0], sys.executable)
-    line(ok_s, _("comando"), shutil.which("backingtrack") or dim(_("(non nel PATH: usa python -m backingtrack)")))
+    cmd = shutil.which("backingtrack")
+    line(ok_s if cmd else warn_s, _("comando"), cmd or _("(non nel PATH: usa python -m backingtrack)"))
 
-    head(_("Dipendenze"))
+    term.section(_("Dipendenze"))
     ff = shutil.which("ffmpeg")
     if ff:
         ver = subprocess.run([ff, "-version"], stdout=subprocess.PIPE, universal_newlines=True).stdout.split("\n")[0]
@@ -328,13 +328,13 @@ def cmd_doctor(_args):
             hint += _("  poi  pipx reinstall --system-site-packages backingtrack")
         todo.append((_("per la GUI installa GTK 4 e libadwaita"), hint))
 
-    head(_("Campioni  ") + dim(str(packs.data_dir() / "packs")))
-    total = 0.0
+    sizes = {n: packs.disk_mb(n) for n in packs.PACKS if packs.is_installed(n)}
+    term.section(_("Campioni"), _("%.0f MB in totale") % sum(sizes.values()))
+    term.note(str(packs.data_dir() / "packs"))
+    biggest = max(sizes.values(), default=1) or 1
     for name, info in packs.PACKS.items():
-        needed = info.get("default")
-        if packs.is_installed(name):
-            mb = packs.disk_mb(name)
-            total += mb
+        title = _(info["title"]).split(" — ")[0]
+        if name in sizes:
             # integrità: rileggo qualche campione a caso (scopre file corrotti o troncati)
             files = [f for f in packs.pack_dir(name).rglob("*.wav")]
             bad = 0
@@ -347,31 +347,27 @@ def cmd_doctor(_args):
                 line(bad_s, name, _("%d file illeggibili su %d controllati") % (bad, min(12, len(files))))
                 todo.append((_("reinstalla i campioni '%s'") % name, "backingtrack setup %s --force" % name))
             else:
-                line(ok_s, name, "%5.0f MB  %s" % (mb, info["title"].split(" — ")[0]), _("%d file") % len(files))
-        elif needed:
-            line(bad_s, name, _("mancante  %s") % info["title"].split(" — ")[0], "~%d MB" % info.get("light_mb", 0))
+                line(ok_s, name, "%s %4.0f MB  %s" % (term.bar(sizes[name] / biggest, 8), sizes[name], title),
+                     _("%d file") % len(files))
+        elif info.get("default"):
+            line(bad_s, name, _("mancante  %s") % title, "~%d MB" % info.get("light_mb", 0))
             todo.append((_("scarica i campioni"), "backingtrack setup"))
         else:
-            line(dim("·"), name, dim(_("non installato  %s") % info["title"].split(" — ")[0]),
-                 _("opzionale: backingtrack setup %s") % name)
-    print("  %s %-12s %.0f MB" % (" ", _("totale"), total))
+            line(term.OFF, name, _("non installato  %s") % title, _("opzionale: backingtrack setup %s") % name)
 
-    head(_("Cartelle"))
+    term.section(_("Cartelle"))
     line(ok_s, _("dati"), packs.data_dir())
     cache = packs.cache_dir()
-    line(ok_s, "cache", "%s  %s" % (cache, dim("%.0f MB" % _dir_mb(cache))))
+    line(ok_s, "cache", cache, "%.0f MB" % _dir_mb(cache))
     line(ok_s, "output", Path("out").resolve(), _("default di render"))
 
-    print()
     todo = list(dict.fromkeys(todo))
     if todo:
-        print(c("1;33", _("Da sistemare:")))
-        for i, (what, cmd) in enumerate(todo, 1):
-            print("  %d. %s\n     %s" % (i, what, c("1", cmd)))
+        term.todo(_("Da sistemare:"), todo)
         if any(what != _("per la GUI installa GTK 4 e libadwaita") for what, _cmd in todo):
             sys.exit(1)
     else:
-        print(c("1;32", _("Tutto pronto! 🎸")) + _("  prova:  backingtrack examples/blues/sweet_home_chicago.yaml"))
+        term.done(_("Tutto pronto! 🎸"), _("prova:  backingtrack examples/blues/sweet_home_chicago.yaml"))
 
 
 def build_parser():

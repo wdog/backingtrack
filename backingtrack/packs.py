@@ -12,6 +12,7 @@ import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+from . import term
 from .i18n import _
 from .errors import SongError
 
@@ -131,12 +132,15 @@ def sfz_path(name, key="sfz"):
 
 
 def print_progress(done, total, files=None):
-    """Avanzamento del download sul terminale (sovrascrive la riga)."""
-    line = "  %3d%%  %d / %d MB" % (100 * done // max(total, 1), done >> 20, total >> 20) if total \
-        else "  %d MB" % (done >> 20)
+    """Avanzamento del download sul terminale (sovrascrive la riga): barra sfumata, MB e file."""
+    if total:
+        line = "      %s %s  %s" % (term.bar(done / total), term.paint(term.PINK, "%3d%%" % (100 * done // total), True),
+                                   "%.1f / %.1f MB" % (done / 2 ** 20, total / 2 ** 20))
+    else:
+        line = "      %.1f MB" % (done / 2 ** 20)
     if files:
-        line += _("  (%d/%d file)") % files
-    sys.stdout.write("\r" + line.ljust(40))
+        line += term.dim(_("  (%d/%d file)") % files)
+    sys.stdout.write("\r" + line + ("\033[K" if term.enabled() else ""))
     sys.stdout.flush()
 
 
@@ -239,7 +243,7 @@ def _install_selective(name, info, dest, full, progress):
     audio = {p for p in files if p.lower().endswith((".wav", ".flac"))}
     needed = sorted(_needed_samples(dict(info, rr=None) if full else info, dest, audio))
     total = sum(files[p] for p in needed)
-    print(_("  %d campioni, %d MB") % (len(needed), total >> 20))
+    term.note(_("%d campioni, %d MB") % (len(needed), total >> 20))
     done = [0, 0]
 
     def get_sample(path):
@@ -260,10 +264,11 @@ def install(name, force=False, full=False, progress=print_progress):
     """progress(fatti, totale, (file, file_totali) | None): byte scaricati, chiamata dal thread del download."""
     info = PACKS[name]
     if is_installed(name) and not force:
-        print(_("✓ %s già installato") % name)
+        term.row(term.OK, name, _("già installato"), _(info["title"]).split(" — ")[0])
         return
     size = info["size_mb"] if full else info.get("light_mb", info["size_mb"])
-    print(_("↓ %s: %s (%s, %s, ~%d MB)") % (name, _(info["title"]), info["author"], _(info["license"]), size))
+    term.row(term.DOWN, name, term.paint(term.PURPLE, _("scarico ~%d MB") % size), _(info["title"]).split(" — ")[0])
+    term.note("%s · %s" % (info["author"], _(info["license"])))
     dest = pack_dir(name)
     if dest.exists():
         shutil.rmtree(dest)
@@ -288,10 +293,10 @@ def _install_zip(name, info, dest, progress):
     for fname, url in sources:
         zpath = cache_dir() / fname
         if not zpath.is_file():
-            print("  %s" % url)
+            term.note(url)
             _download(url, zpath, progress)
         zips.append(zpath)
-    print(_("  estraggo..."))
+    term.note(_("estraggo..."))
     for zpath in zips:
         for filename, is_dir, opener in _archive_members(zpath):
             rel = filename.split("/", 1)[1] if "/" in filename else ""
@@ -326,13 +331,13 @@ def _finish(name, info, dest, zips):
         ffmpeg = shutil.which("ffmpeg")
         if not ffmpeg:
             raise SongError(_("serve ffmpeg per convertire i campioni FLAC (vedi README)"))
-        print(_("  converto %d campioni FLAC...") % len(flacs))
+        term.note(_("converto %d campioni FLAC...") % len(flacs))
         with ThreadPoolExecutor(os.cpu_count() or 4) as ex:
             list(ex.map(lambda f: _flac_to_wav(ffmpeg, f), flacs))
     (dest / ".installed").write_text("%s\n%s\n" % (info.get("repo") or info["urls"][0][1], info["license"]))
     for zpath in zips:
         zpath.unlink()
-    print(_("✓ %s installato in %s") % (name, dest))
+    term.row(term.OK, name, term.paint(term.GREEN, _("installato")), str(dest))
 
 
 def disk_mb(name):
@@ -343,11 +348,11 @@ def disk_mb(name):
 def remove(name):
     d = pack_dir(name)
     if not d.exists():
-        print(_("· %s non installato") % name)
+        term.row(term.OFF, name, _("non installato"))
         return
     mb = disk_mb(name)
     shutil.rmtree(d)
-    print("✓ %s rimosso (%.0f MB liberati)" % (name, mb))
+    term.row(term.OK, name, _("rimosso"), _("%.0f MB liberati") % mb)
 
 
 def status():
