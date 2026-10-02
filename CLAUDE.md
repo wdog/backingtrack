@@ -23,6 +23,8 @@ python3 -m unittest discover tests                # test (non servono i campioni
 backingtrack gui [file.yaml]                      # editor GTK4 / libadwaita
 backingtrack update [--src DIR]                   # campioni mancanti + aggiornamento programma
 python3 docs/make_images.py                       # rigenera logo/diagramma (Pillow, font DejaVu)
+python3 docs/make_docs.py                         # tabelle groove/brani it+en e navigazione delle docs
+BACKINGTRACK_LANG=it python3 -m backingtrack doctor   # messaggi in italiano (predefinito: inglese)
 shellcheck install.sh                             # installer curl|bash (Linux/macOS)
 ```
 
@@ -93,6 +95,11 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
   (una pagina per argomento, stessi contenuti). `python3 docs/make_docs.py` genera le tabelle di groove e brani dai dati
   e la barra di navigazione (bandiere, avanti/indietro) di ogni pagina: rilanciarlo dopo ogni modifica. Screenshot
   `docs/gui-{brano,sezioni,scale,guida}-{it,en}.jpg`.
+- Release: versione in `backingtrack/__init__.py`, tag annotato `vX.Y.Z`, `gh release create` (gh in `~/.local/bin`,
+  autenticato come wdog). About/topics del repo in inglese (`gh repo edit`).
+
+## Campioni
+
 - chitarra (default `gretsch`): Karoryfer Black & Green Guitars, Gretsch "green" (CC0), DI, ogni semitono;
   `Programs/04-green_twang.sfz` + `05-green_staccato.sfz` per le note stoppate (`muted="real"`).
   Alternativa `epiphone` = Emilyguitar (CC0), palm mute simulato. Scelta con `guitar:` nel YAML.
@@ -103,7 +110,8 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 - casse: Jester's Emerald (Marshall 4x12 Greenback) + Brutal (V30), IR 44.1 kHz; `AMPS[amp]["ir"]`, convoluzione
   `afir` in `mixer.bus_graph`; senza IR si usa `cab_eq`.
 - batteria: Salamander Drumkit (CC-BY-SA 3.0), hi-hat aperto/chiuso via CC4 sul tasto 42.
-- basso: D. Smolken double bass pizz (CC0), opzionale.
+- basso: D. Smolken double bass pizz (CC0), opzionale; `ebass` (Black & Blue Basses) e `sneakybass` con `bass:`.
+- download: `packs.install(name, progress=...)` → percentuale/MB/file sul terminale (`print_progress`) e nel banner GUI.
 Nessun campione nel repo: si scaricano con `setup` (~300 MB default). `sfz.Instrument.select` ripiega su un round robin
 presente se quello estratto non è installato. `backingtrack remove <pack>` libera spazio.
 
@@ -123,6 +131,15 @@ presente se quello estratto non è installato. `backingtrack remove <pack>` libe
 - Adw.ToggleGroup non ha stile con questo tema e all'utente non piaceva: usare menu (`ChoiceRow`).
 - Il CSS dell'app è registrato a `STYLE_PROVIDER_PRIORITY_USER + 1`: il `~/.config/gtk-4.0/gtk.css` dell'utente
   (tema tipo Arc) altrimenti ridipinge di blu `suggested-action`, slider e bordi. Selettori specifici (`.player button.play-btn`).
+- Tema di sistema dell'utente: Qogir-Round-Dark su Hyprland. `.background` colpisce anche i popover: c'è
+  `popover.background { background-color: transparent }` (altrimenti rettangolo scuro dietro i popup). Tab
+  (`viewswitcher button.toggle`), voci dei menu (`popover.menu modelbutton`) e `menubar > item` hanno stile proprio.
+- MenuRow usa `Gtk.PopoverMenu.new_from_model_full(..., NESTED)`: sottomenu separati (altrimenti il menu è largo quanto
+  la voce più lunga di tutti i sottomenu). Descrizioni groove nel menu accorciate a ~48 caratteri.
+- Larghezza minima: player nascosto = `set_visible(False)`; breakpoint 820sp → elenco sezioni a scomparsa, player senza
+  volume/cartella. Pannelli laterali richiudibili (F9 / Shift+F9).
+- Popup per i test: il popover si apre headless dopo ~2,5 s (`btn.popup()`, poi WidgetPaintable sul popover).
+  Screenshot dall'utente: `! sleep 5 && grim ~/popup.png` (slurp chiuderebbe il popup).
 
 ## Vincoli e scelte
 
@@ -149,17 +166,18 @@ Tipi evento chitarra: `D U C P B B5 R5 R6 R7 J` (J = voicing jazz a 4 note, `Cho
 
 Nuova chiave in `mixer.AMPS` (catena ffmpeg su segnale mono DI a -20 dBFS RMS) e usarla come `amp` di un groove.
 
-## Stato e prossimi passi (29/09/2026)
+## Stato e prossimi passi (02/10/2026)
 
-Stato: `main` = `gui` (commit f8d0d2c), tutto committato, nessun remote (da pubblicare su github.com/wdog/backingtrack).
+Stato: pubblicato su github.com/wdog/backingtrack, release v1.1.0 e v1.2.0 (inglese/italiano). `main` allineato.
 Installazione locale: pipx editable con `--system-site-packages` (il comando `backingtrack` usa i file del repo).
 
-Da fare / verificare:
-1. Drag & drop reale col mouse nella griglia battute e dalla tavolozza (verificata solo la logica simulata).
-2. Celle battute: 4 per riga anche con colonna accordi stretta (entry width_chars=3, da verificare a vista).
-3. Ascoltare i groove nuovi (rock/halftime, gallop, pop, blues/rhumba, funk, stop, country, country/shuffle).
-4. Pubblicare: `git remote add origin …`, push `main` e `gui`; poi provare `curl … install.sh | bash` e `backingtrack update`.
-5. Idee non fatte: batteria multi-microfono (Naked Drums, 1,3 GB) come pacchetto opzionale; IR di cassa aperta tipo Fender per clean/rockabilly.
+Da fare / idee:
+1. Ascoltare i groove nuovi e le chitarre `fender`/`acoustic` (fatti senza ascolto).
+2. Drag & drop reale col mouse nella griglia battute e dalla tavolozza (verificata solo la logica).
+3. Scale suggerite: la tonalità è il primo accordo; migliorabile guardando l'accordo finale/cadenze.
+4. Scale a 7 note: i box CAGED sono quelli pentatonici (qualche nota fuori fascia); possibile diteggiatura 3 note per corda.
+5. Idee: base per esercitarsi dalla scheda Scale (vamp modale), ascolta la scala, arpeggi, quiz, accordature
+   alternative/mancini, esporta tastiera; batteria multi-microfono (Naked Drums) come pacchetto opzionale.
 
 Preferenze dell'utente sulla GUI: niente tendine strette (Adw.ComboRow/Gtk.DropDown) né pulsanti segmentati;
 sì a pulsanti-menu con sottomenu e griglie; battute compatte a griglia col colore sezione; gli piace la barra del player.
