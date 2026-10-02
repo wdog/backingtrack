@@ -107,10 +107,10 @@ def describe_bar(text, first=False):
         if t in HOLD:
             parts[-1][1] += step
         else:
-            parts.append([("pausa" if t.upper() in ("N.C.", "NC") else t), step])
+            parts.append([(_("pausa") if t.upper() in ("N.C.", "NC") else t), step])
     if len(parts) == 1:
         return _("%s per tutta la battuta") % parts[0][0]
-    out = ["%s %s %s" % (parts[0][0], _beats(parts[0][1]), "tempo" if parts[0][1] == 1 else "tempi")]
+    out = ["%s %s %s" % (parts[0][0], _beats(parts[0][1]), _("tempo") if parts[0][1] == 1 else _("tempi"))]
     out += ["%s %s" % (n, _beats(d)) for n, d in parts[1:]]
     return " · ".join(out)
 

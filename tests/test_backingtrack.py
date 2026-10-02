@@ -210,6 +210,15 @@ if __name__ == "__main__":
 
 
 class TestSongfile(unittest.TestCase):
+    # i messaggi controllati qui sono quelli italiani (la lingua predefinita è l'inglese)
+    def setUp(self):
+        from backingtrack import i18n
+        i18n.set_lang("it")
+
+    def tearDown(self):
+        from backingtrack import i18n
+        i18n.set_lang(None)
+
     def test_describe_bar(self):
         from backingtrack import songfile as sf
         self.assertEqual(sf.describe_bar("Em . D C"), "Em 2 tempi · D 1 · C 1")

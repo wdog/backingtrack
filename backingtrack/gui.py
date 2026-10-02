@@ -2293,7 +2293,7 @@ class MainWindow(Adw.ApplicationWindow):
         found = theory.suggest_scales(tokens)
         self.f_suggest.remove_all()
         self.f_suggest_row.set_visible(bool(found))
-        self.f_suggest_label.set_label(_("✨ Suggerite per «%s»") % (sec["name"] or "sezione") if sec else "")
+        self.f_suggest_label.set_label(_("✨ Suggerite per «%s»") % (sec["name"] or _("sezione")) if sec else "")
         for root, scale, why in found:
             name = theory.scale_names(root, scale)[root]
             chip = Gtk.Button(label="%s %s" % (name, scale_label(scale)), tooltip_text="%s · %s" % (why, _(SCALE_DESC[scale])))
@@ -3160,7 +3160,7 @@ def main(argv=None):
     if "--version" in argv:
         print("backingtrack-gui", __version__)
         return 0
-    set_lang(load_prefs().get("lang"))  # scelta dal menu Aiuto › Lingua; senza, quella del sistema
+    set_lang(load_prefs().get("lang"))  # scelta dal menu Aiuto › Lingua; senza, inglese
     return App(path).run([sys.argv[0]])
 
 

@@ -30,7 +30,7 @@ The window has three tabs (**Song**, **Sections**, **YAML**) and shows only the 
 tooltips: hover over an item to read them. Dark [Dracula](https://draculatheme.com) theme, with purple and pink accents.
 
 **🌐 Language**: Help ▸ Language / Lingua ▸ 🇮🇹 Italiano · 🇬🇧 English. The editor restarts in the chosen language and
-picks up the song where you left it (unsaved changes included). The first time it uses your system language.
+picks up the song where you left it (unsaved changes included). English is the default.
 
 ## 🎵 Song
 

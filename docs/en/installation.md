@@ -180,7 +180,7 @@ It checks the program, the dependencies (GUI included) and the samples, **re-rea
 damaged samples and shows the folders in use. If something is wrong, it ends with a numbered list of **what to do**,
 with the right command for your system.
 
-The language of messages follows your system; force it with `BACKINGTRACK_LANG=en` or `BACKINGTRACK_LANG=it`.
+Messages are in English; set `BACKINGTRACK_LANG=it` for Italian.
 
 ## 🗑️ Uninstalling
 

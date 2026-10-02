@@ -184,7 +184,7 @@ Controlla programma, dipendenze (anche la GUI), campioni, **rilegge alcuni file 
 rovinati e mostra le cartelle usate. Se qualcosa non va, chiude con l'elenco numerato di **cosa fare**, con il comando
 giusto per il tuo sistema.
 
-La lingua dei messaggi segue il sistema; per sceglierla usa `BACKINGTRACK_LANG=it` o `BACKINGTRACK_LANG=en`.
+I messaggi sono in inglese; per l'italiano imposta `BACKINGTRACK_LANG=it`.
 
 ### 🗑️ Disinstallare
 

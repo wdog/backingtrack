@@ -41,7 +41,7 @@ pipx without `--system-site-packages`: `backingtrack update` or the installer re
 <summary><b>How do I switch the language?</b></summary>
 
 In the editor: **Help ▸ Language / Lingua** (🇮🇹 Italiano · 🇬🇧 English); the editor restarts and keeps your song.
-On the command line: `BACKINGTRACK_LANG=en` or `BACKINGTRACK_LANG=it`.
+English is the default; on the command line use `BACKINGTRACK_LANG=it` for Italian.
 </details>
 
 <details>

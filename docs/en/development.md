@@ -67,7 +67,7 @@ backingtrack/
 │   ├── cli.py         # commands
 │   ├── gui.py         # GTK 4 / libadwaita graphical editor
 │   ├── songfile.py    # editor model: validation, progression templates, YAML
-│   ├── i18n.py        # language: _(), system language, editor preference
+│   ├── i18n.py        # language: _(), English by default, editor preference
 │   ├── locale_en.py   # English translations
 │   ├── data/          # app icon
 │   ├── song.py        # YAML reading, bars, arrangement

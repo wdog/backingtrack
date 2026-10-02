@@ -135,7 +135,7 @@ def print_progress(done, total, files=None):
     line = "  %3d%%  %d / %d MB" % (100 * done // max(total, 1), done >> 20, total >> 20) if total \
         else "  %d MB" % (done >> 20)
     if files:
-        line += "  (%d/%d file)" % files
+        line += _("  (%d/%d file)") % files
     sys.stdout.write("\r" + line.ljust(40))
     sys.stdout.flush()
 

@@ -40,8 +40,7 @@ backingtrack new <file.yaml>               create a starter song file
 backingtrack doctor                        full diagnostics, with what to do if something is missing
 ```
 
-Messages follow the system language (Italian if it starts with `it`, English otherwise). Force it with
-`BACKINGTRACK_LANG=en` or `BACKINGTRACK_LANG=it`, e.g. `BACKINGTRACK_LANG=en backingtrack doctor`.
+Messages are in English; for Italian set `BACKINGTRACK_LANG=it`, e.g. `BACKINGTRACK_LANG=it backingtrack doctor`.
 
 <!-- foot -->
 ---

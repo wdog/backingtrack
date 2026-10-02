@@ -40,8 +40,8 @@ backingtrack new <file.yaml>               crea un file canzone di partenza
 backingtrack doctor                        diagnosi completa, con cosa fare se manca qualcosa
 ```
 
-I messaggi seguono la lingua del sistema (italiano se inizia con `it`, altrimenti inglese). Per sceglierla:
-`BACKINGTRACK_LANG=it` o `BACKINGTRACK_LANG=en`, es. `BACKINGTRACK_LANG=en backingtrack doctor`.
+I messaggi sono in inglese; per l'italiano imposta `BACKINGTRACK_LANG=it`, es. `BACKINGTRACK_LANG=it backingtrack doctor`.
+Conviene aggiungerlo al profilo della shell: `export BACKINGTRACK_LANG=it`.
 
 <!-- foot -->
 ---

@@ -9,6 +9,7 @@ EN = {'\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml': '
  '\n♪ programma: aggiorno da %s': '\n♪ program: updating from %s',
  '   tasti %d–%d': '   frets %d–%d',
  '  %d campioni, %d MB': '  %d samples, %d MB',
+ '  (%d/%d file)': '  (%d/%d files)',
  '  converto %d campioni FLAC...': '  converting %d FLAC samples...',
  '  estraggo...': '  extracting...',
  '  poi  pipx reinstall --system-site-packages backingtrack': '  then  pipx reinstall --system-site-packages '
@@ -1562,6 +1563,7 @@ EN = {'\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml': '
  'pacchetti (default: %s)': 'packs (default: %s)',
  'pacchetti sconosciuti: %s (disponibili: %s)': 'unknown packs: %s (available: %s)',
  'pacchetto sconosciuto: %s': 'unknown pack: %s',
+ 'pausa': 'rest',
  'pausa: la chitarra tace': 'rest: the guitar is silent',
  "pentatonica maggiore + b3: più dolce, country e rock'n'roll": 'major pentatonic + b3: sweeter, country and '
                                                                 "rock'n'roll",
@@ -1603,6 +1605,7 @@ EN = {'\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml': '
  'serve per mix e mp3': 'needed for mixing and mp3',
  'settima maggiore': 'major seventh',
  'settima maggiore, minore settima, power chord': 'major seventh, minor seventh, power chord',
+ 'sezione': 'section',
  'sezione %d: deve essere una mappa con name e chords': 'section %d: must be a mapping with name and chords',
  'sezione %d: manca il nome': 'section %d: the name is missing',
  "sezione '%s'": "section '%s'",
@@ -1628,6 +1631,8 @@ EN = {'\nPronto. Prova:  backingtrack examples/blues/sweet_home_chicago.yaml': '
  "sull'ultima battuta di ogni sezione": 'on the last bar of every section',
  'sviluppo (%s)': 'development (%s)',
  'sì': 'yes',
+ 'tempi': 'beats',
+ 'tempo': 'beat',
  'tempo fuori range (30-320 BPM): %g': 'tempo out of range (30-320 BPM): %g',
  'tempo, stile e scaletta: quali sezioni suonano e in che ordine': 'tempo, style and set list: which sections play '
                                                                    'and in which order',

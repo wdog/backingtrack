@@ -40,7 +40,7 @@ senza `--system-site-packages`: `backingtrack update` o l'installer lo reinstall
 <summary><b>Come cambio lingua?</b></summary>
 
 Nell'editor: **Aiuto ▸ Lingua / Language** (🇮🇹 Italiano · 🇬🇧 English); l'editor si riavvia e tiene il brano.
-Da riga di comando: `BACKINGTRACK_LANG=it` o `BACKINGTRACK_LANG=en`.
+L'inglese è la lingua predefinita; da riga di comando usa `BACKINGTRACK_LANG=it` per l'italiano.
 </details>
 
 <details>

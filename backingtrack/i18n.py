@@ -2,34 +2,30 @@
 
 Uso: `from .i18n import _` e `_("testo italiano")`. Le costanti di modulo (guida, descrizioni…) restano in
 italiano e si traducono dove vengono mostrate, così il cambio di lingua non dipende dall'ordine degli import.
-Lingua: set_lang() (preferenza della GUI), altrimenti BACKINGTRACK_LANG, altrimenti quella del sistema.
+Lingua: set_lang() (preferenza della GUI), altrimenti BACKINGTRACK_LANG, altrimenti inglese.
 """
-import locale
 import os
 
 LANGS = {"it": "Italiano", "en": "English"}
 _lang = None
 
 
-def system_lang():
-    for var in ("BACKINGTRACK_LANG", "LC_ALL", "LC_MESSAGES", "LANG"):
-        value = os.environ.get(var, "")
-        if value:
-            return "it" if value.lower().startswith("it") else "en"
-    code = (locale.getlocale()[0] or "").lower()
-    return "it" if code.startswith("it") else "en"
+def default_lang():
+    """Inglese, salvo BACKINGTRACK_LANG=it (la GUI ricorda poi la scelta fatta dal menu)."""
+    value = os.environ.get("BACKINGTRACK_LANG", "").lower()
+    return "it" if value.startswith("it") else "en"
 
 
 def lang():
     global _lang
     if _lang is None:
-        _lang = system_lang()
+        _lang = default_lang()
     return _lang
 
 
 def set_lang(code):
     global _lang
-    _lang = code if code in LANGS else system_lang()
+    _lang = code if code in LANGS else default_lang()
 
 
 def _(text):

@@ -31,7 +31,7 @@ stanno nei tooltip: passa col mouse su una voce per leggerle. Tema scuro in stil
 con accento viola e rosa.
 
 **🌐 Lingua**: Aiuto ▸ Lingua / Language ▸ 🇮🇹 Italiano · 🇬🇧 English. L'editor si riavvia nella lingua scelta e
-riprende il brano da dove eri (modifiche non salvate comprese). La prima volta usa la lingua del sistema.
+riprende il brano da dove eri (modifiche non salvate comprese). La lingua predefinita è l'inglese.
 
 ## 🎵 Brano
 

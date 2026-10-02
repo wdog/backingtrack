@@ -10,7 +10,7 @@ Codice e commenti in **italiano**; UI, messaggi e documentazione in **italiano e
 avvolti in `_()` (`i18n.py`), traduzioni in `locale_en.py` (`EN`, `GROOVES_EN`); un test fallisce se ne manca una.
 Le costanti di modulo (HELP, SCALE_DESC…) restano grezze e si traducono dove vengono mostrate (mai `_()` a livello di
 modulo o nei default degli argomenti). Lingua GUI: Aiuto › Lingua (gui.json `lang`, riavvio con la bozza);
-CLI: `BACKINGTRACK_LANG` o lingua di sistema.
+CLI: `BACKINGTRACK_LANG=it`; predefinita inglese (app e docs: README.md è l'inglese).
 
 ## Comandi
 
