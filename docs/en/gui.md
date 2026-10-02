@@ -151,7 +151,7 @@ which appears after the first render:
 
 **Help ▸ Guide** (`F1`) explains every part of the window: Start, Song, Sections, Chords, Key, Scales, Player and Keys.
 
-<p align="center"><img src="../gui-guida-en.jpg" alt="built-in guide" width="640"></p>
+<p align="center"><img src="../gui-guida-en.jpg" alt="built-in guide: Key page" width="640"></p>
 
 ## 💾 Saving and automatic draft
 

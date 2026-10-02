@@ -1,4 +1,4 @@
-# 🖥️ Riferimento comandi
+# ⌨️ Riferimento comandi
 
 <!-- nav -->
 <p align="center">

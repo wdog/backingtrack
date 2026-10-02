@@ -16,9 +16,7 @@
 <p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/installation.md">🇬🇧 English</a></p>
 <!-- /nav -->
 
-## 📦 Installazione
-
-### ⚡ Installazione con un comando
+## ⚡ Installazione con un comando
 
 **Linux / macOS**
 
@@ -42,9 +40,9 @@ Opzioni: `BT_BASS=1` aggiunge il contrabbasso, `BT_NO_SAMPLES=1` salta i campion
 curl -fsSL https://raw.githubusercontent.com/wdog/backingtrack/main/install.sh | BT_BASS=1 bash
 ```
 
-### 🔧 Installazione manuale
+## 🔧 Installazione manuale
 
-#### 1. ffmpeg
+### 1. ffmpeg
 
 | Sistema | Comando |
 |---|---|
@@ -63,7 +61,7 @@ Per l'**editor grafico** (opzionale) servono anche GTK 4 e libadwaita con i bind
 | 🐧 Arch | `sudo pacman -S python-gobject gtk4 libadwaita` |
 | 🍎 macOS | `brew install pygobject3 gtk4 libadwaita` |
 
-#### 2. backingtrack
+### 2. backingtrack
 
 ```sh
 git clone https://github.com/wdog/backingtrack.git
@@ -77,7 +75,7 @@ funziona ma `backingtrack gui` no.
 Senza installare niente puoi anche usare `python3 -m backingtrack` dalla cartella del progetto
 (servono `pip install numpy pyyaml`).
 
-#### 3. Campioni (una volta sola)
+### 3. Campioni (una volta sola)
 
 ```sh
 backingtrack setup          # chitarra + batteria + casse: ~300 MB
@@ -85,7 +83,7 @@ backingtrack setup --bass   # aggiunge il contrabbasso: ~56 MB
 backingtrack doctor         # cosa è installato e quanto spazio occupa
 ```
 
-### 💾 Perché ~300 MB?
+## 💾 Perché ~300 MB?
 
 Un suono realistico viene da **registrazioni vere**: ogni nota della chitarra e ogni colpo di batteria
 sono file audio separati, registrati a più dinamiche (piano, medio, forte) e più volte (i *round robin*,
@@ -113,9 +111,7 @@ e al massimo 2 round robin per la chitarra e 6 per la batteria. Rispetto alle li
   (es. un disco esterno).
 - Si scarica **una volta sola**: poi il programma funziona offline.
 
-## 🔄 Aggiornare, 🩺 diagnosi e 🗑️ disinstallare
-
-### 🔄 Aggiornare
+## 🔄 Aggiornare
 
 ```sh
 backingtrack update
@@ -150,7 +146,7 @@ I campioni già scaricati vengono saltati. Per provare anche il primo download d
 Per lavorare sul codice senza reinstallare a ogni modifica: `pipx install -e --system-site-packages .`
 (editable: il comando usa direttamente i file della cartella).
 
-### 🩺 Diagnosi
+## 🩺 Diagnosi
 
 ```sh
 backingtrack doctor
@@ -186,7 +182,7 @@ giusto per il tuo sistema.
 
 I messaggi sono in inglese; per l'italiano imposta `BACKINGTRACK_LANG=it`.
 
-### 🗑️ Disinstallare
+## 🗑️ Disinstallare
 
 Il programma e i campioni stanno in posti diversi: puoi togliere uno, l'altro o tutto.
 

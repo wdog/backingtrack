@@ -120,6 +120,11 @@ backingtrack gui [my_song.yaml]
 ```
 
 <p align="center"><img src="docs/gui-sezioni-en.jpg" alt="editor: Sections page" width="900"></p>
+<p align="center">
+  <img src="docs/gui-brano-en.jpg" alt="Song page: tempo, groove and set list" width="32%">
+  <img src="docs/gui-scale-en.jpg" alt="Scales tab: fretboard with CAGED boxes and suggested scales" width="32%">
+  <img src="docs/gui-guida-en.jpg" alt="built-in guide" width="32%">
+</p>
 
 Three tabs: **Song** (tempo, groove, set list), **Sections** (chords, scales on the fretboard, progression templates)
 and **YAML**. **Render & play** (`Alt+G`) creates the audio and plays it right away in the built-in player; `F1` opens

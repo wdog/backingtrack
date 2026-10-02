@@ -41,6 +41,7 @@ backingtrack doctor                        full diagnostics, with what to do if 
 ```
 
 Messages are in English; for Italian set `BACKINGTRACK_LANG=it`, e.g. `BACKINGTRACK_LANG=it backingtrack doctor`.
+Add it to your shell profile to keep it: `export BACKINGTRACK_LANG=it`.
 
 <!-- foot -->
 ---

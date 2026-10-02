@@ -16,6 +16,9 @@
 <p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/format.md">🇬🇧 English</a></p>
 <!-- /nav -->
 
+Un brano è un file YAML: poche chiavi globali e un elenco di sezioni con i loro accordi. I nomi delle sezioni sono
+liberi (`Verse`, `Strofa`, `Solo`…): servono solo in `arrangement` e nell'editor.
+
 ### Chiavi principali
 
 | Chiave | Default | Descrizione |
