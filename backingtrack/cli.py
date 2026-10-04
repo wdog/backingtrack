@@ -143,8 +143,8 @@ def render(song, out, tempo=None, groove=None, bass=False, mute=None, mp3=False,
         if mute_sfz:  # note stoppate con i veri campioni staccato
             muted = [dict(n, muted="real") for n in notes if n["muted"]]
             notes = [n for n in notes if not n["muted"]]
-            mix_voices(Sampler(_instrument(pack, "mute_sfz")).voices(muted, rng), buses)
-        mix_voices(Sampler(_instrument(pack)).voices(notes, rng), buses)
+            mix_voices(Sampler(_instrument(pack, "mute_sfz"), detune=4).voices(muted, rng), buses)
+        mix_voices(Sampler(_instrument(pack), detune=4).voices(notes, rng), buses)
     if groups["drums"]:
         drum_map = packs.PACKS["drums"]["drum_map"]
 

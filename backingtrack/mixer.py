@@ -155,17 +155,21 @@ def mix(buses, out_wav, tmp, mp3=None, stems_dir=None, loudness=-16.0, cab_dir=N
     names = [b for b in buses if rms(buses[b]) > 0]
     if not names:
         raise SongError(_("niente da mixare"))
+    # rumore a -140 dB: evita i numeri denormali (lentissimi) nei filtri durante i silenzi;
+    # uno solo per tutti i bus, ogni bus ne usa un tratto diverso
+    n = max(buses[b].shape[1] for b in names)
+    noise = np.random.default_rng(0).standard_normal(n + 4096).astype(np.float32) * 1e-7
 
     # 1) catene per bus (ampli, EQ, compressione, slapback), un processo ffmpeg per bus in parallelo
     def process(i, name):
         x = buses[name]
         if family(name) == "guitar":  # livello DI costante = saturazione prevedibile
             x = x * (db(-20) / rms(x))
-        # rumore a -140 dB: evita i numeri denormali (lentissimi) nei filtri durante i silenzi
-        x = x + np.random.default_rng(i).standard_normal(x.shape).astype(np.float32) * 1e-7
+        k = (i * 509) % 4096
+        x = x + noise[k:k + x.shape[1]]
         write_raw(tmp / ("in%d.raw" % i), x)
         extra, graph = bus_graph(name, cab_dir)
-        cmd = [ffmpeg, "-y", "-v", "error"] + raw + ["-i", str(tmp / ("in%d.raw" % i))]
+        cmd = [ffmpeg, "-y", "-v", "error"] + raw[:-1] + [str(x.shape[0]), "-i", str(tmp / ("in%d.raw" % i))]
         for f in extra:
             cmd += ["-i", f]
         _run(cmd + ["-filter_complex", graph, "-map", "[out]"] + raw[:2] + [str(tmp / ("out%d.raw" % i))])
@@ -174,7 +178,6 @@ def mix(buses, out_wav, tmp, mp3=None, stems_dir=None, loudness=-16.0, cab_dir=N
         list(ex.map(lambda a: process(*a), enumerate(names)))
 
     # 2) bilanciamento per famiglia + mandata riverbero
-    n = max(buses[b].shape[1] for b in names)
     fams = {}
     for i, name in enumerate(names):
         y = read_raw(tmp / ("out%d.raw" % i))

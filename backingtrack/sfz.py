@@ -9,6 +9,7 @@ Intonazione automatica (strumenti intonati): ogni campione viene misurato una vo
 di quanto è calante/crescente rispetto al suo pitch_keycenter; le misure restano in un JSON accanto all'SFZ.
 """
 import json
+import pickle
 import re
 import struct
 from pathlib import Path
@@ -31,9 +32,11 @@ def note_number(v):
     return (int(m.group(3)) + 1) * 12 + NOTE_NAMES[m.group(1).lower()] + {"#": 1, "b": -1, "": 0}[m.group(2)]
 
 
-def _read_text(path, defines, root, depth=0):
+def _read_text(path, defines, root, depth=0, files=None):
     if depth > 16:
         raise SongError(_("SFZ: troppi #include annidati"))
+    if files is not None:
+        files.append(Path(path))
     text = Path(path).read_text(encoding="utf-8", errors="replace")
     text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
     out = []
@@ -51,16 +54,17 @@ def _read_text(path, defines, root, depth=0):
                 inc = Path(root) / rel  # come da specifica: relativo all'SFZ principale
                 if not inc.is_file():
                     inc = Path(path).parent / rel
-                out.append(_read_text(inc, defines, root, depth + 1))
+                out.append(_read_text(inc, defines, root, depth + 1, files))
             else:
                 out.append(part)
         out.append("\n")
     return "".join(out)
 
 
-def parse(path):
-    """Ritorna (control, [opcode della region, già uniti a global/master/group])."""
-    text = _read_text(path, {}, Path(path).parent)
+def parse(path, files=None):
+    """Ritorna (control, [opcode della region, già uniti a global/master/group]).
+    files: lista in cui annotare i file letti (SFZ principale e #include)."""
+    text = _read_text(path, {}, Path(path).parent, files=files)
     control, scopes, regions = {}, {"global": {}, "master": {}, "group": {}}, []
     target = None
     for chunk in re.split(r"(<\w+>)", text):
@@ -206,6 +210,13 @@ def pitch_offset_cents(data, sr, key, max_cents=50):
     return float(cents) if abs(cents) <= max_cents else None
 
 
+CACHE_VERSION = 1
+
+
+def _stamp(files):
+    return [(str(f), f.stat().st_mtime_ns, f.stat().st_size) for f in files]
+
+
 class Instrument:
     def __init__(self, sfz_file, autotune=False, root=None, cc=None):
         """root: cartella del pacchetto, dove cercare per nome i campioni con percorsi non risolvibili;
@@ -215,7 +226,29 @@ class Instrument:
         self._tuning_file = sfz_file.parent / ".backingtrack-tuning.json"
         self._tuning, self._tuning_dirty = None, False
         self._base = sfz_file.parent
-        control, ops_list = parse(sfz_file)
+        # region già pronte in cache accanto all'SFZ (il parsing di un pacchetto grande costa ~0,3 s);
+        # valida finché SFZ e #include non cambiano (reinstallare un pacchetto ricrea la cartella)
+        cache = sfz_file.with_name(".backingtrack-%s.pickle" % sfz_file.stem)
+        key = (CACHE_VERSION, str(sfz_file), str(root), sorted((cc or {}).items()))
+        try:
+            with open(cache, "rb") as f:
+                ckey, stamp, data = pickle.load(f)
+            if ckey == key and stamp == _stamp(Path(p) for p, _, _ in stamp):
+                self.cc_defaults, self.regions = data
+                self._index()
+                return
+        except Exception:  # cache assente, vecchia o illeggibile: si rifà il parsing
+            pass
+        files = []
+        self._load(sfz_file, root, cc, files)
+        try:
+            with open(cache, "wb") as f:
+                pickle.dump((key, _stamp(files), (self.cc_defaults, self.regions)), f, pickle.HIGHEST_PROTOCOL)
+        except OSError:
+            pass
+
+    def _load(self, sfz_file, root, cc, files):
+        control, ops_list = parse(sfz_file, files)
         default_path = control.get("default_path", "").replace("\\", "/")
         self.cc_defaults = {int(k[6:]): int(float(v)) for k, v in control.items() if k.startswith("set_cc")}
         self.cc_defaults.update(cc or {})
@@ -238,6 +271,9 @@ class Instrument:
             self.regions.append(r)
         if not self.regions:
             raise SongError(_("SFZ senza campioni utilizzabili: %s") % sfz_file)
+        self._index()
+
+    def _index(self):
         self.by_key = {}
         for r in self.regions:
             for k in range(r.lokey, r.hikey + 1):

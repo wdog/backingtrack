@@ -1,22 +1,61 @@
 """Sampler: trasforma le note in tracce audio (bus) usando gli strumenti SFZ."""
 import math
 import random
+from fractions import Fraction
 
 import numpy as np
 
-SR = 44100
+SR = 48000  # come la batteria Salamander: niente conversione sui piatti
 MAX_VOICE_S = 8.0
 
 
+def _smooth(n):
+    """Il più piccolo intero >= n senza fattori primi oltre il 7 (FFT veloce)."""
+    while True:
+        m = n
+        for p in (2, 3, 5, 7):
+            while m % p == 0:
+                m //= p
+        if m == 1:
+            return n
+        n += 1
+
+
+def resample(data, sr_from, sr_to):
+    """Conversione di frequenza di campionamento a banda limitata (FFT, rapporto razionale esatto).
+
+    Molto più pulita dell'interpolazione lineare (niente aliasing sui piatti); il segnale è
+    allungato di zeri, così la discontinuità finale non rientra sull'attacco.
+    """
+    q = Fraction(sr_to, sr_from).limit_denominator(1000)
+    up, down = q.numerator, q.denominator
+    n = data.shape[1]
+    k = _smooth(-(-(n + 1024) // down))
+    x = np.fft.rfft(data, k * down, axis=1)
+    m = k * up
+    y = np.zeros((data.shape[0], m // 2 + 1), dtype=np.complex64)
+    w = min(x.shape[1], y.shape[1])
+    y[:, :w] = x[:, :w]
+    return (np.fft.irfft(y, m, axis=1)[:, : n * up // down] * (up / down)).astype(np.float32)
+
+
 class Sampler:
-    def __init__(self, instrument, sr=SR, vel_exp=1.0):
+    def __init__(self, instrument, sr=SR, vel_exp=1.0, detune=0.0, seed=7):
         self.ins = instrument
         self.sr = sr
         self.vel_exp = vel_exp  # <1 = curva velocity più morbida (ghost note udibili)
+        # umanizzazione: ogni voce un filo stonata (-detune, 0 o +detune cent: pochi valori per non
+        # moltiplicare la cache dei campioni trasposti) e con volume leggermente diverso;
+        # le corde di una chitarra vera non sono mai perfette
+        self.detune = detune
+        self._human = random.Random(seed)
         self._pitched = {}
 
     def _pitched_sample(self, region, semitones):
-        """Campione trasposto (ricampionamento lineare), in cache."""
+        """Campione trasposto e portato alla frequenza del motore, in cache.
+
+        Solo cambio di frequenza (batteria): FFT a banda limitata. Con trasposizione: interpolazione
+        lineare in un passo solo (chitarre e basso, la cui catena taglia comunque gli acuti)."""
         key = (region.sample, region.offset, region.end, round(semitones, 3))
         if key not in self._pitched:
             data, sr = self.ins.sample(region)
@@ -25,7 +64,9 @@ class Sampler:
             else:
                 ratio = 2 ** (semitones / 12) * sr / self.sr
                 data = data[:, : int(MAX_VOICE_S * sr)]
-                if abs(ratio - 1) > 1e-6:
+                if abs(semitones) < 1e-3 and sr != self.sr:
+                    data = resample(data, sr, self.sr)
+                elif abs(ratio - 1) > 1e-6:
                     n = data.shape[1]
                     pos = np.arange(0, n - 1, ratio, dtype=np.float64)
                     xp = np.arange(n)
@@ -41,10 +82,14 @@ class Sampler:
             if cc_for:
                 key, cc = cc_for(key)
             for r in self.ins.select(key, n["vel"], rng, cc):
-                data = self._pitched_sample(r, key - r.center + r.tune + self.ins.tune_correction(r))
+                semis = key - r.center + r.tune + self.ins.tune_correction(r)
+                gain = 10 ** (r.volume / 20) * r.vel_gain(n["vel"]) ** self.vel_exp * n.get("gain", 1.0)
+                if self.detune:
+                    semis += self._human.choice((-self.detune, 0, self.detune)) / 100
+                    gain *= 10 ** (self._human.uniform(-1.5, 1.5) / 20)
+                data = self._pitched_sample(r, semis)
                 if data is None:
                     continue
-                gain = 10 ** (r.volume / 20) * r.vel_gain(n["vel"]) ** self.vel_exp * n.get("gain", 1.0)
                 end = None if r.one_shot else n["end"]
                 out.append(dict(start=n["start"], end=end, region=r, data=data, gain=gain,
                                 muted=n.get("muted", False), bus=n["bus"]))
@@ -97,6 +142,8 @@ def mix_voices(voices, buses, sr=SR):
         if e <= s:
             continue
         seg = y[:, : e - s]
+        if bus.shape[0] == 1 and seg.shape[0] > 1:
+            seg = seg.mean(axis=0, keepdims=True)
         if seg.shape[0] == 1:
             bus[:, s:e] += seg[0]
         else:
@@ -105,8 +152,9 @@ def mix_voices(voices, buses, sr=SR):
 
 
 def new_buses(names, seconds, sr=SR):
+    """Bus vuoti: stereo la batteria, mono gli altri (chitarre e basso si spazializzano nel mix)."""
     n = int(math.ceil(seconds * sr))
-    return {name: np.zeros((2, n), dtype=np.float32) for name in names}
+    return {name: np.zeros((2 if name == "drums" else 1, n), dtype=np.float32) for name in names}
 
 
 def make_rng(seed):
