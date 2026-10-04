@@ -48,7 +48,7 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
   (solo valori non di default, `chords` come blocco `|`), `check_bar`/`describe_bar` (messaggi e lettura
   "Em 2 tempi · D 1 · C 1"), `TEMPLATES` a gradi (I, IV, V:7, vi:m…) → `template_bars(nome, tonalità)`.
 - `gui.py` — Adw.Application: schede Brano (+ ordine sezioni) / Sezioni (3 colonne: elenco | Accordi/Scale (`center_stack`) | impostazioni+modelli;
-  `Adw.OverlaySplitView` con `pin_sidebar`, si chiude solo < 600sp; colonne impilate < 820sp) / YAML.
+  `Adw.OverlaySplitView` con `pin_sidebar`, a scomparsa < 1300sp; colonne impilate < 1000sp) / YAML.
   Solo le impostazioni base in vista: il resto passa da `self.advanced(widget)` ed è mostrato dall'azione stateful
   `app.advanced` (pulsanti "Avanzate", ricordata in `data_dir()/gui.json`). Spiegazioni nei tooltip, non nei sottotitoli.
   Genera e ascolta: `Alt+G` (anche `Ctrl+R`).
@@ -149,7 +149,7 @@ presente se quello estratto non è installato. `backingtrack remove <pack>` libe
   (`viewswitcher button.toggle`), voci dei menu (`popover.menu modelbutton`) e `menubar > item` hanno stile proprio.
 - MenuRow usa `Gtk.PopoverMenu.new_from_model_full(..., NESTED)`: sottomenu separati (altrimenti il menu è largo quanto
   la voce più lunga di tutti i sottomenu). Descrizioni groove nel menu accorciate a ~48 caratteri.
-- Larghezza minima: player nascosto = `set_visible(False)`; breakpoint 820sp → elenco sezioni a scomparsa, player senza
+- Larghezza minima: player nascosto = `set_visible(False)`; breakpoint 1300sp → elenco sezioni a scomparsa; 1000sp → colonne e schede Brano impilate, player senza
   volume/cartella. Pannelli laterali richiudibili (F9 / Shift+F9).
 - Popup per i test: il popover si apre headless dopo ~2,5 s (`btn.popup()`, poi WidgetPaintable sul popover).
   Screenshot dall'utente: `! sleep 5 && grim ~/popup.png` (slurp chiuderebbe il popup).
