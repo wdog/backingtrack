@@ -121,7 +121,7 @@ quattro livelli di evidenza:
 
 ### ✨ Modelli di giro e tonalità
 
-I **modelli di giro** (12-bar blues, 8-bar, blues minore, I-IV-V, anni '50, pop-rock…) sono scritti a gradi (I, IV,
+I **modelli di giro** (12-bar blues, 8-bar, blues minore, I-IV-V, anni '50, pop-rock, bluegrass…) sono scritti a gradi (I, IV,
 V) e la **Tonalità** li trasforma in accordi veri: 12-bar blues in A = A7, D7, E7; in E = E7, A7, B7.
 **Sostituisci accordi** cancella le battute della sezione e ci mette il giro, **Aggiungi in coda** lo mette dopo.
 Nessuno dei due traspone: per spostare un brano già scritto c'è **Trasposizione** (Brano ▸ Avanzate).

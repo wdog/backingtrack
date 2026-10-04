@@ -52,6 +52,13 @@ TEMPLATES = {
     "Minore i-bVII-bVI-V": "I:m bVII bVI V",
     "Turnaround I-IV-I-V": "I:7 IV:7 I:7 V:7",
     "Un accordo (boogie)": "I:7 I:7 I:7 I:7",
+    "Bluegrass I-IV-V (16)": "I I IV I | I I V V | I I IV I | I V I I",
+    "Breakdown I-vi-V (Foggy Mountain)": "I I vi:m vi:m | I I V I",
+    "Ragtime I-VI7-II7-V7 (Salty Dog)": "I I VI:7 VI:7 | II:7 II:7 V:7 V:7 | I I VI:7 VI:7 | II:7 V:7 I I",
+    "Gospel I-I7-IV-V (Circle)": "I I:7 IV I | I I V I",
+    "Fiddle tune I-V (8)": "I I I V | I I V I",
+    "Misolidio I-bVII (Old Joe Clark)": "I I I bVII | I I bVII I",
+    "Minore i-bVII (high lonesome)": "I:m I:m bVII bVII | I:m I:m bVII I:m",
 }
 DEGREES = {"I": 0, "bII": 1, "ii": 2, "II": 2, "bIII": 3, "iii": 4, "III": 4, "IV": 5, "#IV": 6, "V": 7,
            "bVI": 8, "vi": 9, "VI": 9, "bVII": 10, "VII": 11, "vii": 11}

@@ -614,6 +614,9 @@ TEMPLATE_GROUPS = [
                   "Slow blues con passaggi", "Turnaround I-IV-I-V", "Un accordo (boogie)"]),
     ("🤘  Rock", ["Rock'n'roll I-IV-V (12)", "Rock I-bVII-IV", "Minore i-bVII-bVI-V"]),
     ("🕺  Anni '50 e pop", ["Anni '50 I-vi-IV-V", "Pop-rock I-V-vi-IV"]),
+    ("🪕  Bluegrass", ["Bluegrass I-IV-V (16)", "Breakdown I-vi-V (Foggy Mountain)", "Ragtime I-VI7-II7-V7 (Salty Dog)",
+                      "Gospel I-I7-IV-V (Circle)", "Fiddle tune I-V (8)", "Misolidio I-bVII (Old Joe Clark)",
+                      "Minore i-bVII (high lonesome)"]),
 ]
 
 

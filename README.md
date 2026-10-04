@@ -15,7 +15,7 @@
   <img alt="Platform" src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-555">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
   <img alt="Styles" src="https://img.shields.io/badge/styles-rock%20%7C%20blues%20%7C%20rockabilly%20%7C%20country%20%7C%20jazz%20%7C%20funk%20%7C%20reggae%20%7C%20soul-F5A623">
-  <img alt="Grooves" src="https://img.shields.io/badge/grooves-147-8E44AD">
+  <img alt="Grooves" src="https://img.shields.io/badge/grooves-150-8E44AD">
   <img alt="Examples" src="https://img.shields.io/badge/examples-84%20songs-C0392B">
   <img alt="Languages" src="https://img.shields.io/badge/lang-English%20%7C%20Italiano-2E86C1">
 </p>
@@ -44,7 +44,7 @@
 - 🥁 **Sampled acoustic drums** (Salamander Drumkit): open/closed hi-hat, ghost notes, variations every 4 bars,
   **fills** at the end of sections, crash on downbeats.
 - 🎻 **Optional bass**: double bass or electric bass, with walking, root-fifth, eighths, reggae, tumbao…
-- 🎚️ **147 grooves** in 9 styles (rock, blues, rockabilly, country, bluegrass, jazz, funk, reggae, soul), also different section
+- 🎚️ **150 grooves** in 9 styles (rock, blues, rockabilly, country, bluegrass, jazz, funk, reggae, soul), also different section
   by section; **repeatable sections** and set list (`[Intro, Verse x2, Chorus]`).
 - 🧑‍🎤 **Sounds human**: micro-timing, varying dynamics, adjustable swing. **Automatic mix** with EQ, compression,
   convolution reverb and steady loudness.
@@ -141,7 +141,7 @@ The whole editor, screen by screen: **[docs/en/gui.md](docs/en/gui.md)**.
 | [🖥️ Graphical editor](docs/en/gui.md) | tabs, chords and palette, scales and CAGED, player, shortcuts, language |
 | [🎓 Tutorial and examples](docs/en/tutorial.md) | your first backing track step by step, complete song examples |
 | [📝 Song format](docs/en/format.md) | YAML keys, how to read a bar, supported chords |
-| [🥁 Grooves](docs/en/grooves.md) | the 147 grooves, style by style |
+| [🥁 Grooves](docs/en/grooves.md) | the 150 grooves, style by style |
 | [📚 Example songs](docs/en/songs.md) | the 84 included songs |
 | [⌨️ Commands](docs/en/commands.md) | every command-line option |
 | [❓ FAQ](docs/en/faq.md) | common problems |

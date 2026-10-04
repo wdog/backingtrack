@@ -118,7 +118,7 @@ of emphasis:
 
 ### ✨ Progression templates and keys
 
-The **progression templates** (12-bar blues, 8-bar, minor blues, I-IV-V, '50s, pop-rock…) are written in degrees
+The **progression templates** (12-bar blues, 8-bar, minor blues, I-IV-V, '50s, pop-rock, bluegrass…) are written in degrees
 (I, IV, V) and the **Key** turns them into real chords: 12-bar blues in A = A7, D7, E7; in E = E7, A7, B7.
 **Replace chords** clears the bars of the section and puts the progression in, **Append** adds it after them.
 Neither one transposes: to move a song you already wrote there is **Transpose** (Song ▸ Advanced).

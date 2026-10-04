@@ -674,6 +674,13 @@ GROOVES.update({
     "bluegrass/halftime": g("Bluegrass a metà tempo: basso sull'1, pennata lunga sul 3 (strofe lente, gospel)",
                             "clean", pat("B---D-u-", 96, 56), GRASS_TRAD, GRASS_TURN, GRASS_FILL,
                             lick=RUN_SHORT, **GR),
+    # semplici: solo tonica e quinta alternate + accordo, niente run (base per suonarci sopra)
+    "bluegrass/plain": g("Base semplice: tonica sull'1, quinta sul 3, accordo sul 2 e 4, niente run", "clean",
+                         pat("B.D.F.D.", 100, 60), GRASS_TRAD, GRASS_TURN, GRASS_FILL, **GR),
+    "bluegrass/plain-chucka": g("Base semplice: tonica e quinta alternate, pennata giù-su sul 2 e 4, niente run",
+                                "clean", pat("B.DuF.Du", 100, 58), GRASS_TRAD, GRASS_TURN, GRASS_FILL, **GR),
+    "bluegrass/plain-ballad": g("Base semplice lenta: tonica e quinta, accordi lunghi, niente run", "clean",
+                                pat("B-D-F-D-", 94, 58), GRASS_TRAD, GRASS_TURN, GRASS_FILL, **GR),
 })
 
 

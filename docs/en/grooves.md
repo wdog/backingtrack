@@ -16,7 +16,7 @@
 <p align="center"><b>🇬🇧 English</b> · <a href="../it/groove.md">🇮🇹 Italiano</a></p>
 <!-- /nav -->
 
-147 grooves in 9 styles. Columns: amp, swing (0 = straight, 1 = triplet), bass (`--bass`) and description;
+150 grooves in 9 styles. Columns: amp, swing (0 = straight, 1 = triplet), bass (`--bass`) and description;
 🎧 = double-tracked guitar L/R, 🔁 = slapback. Pick a groove with `groove:` in the song, also section by section.
 
 <details>
@@ -117,7 +117,7 @@
 </details>
 
 <details>
-<summary><b>🪕 Bluegrass</b> — 22 grooves</summary>
+<summary><b>🪕 Bluegrass</b> — 25 grooves</summary>
 
 | Groove | Amp | Swing | Bass | Description |
 |---|---|---|---|---|
@@ -143,6 +143,9 @@
 | `bluegrass/carter` | clean | 0 | two | the thumb plays the bass line (1-3-5-3), upstroke on the offbeat |
 | `bluegrass/walkdown` | clean | 0 | two | Boom-chuck with a G-F#-E-D bass walkdown at section end (toward the fifth) |
 | `bluegrass/halftime` | clean | 0 | two | bass on one, long strum on three (slow verses, gospel) |
+| `bluegrass/plain` | clean | 0 | two | root on 1, fifth on 3, chord on 2 and 4, no runs |
+| `bluegrass/plain-chucka` | clean | 0 | two | alternating root and fifth, down-up strum on 2 and 4, no runs |
+| `bluegrass/plain-ballad` | clean | 0 | two | root and fifth, long chords, no runs |
 
 </details>
 

@@ -16,7 +16,7 @@
 <p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/grooves.md">🇬🇧 English</a></p>
 <!-- /nav -->
 
-147 groove in 9 stili. Colonne: ampli, swing (0 = dritto, 1 = terzinato), basso (`--bass`) e descrizione;
+150 groove in 9 stili. Colonne: ampli, swing (0 = dritto, 1 = terzinato), basso (`--bass`) e descrizione;
 🎧 = chitarra doppiata L/R, 🔁 = slapback. Un groove si sceglie con `groove:` nel brano, anche sezione per sezione.
 
 <details>
@@ -117,7 +117,7 @@
 </details>
 
 <details>
-<summary><b>🪕 Bluegrass</b> — 22 groove</summary>
+<summary><b>🪕 Bluegrass</b> — 25 groove</summary>
 
 | Groove | Ampli | Swing | Basso | Descrizione |
 |---|---|---|---|---|
@@ -143,6 +143,9 @@
 | `bluegrass/carter` | clean | 0 | two | il pollice fa la linea di basso (1-3-5-3), pennata in su in levare |
 | `bluegrass/walkdown` | clean | 0 | two | Boom-chuck con walkdown di basso SOL-FA#-MI-RE a fine sezione (verso la quinta) |
 | `bluegrass/halftime` | clean | 0 | two | basso sull'1, pennata lunga sul 3 (strofe lente, gospel) |
+| `bluegrass/plain` | clean | 0 | two | tonica sull'1, quinta sul 3, accordo sul 2 e 4, niente run |
+| `bluegrass/plain-chucka` | clean | 0 | two | tonica e quinta alternate, pennata giù-su sul 2 e 4, niente run |
+| `bluegrass/plain-ballad` | clean | 0 | two | tonica e quinta, accordi lunghi, niente run |
 
 </details>
 
