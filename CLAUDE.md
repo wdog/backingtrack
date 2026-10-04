@@ -70,8 +70,11 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
   Scorciatoie Spazio/B/S/L via `EventControllerKey` in CAPTURE, ignorate se il focus è un `Gtk.Editable`.
   Bozza automatica in `data_dir()/bozza.json`, proposta al riavvio. Colori sezione `SECTION_COLORS`, tema Dracula (sfondi `@define-color`, accento viola #bd93f9, rosa #ff79c6, forzato scuro).
 - `sfz.py` — parser SFZ minimale + `read_wav` (RIFF proprio: PCM 8/16/24/32 e float) + `Instrument.select`.
-- `render.py` — `Sampler`: region → campione trasposto (np.interp, cache) → voci; choke `group/off_by`;
-  `mix_voices` somma nei bus stereo float32 con release, palm mute (decadimento + FIR passa-basso).
+  Region in cache `.backingtrack-<sfz>.pickle` accanto all'SFZ (valida finché SFZ/#include non cambiano).
+- `render.py` — motore a 48 kHz (`SR`, come la batteria Salamander). `Sampler`: region → campione trasposto
+  (np.interp con frequenza + intonazione in un passo; solo cambio di frequenza = `resample` FFT a banda limitata) → voci; choke `group/off_by`;
+  bus mono per chitarre e basso, stereo per la batteria;
+  `mix_voices` somma nei bus float32 con release, palm mute (decadimento + FIR passa-basso).
 - `mixer.py` — ffmpeg: catena per bus in parallelo (ampli `AMPS`, EQ, comp, slapback), numpy bilancia le
   famiglie (`LEVELS`) e prepara la mandata; ffmpeg fa riverbero a convoluzione (`afir` con IR generata),
   glue compressor, gain di loudness e `alimiter`.
@@ -102,10 +105,10 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 
 ## Campioni
 
-- chitarra (default `gretsch`): Karoryfer Black & Green Guitars, Gretsch "green" (CC0), DI, ogni semitono;
+- chitarra (default `fender`, scaricata di base anche `gretsch`): Karoryfer Black & Green Guitars, Gretsch "green" (CC0), DI, ogni semitono;
   `Programs/04-green_twang.sfz` + `05-green_staccato.sfz` per le note stoppate (`muted="real"`).
   Alternativa `epiphone` = Emilyguitar (CC0), palm mute simulato. Scelta con `guitar:` nel YAML.
-  `fender` = FreePats FSBS direct (Fender DI ponte, CC0, repo GitHub), per rock/hard rock.
+  `fender` = FreePats FSBS direct (Fender DI ponte, CC0, repo GitHub), chitarra predefinita.
   `acoustic` = FreePats FSS Seagull steel string (GPL+eccezione, tar.xz da freepats.zenvoid.org): `amp="acoustic"` nel
   pacchetto → `cli.render` sostituisce l'ampli dei bus chitarra con `AMPS["acoustic"]` (senza IR né cassa).
   Scartati: Shinyguitar archtop (brutta), Martin HD28 del Discord GM (15 campioni), BJAM/Ella G. (RAR su Google Drive).
@@ -114,7 +117,7 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
 - batteria: Salamander Drumkit (CC-BY-SA 3.0), hi-hat aperto/chiuso via CC4 sul tasto 42.
 - basso: D. Smolken double bass pizz (CC0), opzionale; `ebass` (Black & Blue Basses) e `sneakybass` con `bass:`.
 - download: `packs.install(name, progress=...)` → percentuale/MB/file sul terminale (`print_progress`) e nel banner GUI.
-Nessun campione nel repo: si scaricano con `setup` (~300 MB default). `sfz.Instrument.select` ripiega su un round robin
+Nessun campione nel repo: si scaricano con `setup` (~460 MB default). `sfz.Instrument.select` ripiega su un round robin
 presente se quello estratto non è installato. `backingtrack remove <pack>` libera spazio.
 
 ## GUI: note
@@ -172,6 +175,20 @@ Nuova chiave in `mixer.AMPS` (catena ffmpeg su segnale mono DI a -20 dBFS RMS) e
 
 Stato: pubblicato su github.com/wdog/backingtrack, release v1.1.0, v1.2.0 (inglese/italiano) e v1.3.0 (doc it/en allineate, output CLI moderno). `main` allineato.
 Installazione locale: pipx editable con `--system-site-packages` (il comando `backingtrack` usa i file del repo).
+
+### Branch `audio-engine` (04/10/2026, non ancora committato né unito a `main`)
+Obiettivo: render più veloce e suono migliore. Fatto (test ok, esempi validi):
+- motore a 48 kHz (batteria Salamander senza conversione: piatti più aperti, +2,5 dB sopra 12 kHz);
+  `render.resample` FFT a banda limitata per i soli cambi di frequenza; cache pickle delle region SFZ (0,48 → 0,02 s);
+  bus mono per chitarre/basso, un solo buffer di rumore anti-denormali. Back in Black: 3,4 → 2,6 s.
+- chitarre umanizzate: `Sampler(detune=4)` = ogni voce -4/0/+4 cent e ±1,5 dB (costo CPU nullo, misurato).
+- 6 esempi `examples/bluegrass/` (groove `country/bluegrass` e `twostep`), `SONG_STYLES` in `docs/make_docs.py`, README 90 brani.
+Ascolto dell'utente: basso e batteria molto meglio; chitarra "ancora sintetizzata" nel mix, ma da sola (DI, ampli,
+umanizzata, epiphone: `out/chitarra/`) gli piacciono tutte → il problema è nel contesto del mix.
+In attesa: confronto `out/mix/*_{1_main,2_nuovo,3_nuovo_senza_riverbero}.wav`. Sospetto: riverbero artificiale
+(`mixer.reverb_ir`, rumore) con mandata alta sulla chitarra → sostituirlo con IR vera (stanza/plate CC0).
+Poi: campioni di release Gretsch (`rel_tp.sfz`, `trigger=release`, non scaricati né supportati), opzione B
+`pedalboard` (wheel per Win/macOS/Linux, ma Python ≥3.10 e licenza GPLv3), due commit separati (motore / bluegrass).
 
 Da fare / idee:
 1. Ascoltare i groove nuovi e le chitarre `fender`/`acoustic` (fatti senza ascolto).

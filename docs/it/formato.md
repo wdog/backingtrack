@@ -37,7 +37,7 @@ liberi (`Verse`, `Strofa`, `Solo`…): servono solo in `arrangement` e nell'edit
 | `crash` | `true` | piatto all'inizio di ogni sezione |
 | `bass` | `false` | `true` = contrabbasso, oppure `ebass` (elettrico) o `sneakybass` (serve `setup <nome>`) |
 | `voicing` | dal groove | forma degli accordi pieni: `barre`, `open` (prima posizione, dove esiste), `jazz` (4 note), `triad` (3 corde alte) |
-| `guitar` | `gretsch` | chitarra: `gretsch` (hollowbody), `epiphone` (solid body), `fender` (rock/hard rock), `acoustic` (acustica, ignora `amp`) (servono `setup <nome>`) |
+| `guitar` | `fender` | chitarra: `fender` (solid body), `gretsch` (hollowbody), `epiphone` (solid body), `acoustic` (acustica, ignora `amp`) (servono `setup <nome>`) |
 | `amp` | dal groove | forza l'ampli: `clean` `blues` `twang` `crunch` `high` |
 | `double` | dal groove | chitarra doppiata a sinistra e destra |
 | `slapback` | dal groove | eco slapback rockabilly |

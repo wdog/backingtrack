@@ -66,7 +66,7 @@ PACKS = {
         title="Electric Guitar FSBS — Fender solid body DI, pickup al ponte, 4 round robin (guitar: fender)",
         author="FreePats", license="CC0-1.0",
         repo="freepats/electric-guitar-FSBS-direct", sfz="EGuitarFSBS-direct bridge 20220911.sfz",
-        size_mb=314, light_mb=160, rr=2, keys=range(36, 90), kind="guitar"),
+        size_mb=314, light_mb=160, rr=2, keys=range(36, 90), default=True, kind="guitar"),
     "ebass": dict(
         title="Black & Blue Basses 'darkblack' — basso elettrico a dita (bass: ebass)",
         author="Karoryfer Samples", license="CC0-1.0",

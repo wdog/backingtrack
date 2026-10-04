@@ -78,19 +78,19 @@ Senza installare niente puoi anche usare `python3 -m backingtrack` dalla cartell
 ### 3. Campioni (una volta sola)
 
 ```sh
-backingtrack setup          # chitarra + batteria + casse: ~300 MB
+backingtrack setup          # 2 chitarre + batteria + casse: ~460 MB
 backingtrack setup --bass   # aggiunge il contrabbasso: ~56 MB
 backingtrack doctor         # cosa è installato e quanto spazio occupa
 ```
 
-## 💾 Perché ~300 MB?
+## 💾 Perché ~460 MB?
 
 Un suono realistico viene da **registrazioni vere**: ogni nota della chitarra e ogni colpo di batteria
 sono file audio separati, registrati a più dinamiche (piano, medio, forte) e più volte (i *round robin*,
 così due colpi di fila non sono mai identici). Il programma in sé pesa meno di 200 KB: lo spazio è tutto campioni.
 
 `setup` **non scarica le librerie intere**: legge le mappe SFZ e prende **solo i campioni che il programma usa**,
-e al massimo 2 round robin per la chitarra e 6 per la batteria. Rispetto alle librerie complete il download scende da ~1,2 GB a ~300 MB.
+e al massimo 2 round robin per la chitarra e 6 per la batteria. Rispetto alle librerie complete il download scende da ~1,2 GB a ~460 MB.
 
 | Pacchetto | Cosa contiene | `setup` | `setup --full` |
 |---|---|---|---|
@@ -99,7 +99,7 @@ e al massimo 2 round robin per la chitarra e 6 per la batteria. Rispetto alle li
 | `cabs` 🔈 | 21 impulse response di casse Marshall 4×12 | ~5 MB | ~5 MB |
 | `bass` 🎻 | contrabbasso pizzicato (solo con `--bass`) | ~56 MB | ~130 MB |
 | `epiphone` 🎸 | chitarra alternativa, Epiphone solid body (opzionale) | ~40 MB | ~100 MB |
-| `fender` 🎸 | Fender solid body DI, pickup al ponte: rock e hard rock con `amp: crunch`/`high` (opzionale) | ~160 MB | ~314 MB |
+| `fender` 🎸 | Fender solid body DI, pickup al ponte: chitarra predefinita | ~160 MB | ~314 MB |
 | `acoustic` 🎸 | chitarra acustica steel string Seagull, suonata senza ampli (opzionale, GPL con eccezione) | ~25 MB | ~25 MB |
 | `ebass` 🎸 | basso elettrico Black & Blue 'darkblack', a dita (opzionale) | ~80 MB | ~160 MB |
 | `sneakybass` 🎻 | contrabbasso Sneakybass, pizzicato leggero (opzionale) | ~63 MB | ~124 MB |
@@ -141,7 +141,7 @@ backingtrack doctor
 ```
 
 I campioni già scaricati vengono saltati. Per provare anche il primo download da zero, prima cancellali:
-`rm -rf ~/.local/share/backingtrack ~/.cache/backingtrack` (poi ~300 MB da riscaricare).
+`rm -rf ~/.local/share/backingtrack ~/.cache/backingtrack` (poi ~460 MB da riscaricare).
 
 Per lavorare sul codice senza reinstallare a ogni modifica: `pipx install -e --system-site-packages .`
 (editable: il comando usa direttamente i file della cartella).

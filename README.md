@@ -36,7 +36,7 @@
 
 ## ✨ Features
 
-- 🎸 **Real guitars**: Gretsch hollowbody (default), Epiphone, Fender solid body and an acoustic guitar, sampled note
+- 🎸 **Real guitars**: Fender solid body (default), Gretsch hollowbody, Epiphone and an acoustic guitar, sampled note
   by note with several dynamics and round robins, plus real **staccato** hits for palm mutes and chops. Barre, open,
   jazz and triad voicings; down/up strums, boogie double stops, boom-chick. Every string plays one note at a time.
 - 🔊 **Real amps and cabinets**: 5 sounds (clean, blues, twang, crunch, high gain) through real Marshall 4×12
@@ -73,7 +73,7 @@ irm https://raw.githubusercontent.com/wdog/backingtrack/main/install.ps1 | iex
 ```
 
 The script checks Python, installs ffmpeg if missing, installs `backingtrack`, adds an application menu entry on Linux
-and downloads the samples (~300 MB, only once). Running it again = updating.
+and downloads the samples (~460 MB, only once). Running it again = updating.
 Manual install, updates, diagnostics and uninstalling: **[docs/en/installation.md](docs/en/installation.md)**.
 
 ---
@@ -227,9 +227,9 @@ The **samples** are downloaded with `backingtrack setup` straight from their aut
 
 | Library | Instrument | Author | License |
 |---|---|---|---|
-| [Black & Green Guitars](https://github.com/sfzinstruments/karoryfer.black-and-green-guitars) | Gretsch guitar (default) | Karoryfer Samples | CC0 1.0 |
+| [Black & Green Guitars](https://github.com/sfzinstruments/karoryfer.black-and-green-guitars) | Gretsch guitar | Karoryfer Samples | CC0 1.0 |
 | [Emilyguitar](https://github.com/sfzinstruments/karoryfer.emilyguitar) | Epiphone guitar (optional) | Karoryfer Samples / D. Smolken | CC0 1.0 |
-| [Electric Guitar FSBS](https://github.com/freepats/electric-guitar-FSBS-direct) | Fender guitar (optional) | FreePats | CC0 1.0 |
+| [Electric Guitar FSBS](https://github.com/freepats/electric-guitar-FSBS-direct) | Fender guitar (default) | FreePats | CC0 1.0 |
 | [FSS Steel-String Guitar](https://freepats.zenvoid.org/Guitar/steel-acoustic-guitar.html) | acoustic guitar (optional) | FreePats / FlameStudios | GPL 3+ with an exception for songs |
 | [Jester's Emerald](https://www.jester-dyne-productions.com/emerald-ir-pack/) and [Brutal IR](https://www.jester-dyne-productions.com/brutal-ir-pack/) | guitar cabinets (IR) | Jester Dyne Productions | free, commercial use allowed |
 | [Salamander Drumkit](https://github.com/studiorack/salamander-drumkit) | drums | Alexander Holm | CC-BY-SA 3.0 |

@@ -124,7 +124,7 @@ def render(song, out, tempo=None, groove=None, bass=False, mute=None, mp3=False,
             continue
         groups[fam].append(dict(start=arr.seconds(n.start), end=arr.seconds(n.end), key=n.pitch,
                                 vel=n.vel, muted=n.muted, bus=n.bus))
-    pack = str(song.get("guitar", "gretsch"))
+    pack = str(song.get("guitar", "fender"))
     if groups["guitar"]:
         if pack not in GUITARS:
             raise SongError(_("guitar: '%s' sconosciuta (usa %s)") % (pack, ", ".join(GUITARS)))

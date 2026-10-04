@@ -2537,7 +2537,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.w_transpose.set_value(s["transpose"] or 0)
         self.w_swing.set_enable_expansion(s["swing"] is not None)
         self.w_swing_val.set_value(s["swing"] if s["swing"] is not None else 0.5)
-        self.w_guitar.set_selected(sf.GUITARS.index(s["guitar"]) if s["guitar"] in sf.GUITARS else 0)
+        self.w_guitar.set_selected(sf.GUITARS.index(s["guitar"]) if s["guitar"] in sf.GUITARS else sf.GUITARS.index("fender"))
         self.w_amp.set_selected(sf.AMPS.index(s["amp"]) + 1 if s["amp"] in sf.AMPS else 0)
         self.w_double.set_selected(TRI_VAL.index(s["double"]) if s["double"] in TRI_VAL else 0)
         self.w_slap.set_selected(TRI_VAL.index(s["slapback"]) if s["slapback"] in TRI_VAL else 0)
@@ -2780,7 +2780,7 @@ class MainWindow(Adw.ApplicationWindow):
 
     # ------------------------------------------------------------------ campioni
     def required_packs(self):
-        need = [self.song.get("guitar") or "gretsch", "drums", "cabs"]
+        need = [self.song.get("guitar") or "fender", "drums", "cabs"]
         try:
             bass = packs.bass_pack(self.song.get("bass"))
         except SongError:

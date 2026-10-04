@@ -37,7 +37,7 @@ A song is a YAML file: a few global keys and a list of sections with their chord
 | `crash` | `true` | crash at the start of every section |
 | `bass` | `false` | `true` = double bass, or `ebass` (electric) or `sneakybass` (needs `setup <name>`) |
 | `voicing` | from the groove | shape of full chords: `barre`, `open` (first position, where it exists), `jazz` (4 notes), `triad` (3 high strings) |
-| `guitar` | `gretsch` | guitar: `gretsch` (hollowbody), `epiphone` (solid body), `fender` (rock/hard rock), `acoustic` (acoustic, ignores `amp`) (need `setup <name>`) |
+| `guitar` | `fender` | guitar: `fender` (solid body), `gretsch` (hollowbody), `epiphone` (solid body), `acoustic` (acoustic, ignores `amp`) (need `setup <name>`) |
 | `amp` | from the groove | force the amp: `clean` `blues` `twang` `crunch` `high` |
 | `double` | from the groove | guitar double-tracked left and right |
 | `slapback` | from the groove | rockabilly slapback echo |

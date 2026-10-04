@@ -36,7 +36,7 @@
 
 ## ✨ Caratteristiche
 
-- 🎸 **Chitarre vere**: Gretsch hollowbody (default), Epiphone, Fender solid body e chitarra acustica, campionate
+- 🎸 **Chitarre vere**: Fender solid body (default), Gretsch hollowbody, Epiphone e chitarra acustica, campionate
   nota per nota con più dinamiche e round robin, più i veri colpi **staccato** per palm mute e chop. Voicing barré,
   aperti, jazz e triadi; pennate giù/su, bicordi boogie, boom-chick. Ogni corda suona una nota alla volta.
 - 🔊 **Ampli e casse vere**: 5 suoni (clean, blues, twang, crunch, high gain) su vere casse Marshall 4×12 riprodotte
@@ -73,7 +73,7 @@ irm https://raw.githubusercontent.com/wdog/backingtrack/main/install.ps1 | iex
 ```
 
 Lo script controlla Python, installa ffmpeg se manca, installa `backingtrack`, su Linux aggiunge la voce nel menu
-applicazioni e scarica i campioni (~300 MB, una volta sola). Rilanciarlo = aggiornare.
+applicazioni e scarica i campioni (~460 MB, una volta sola). Rilanciarlo = aggiornare.
 Installazione manuale, aggiornamenti, diagnosi e disinstallazione: **[docs/it/installazione.md](docs/it/installazione.md)**.
 
 ---
@@ -227,9 +227,9 @@ I **campioni** si scaricano con `backingtrack setup` direttamente dagli autori:
 
 | Libreria | Strumento | Autore | Licenza |
 |---|---|---|---|
-| [Black & Green Guitars](https://github.com/sfzinstruments/karoryfer.black-and-green-guitars) | chitarra Gretsch (default) | Karoryfer Samples | CC0 1.0 |
+| [Black & Green Guitars](https://github.com/sfzinstruments/karoryfer.black-and-green-guitars) | chitarra Gretsch | Karoryfer Samples | CC0 1.0 |
 | [Emilyguitar](https://github.com/sfzinstruments/karoryfer.emilyguitar) | chitarra Epiphone (opzionale) | Karoryfer Samples / D. Smolken | CC0 1.0 |
-| [Electric Guitar FSBS](https://github.com/freepats/electric-guitar-FSBS-direct) | chitarra Fender (opzionale) | FreePats | CC0 1.0 |
+| [Electric Guitar FSBS](https://github.com/freepats/electric-guitar-FSBS-direct) | chitarra Fender (default) | FreePats | CC0 1.0 |
 | [FSS Steel-String Guitar](https://freepats.zenvoid.org/Guitar/steel-acoustic-guitar.html) | chitarra acustica (opzionale) | FreePats / FlameStudios | GPL 3+ con eccezione per i brani |
 | [Jester's Emerald](https://www.jester-dyne-productions.com/emerald-ir-pack/) e [Brutal IR](https://www.jester-dyne-productions.com/brutal-ir-pack/) | casse per chitarra (IR) | Jester Dyne Productions | gratuite, anche per uso commerciale |
 | [Salamander Drumkit](https://github.com/studiorack/salamander-drumkit) | batteria | Alexander Holm | CC-BY-SA 3.0 |

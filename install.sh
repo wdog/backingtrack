@@ -151,7 +151,7 @@ fi
 if [ "${BT_NO_SAMPLES:-0}" = 1 ]; then
   warn "campioni saltati: più tardi esegui  backingtrack setup"
 else
-  step "Scarico i campioni (chitarra + batteria + casse, ~300 MB)"
+  step "Scarico i campioni (chitarre + batteria + casse, ~460 MB)"
   # i pacchetti già presenti vengono saltati: rilanciare l'installer = aggiornare
   if [ "${BT_BASS:-0}" = 1 ]; then "$BT" setup --bass; else "$BT" setup; fi
 fi

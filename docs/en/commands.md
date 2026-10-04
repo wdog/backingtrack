@@ -30,7 +30,7 @@ backingtrack render <file.yaml>... [options]
     --midi-only          MIDI file only
     --dry-run            show the structure without writing files
 backingtrack setup [packs] [--bass] [--full] [--force]
-                                           download the samples (default: gretsch drums cabs)
+                                           download the samples (default: gretsch drums cabs fender)
 backingtrack remove <pack>...              delete samples and free space
 backingtrack update [--ref TAG] [--src DIR]
                                            update the program and the missing samples
