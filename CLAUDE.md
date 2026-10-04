@@ -106,8 +106,8 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
   `grooves/` e `examples/` (una pagina per stile) e `index.md` (= README della lingua, link riscritti): rilanciarlo dopo ogni modifica.
   Immagini nelle pagine in sintassi markdown `![](../x.jpg)` (mkdocs non riscrive i percorsi dell'HTML); link al codice
   con URL GitHub assoluti. Screenshot `docs/gui-{brano,sezioni,scale,guida}-{it,en}.jpg`.
-- Release: versione in `backingtrack/__init__.py`, tag annotato `vX.Y.Z`, `gh release create` (gh non più installato:
-  reinstallarlo, autenticato come wdog). About/topics del repo in inglese (`gh repo edit`).
+- Release: versione in `backingtrack/__init__.py`, tag annotato `vX.Y.Z`, `gh release create` (gh in `~/.local/bin`,
+  autenticato come wdog). About/topics del repo in inglese (`gh repo edit`).
   **A ogni release**: aggiornare docs it/en e README, `python3 docs/make_docs.py`, poi `mkdocs gh-deploy`
   (il sito non si aggiorna da solo).
 
@@ -181,7 +181,8 @@ Nuova chiave in `mixer.AMPS` (catena ffmpeg su segnale mono DI a -20 dBFS RMS) e
 
 ## Stato e prossimi passi (04/10/2026)
 
-Stato: pubblicato su github.com/wdog/backingtrack, release v1.1.0, v1.2.0 (inglese/italiano) e v1.3.0 (doc it/en allineate, output CLI moderno). `main` allineato.
+Stato: pubblicato su github.com/wdog/backingtrack, release v1.1.0, v1.2.0 (inglese/italiano) v1.3.0 (doc it/en allineate, output CLI moderno) e v1.4.0 (bluegrass, motore 48 kHz, Fender, sito docs).
+`main` allineato. Installer e `update` mostrano la versione (`vecchia → nuova`).
 Installazione locale: pipx editable con `--system-site-packages` (il comando `backingtrack` usa i file del repo).
 
 ### Motore audio (04/10/2026, in `main`)
