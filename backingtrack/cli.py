@@ -244,7 +244,12 @@ def cmd_update(args):
     if subprocess.run(cmd, stdout=subprocess.DEVNULL).returncode != 0:
         raise SongError(_("aggiornamento non riuscito. Riprova o usa l'installer:  "
                         "curl -fsSL https://raw.githubusercontent.com/wdog/backingtrack/main/install.sh | bash"))
-    term.done(_("Aggiornato!"), _("novità nel README: https://github.com/wdog/backingtrack#readme"))
+    # versione nuova: la legge un processo nuovo, questo ha ancora in memoria la vecchia
+    new = subprocess.run([sys.executable, "-c", "import backingtrack; print(backingtrack.__version__)"],
+                         stdout=subprocess.PIPE, universal_newlines=True).stdout.strip() or "?"
+    term.row(term.OK, _("versione"), "%s → %s" % (__version__, new) if new != __version__
+             else _("%s (già l'ultima)") % new)
+    term.done(_("Aggiornato!"), _("novità: https://github.com/wdog/backingtrack/releases"))
 
 
 def _install_hint(what):

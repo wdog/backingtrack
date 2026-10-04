@@ -89,7 +89,20 @@ else
 fi
 
 # ---------------------------------------------------------------- programma
-step "Installo backingtrack"
+# versione installata (se c'è) e versione che sta per arrivare
+ver_of() { sed -n 's/^__version__ = "\(.*\)"/\1/p'; }
+OLD=""; have backingtrack && OLD="$(backingtrack --version 2>/dev/null | awk '{print $NF}')" || true
+NEW=""
+if [ -n "${BT_SRC:-}" ] && [ -f "${BT_SRC}/backingtrack/__init__.py" ]; then
+  NEW="$(ver_of < "${BT_SRC}/backingtrack/__init__.py")"
+elif have curl; then
+  NEW="$(curl -fsSL "https://raw.githubusercontent.com/${REPO}/${REF}/backingtrack/__init__.py" 2>/dev/null | ver_of)" || true
+fi
+if [ -n "$OLD" ] && [ -n "$NEW" ]; then
+  if [ "$OLD" = "$NEW" ]; then step "Reinstallo backingtrack $NEW (già l'ultima)"; else step "Aggiorno backingtrack $OLD → $NEW"; fi
+else
+  step "Installo backingtrack${NEW:+ $NEW}"
+fi
 BIN="$HOME/.local/bin"
 PKG="$ZIP"
 if [ -n "${BT_SRC:-}" ] || have git; then PKG="$SRC"; fi

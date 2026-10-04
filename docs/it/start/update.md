@@ -5,13 +5,13 @@ backingtrack update
 ```
 
 Scarica **solo i campioni che mancano** (quelli già presenti restano dove sono, niente download inutili)
-e poi aggiorna il programma da GitHub, mantenendo il supporto alla GUI. In alternativa rilancia l'installer:
-fa la stessa cosa.
+e poi aggiorna il programma da GitHub, mantenendo il supporto alla GUI. Alla fine mostra il cambio di versione (`1.3.0 → 1.4.0`).
+In alternativa rilancia l'installer: fa la stessa cosa e dice quale versione sta installando.
 
 | Comando | A cosa serve |
 |---|---|
 | `backingtrack update` | aggiorna alla versione `main` |
-| `backingtrack update --ref v1.3.0` | installa un branch o un tag preciso |
+| `backingtrack update --ref v1.4.0` | installa un branch o un tag preciso |
 | `backingtrack update --src ~/backingtrack` | aggiorna da una copia locale: utile per provare le modifiche prima di pubblicarle |
 
 Se lavori sul codice (cartella con `.git`), `update` ti ricorda di usare `git pull` e si limita ai campioni.

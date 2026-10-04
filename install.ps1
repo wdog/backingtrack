@@ -38,7 +38,17 @@ elseif (Have winget) {
 }
 else { Die "installa ffmpeg (winget install Gyan.FFmpeg / choco install ffmpeg) e rilancia" }
 
-Step "Installo backingtrack"
+# versione installata (se c'è) e versione che sta per arrivare
+$Old = $null
+if (Have backingtrack) { $Old = ((& backingtrack --version 2>$null) -split " ")[-1] }
+$New = $null
+try {
+    $Init = Invoke-RestMethod "https://raw.githubusercontent.com/$Repo/$Ref/backingtrack/__init__.py"
+    if ($Init -match '__version__ = "([^"]+)"') { $New = $Matches[1] }
+} catch {}
+if ($Old -and $New) {
+    if ($Old -eq $New) { Step "Reinstallo backingtrack $New (già l'ultima)" } else { Step "Aggiorno backingtrack $Old -> $New" }
+} elseif ($New) { Step "Installo backingtrack $New" } else { Step "Installo backingtrack" }
 $Data = Join-Path $env:LOCALAPPDATA "backingtrack"
 $Venv = Join-Path $Data "venv"
 & $Py -m venv $Venv
