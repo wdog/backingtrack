@@ -1,8 +1,11 @@
-<p align="center">
-  <img src="docs/logo.jpg" alt="backingtrack" width="820">
-</p>
+---
+hide:
+  - navigation
+---
 
-<p align="center"><a href="README.md">🇬🇧 English</a> · <b>🇮🇹 Italiano</b> · <a href="https://wdog.github.io/backingtrack/it/">📖 Documentazione</a></p>
+# backingtrack { .sr-only }
+
+![backingtrack](../logo.jpg)
 
 <p align="center">
   <b>Scrivi gli accordi, scegli il groove, suona sopra.</b><br>
@@ -20,7 +23,7 @@
   <img alt="Languages" src="https://img.shields.io/badge/lingua-Italiano%20%7C%20English-2E86C1">
 </p>
 
-<p align="center"><img src="docs/gui-sezioni-it.jpg" alt="editor: pagina Sezioni" width="900"></p>
+![editor: pagina Sezioni](../gui-sezioni-it.jpg)
 
 ## ✨ Caratteristiche
 

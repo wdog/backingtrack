@@ -1,0 +1,128 @@
+site_name: backingtrack
+site_description: Backing tracks with sampled guitar and drums, from a YAML file or a graphical editor
+site_url: https://wdog.github.io/backingtrack/
+repo_url: https://github.com/wdog/backingtrack
+repo_name: wdog/backingtrack
+edit_uri: edit/main/docs/
+copyright: MIT · samples by their authors
+
+exclude_docs: |
+  *.py
+
+theme:
+  name: material
+  logo: assets/icon.png
+  favicon: assets/icon.png
+  font:
+    text: Inter
+    code: JetBrains Mono
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.path
+    - navigation.footer
+    - navigation.top
+    - toc.follow
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.action.edit
+  palette:
+    scheme: slate
+    primary: custom
+    accent: custom
+
+extra_css:
+  - assets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: "#"
+      slugify: !!python/object/apply:pymdownx.slugs.slugify {kwds: {case: lower}}
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.keys
+  - pymdownx.emoji
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: folder
+      languages:
+        - {locale: en, default: true, name: English, build: true}
+        - locale: it
+          name: Italiano
+          build: true
+          nav_translations:
+            Get started: Per iniziare
+            Editor: Editor
+            Song files: File del brano
+            Sections: Sezioni
+            Grooves: Groove
+            Examples: Esempi
+            Reference: Riferimento
+            Development: Sviluppo
+
+nav:
+  - Home: index.md
+  - Get started:
+      - start/install.md
+      - start/tutorial.md
+      - start/examples.md
+      - start/samples.md
+      - start/update.md
+  - Editor:
+      - editor/index.md
+      - editor/song.md
+      - Sections:
+          - editor/sections.md
+          - editor/chords.md
+          - editor/scales.md
+          - editor/templates.md
+      - editor/player.md
+      - editor/files.md
+      - editor/shortcuts.md
+  - Song files:
+      - songs/format.md
+      - songs/bars.md
+      - songs/chords.md
+  - Grooves:
+      - grooves/index.md
+      - grooves/rock.md
+      - grooves/blues.md
+      - grooves/rockabilly.md
+      - grooves/country.md
+      - grooves/bluegrass.md
+      - grooves/jazz.md
+      - grooves/funk.md
+      - grooves/reggae.md
+      - grooves/soul.md
+  - Examples:
+      - examples/index.md
+      - examples/rock.md
+      - examples/blues.md
+      - examples/rockabilly.md
+      - examples/country.md
+      - examples/bluegrass.md
+      - examples/jazz.md
+  - Reference:
+      - reference/commands.md
+      - reference/faq.md
+      - reference/diagnostics.md
+  - Development:
+      - dev/index.md
+      - dev/tools.md
+      - dev/structure.md
+      - dev/setup.md
+      - dev/grooves.md
+      - dev/translations.md
+      - dev/libraries.md

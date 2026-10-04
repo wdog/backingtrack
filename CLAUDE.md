@@ -23,7 +23,8 @@ python3 -m unittest discover tests                # test (non servono i campioni
 backingtrack gui [file.yaml]                      # editor GTK4 / libadwaita
 backingtrack update [--src DIR]                   # campioni mancanti + aggiornamento programma
 python3 docs/make_images.py                       # rigenera logo/diagramma (Pillow, font DejaVu)
-python3 docs/make_docs.py                         # tabelle groove/brani it+en e navigazione delle docs
+python3 docs/make_docs.py                         # tabelle groove/brani it+en e home del sito (index.md dai README)
+mkdocs serve / mkdocs gh-deploy                   # sito docs (serve: pip install mkdocs-material mkdocs-static-i18n)
 BACKINGTRACK_LANG=it python3 -m backingtrack doctor   # messaggi in italiano (predefinito: inglese)
 shellcheck install.sh                             # installer curl|bash (Linux/macOS)
 ```
@@ -96,12 +97,19 @@ Pipeline: `song.py` → `arranger.py` → `render.py` (+ `sfz.py`) → `mixer.py
   poi `backingtrack setup`. Variabili: `BT_BASS`, `BT_NO_SAMPLES`, `BT_YES`, `BT_REF`, `BT_SRC` (sorgente locale per test:
   `HOME=/tmp/h BT_SRC=$PWD BT_NO_SAMPLES=1 bash install.sh`).
 - `install.ps1`: equivalente Windows (`irm ... | iex`), venv in `%LOCALAPPDATA%\backingtrack`.
-- Documentazione: `README.md` (inglese) e `README.it.md` (italiano), corti; il resto in `docs/en/` e `docs/it/`
-  (una pagina per argomento, stessi contenuti). `python3 docs/make_docs.py` genera le tabelle di groove e brani dai dati
-  e la barra di navigazione (bandiere, avanti/indietro) di ogni pagina: rilanciarlo dopo ogni modifica. Screenshot
-  `docs/gui-{brano,sezioni,scale,guida}-{it,en}.jpg`.
-- Release: versione in `backingtrack/__init__.py`, tag annotato `vX.Y.Z`, `gh release create` (gh in `~/.local/bin`,
-  autenticato come wdog). About/topics del repo in inglese (`gh repo edit`).
+- Documentazione: `README.md` (inglese) e `README.it.md` (italiano) corti (~90 righe: vetrina, installazione, avvio,
+  link al sito, crediti campioni). Il resto è il sito MkDocs Material https://wdog.github.io/backingtrack/ (`mkdocs.yml`,
+  plugin `mkdocs-static-i18n` a cartelle: `docs/en/` → `/`, `docs/it/` → `/it/`, **stessi nomi file** nelle due lingue).
+  Pubblicazione: `mkdocs gh-deploy` (branch `gh-pages`, niente GitHub Action). Pagine in sottocartelle (`start/`, `editor/`, `songs/`, `reference/`,
+  `dev/`), ognuna nel `nav` di `mkdocs.yml`; stile in `docs/assets/extra.css` (Dracula, titoli JetBrains Mono).
+  `python3 docs/make_docs.py` genera
+  `grooves/` e `examples/` (una pagina per stile) e `index.md` (= README della lingua, link riscritti): rilanciarlo dopo ogni modifica.
+  Immagini nelle pagine in sintassi markdown `![](../x.jpg)` (mkdocs non riscrive i percorsi dell'HTML); link al codice
+  con URL GitHub assoluti. Screenshot `docs/gui-{brano,sezioni,scale,guida}-{it,en}.jpg`.
+- Release: versione in `backingtrack/__init__.py`, tag annotato `vX.Y.Z`, `gh release create` (gh non più installato:
+  reinstallarlo, autenticato come wdog). About/topics del repo in inglese (`gh repo edit`).
+  **A ogni release**: aggiornare docs it/en e README, `python3 docs/make_docs.py`, poi `mkdocs gh-deploy`
+  (il sito non si aggiorna da solo).
 
 ## Campioni
 
@@ -165,30 +173,23 @@ Nuovo stile = prefisso del nome + `STYLE_EMOJI`/`STYLE_NAMES` in gui.py + logo (
 Batteria: solo note in `SALAMANDER_MAP` (niente cowbell/clap: si usa `BELL` 53 = campana del ride).
 Tipi evento chitarra: `D U C P B B5 R5 R6 R7 J N<n> A<n>` (J = voicing jazz a 4 note, `Chord.jazz`; N<n> = nota singola n semitoni sopra la tonica grave, `arranger.single_note`; A<n> = corda n del voicing, crosspicking). Groove con `lick=` (lista di eventi) = run al posto della chitarra nell'ultima battuta di sezione con fill (G run bluegrass).
   Voicing di D/U/C: `Chord.voicing(barre|open|jazz|triad)`, default del groove (`voicing=`), il brano lo cambia con
-  `voicing:`; forme aperte in `theory.OPEN_SHAPES` (open ripiega sul barré) + suffisso `m` (stoppato). Aggiornare la tabella in `docs/groove.md`.
+  `voicing:`; forme aperte in `theory.OPEN_SHAPES` (open ripiega sul barré) + suffisso `m` (stoppato). Rilanciare `docs/make_docs.py` (tabelle in `docs/*/grooves/`).
 
 ## Aggiungere un ampli
 
 Nuova chiave in `mixer.AMPS` (catena ffmpeg su segnale mono DI a -20 dBFS RMS) e usarla come `amp` di un groove.
 
-## Stato e prossimi passi (02/10/2026)
+## Stato e prossimi passi (04/10/2026)
 
 Stato: pubblicato su github.com/wdog/backingtrack, release v1.1.0, v1.2.0 (inglese/italiano) e v1.3.0 (doc it/en allineate, output CLI moderno). `main` allineato.
 Installazione locale: pipx editable con `--system-site-packages` (il comando `backingtrack` usa i file del repo).
 
-### Branch `audio-engine` (04/10/2026, non ancora committato né unito a `main`)
-Obiettivo: render più veloce e suono migliore. Fatto (test ok, esempi validi):
-- motore a 48 kHz (batteria Salamander senza conversione: piatti più aperti, +2,5 dB sopra 12 kHz);
-  `render.resample` FFT a banda limitata per i soli cambi di frequenza; cache pickle delle region SFZ (0,48 → 0,02 s);
-  bus mono per chitarre/basso, un solo buffer di rumore anti-denormali. Back in Black: 3,4 → 2,6 s.
-- chitarre umanizzate: `Sampler(detune=4)` = ogni voce -4/0/+4 cent e ±1,5 dB (costo CPU nullo, misurato).
-- 6 esempi `examples/bluegrass/` (groove `country/bluegrass` e `twostep`), `SONG_STYLES` in `docs/make_docs.py`, README 90 brani.
-Ascolto dell'utente: basso e batteria molto meglio; chitarra "ancora sintetizzata" nel mix, ma da sola (DI, ampli,
-umanizzata, epiphone: `out/chitarra/`) gli piacciono tutte → il problema è nel contesto del mix.
-In attesa: confronto `out/mix/*_{1_main,2_nuovo,3_nuovo_senza_riverbero}.wav`. Sospetto: riverbero artificiale
-(`mixer.reverb_ir`, rumore) con mandata alta sulla chitarra → sostituirlo con IR vera (stanza/plate CC0).
-Poi: campioni di release Gretsch (`rel_tp.sfz`, `trigger=release`, non scaricati né supportati), opzione B
-`pedalboard` (wheel per Win/macOS/Linux, ma Python ≥3.10 e licenza GPLv3), due commit separati (motore / bluegrass).
+### Motore audio (04/10/2026, in `main`)
+Motore a 48 kHz, resample FFT, cache region SFZ, chitarre umanizzate (`Sampler(detune=4)`); Fender chitarra predefinita
+(scaricata da `setup` con gretsch, drums, cabs). Ascolto dell'utente: basso e batteria molto meglio; chitarra "ancora
+sintetizzata" nel mix ma buona da sola → sospetto il riverbero artificiale (`mixer.reverb_ir`, rumore) con mandata alta
+sulla chitarra: sostituirlo con IR vera (stanza/plate CC0). Poi: campioni di release (`trigger=release`, non supportati).
+Confronto in `out/mix/*_{1_main,2_nuovo,3_nuovo_senza_riverbero}.wav` (manca foggy_3).
 
 Da fare / idee:
 1. Ascoltare i groove nuovi e le chitarre `fender`/`acoustic` (fatti senza ascolto).
