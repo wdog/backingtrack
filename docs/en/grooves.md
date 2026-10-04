@@ -16,7 +16,7 @@
 <p align="center"><b>🇬🇧 English</b> · <a href="../it/groove.md">🇮🇹 Italiano</a></p>
 <!-- /nav -->
 
-150 grooves in 9 styles. Columns: amp, swing (0 = straight, 1 = triplet), bass (`--bass`) and description;
+153 grooves in 9 styles. Columns: amp, swing (0 = straight, 1 = triplet), bass (`--bass`) and description;
 🎧 = double-tracked guitar L/R, 🔁 = slapback. Pick a groove with `groove:` in the song, also section by section.
 
 <details>
@@ -44,7 +44,7 @@
 </details>
 
 <details>
-<summary><b>🎷 Blues</b> — 15 grooves</summary>
+<summary><b>🎷 Blues</b> — 18 grooves</summary>
 
 | Groove | Amp | Swing | Bass | Description |
 |---|---|---|---|---|
@@ -63,6 +63,9 @@
 | `blues/hill` | crunch | 0 | eighths | hypnotic straight boogie, double kick (R.L. Burnside style) |
 | `blues/halfshuffle` | blues | 1 | walk | Purdie half-time shuffle, ghost notes on the snare |
 | `blues/chicago` | blues | 1 | walk | long chord on 1 and 3, chops on 2 and 4 |
+| `blues/plain` | blues | 1 | two | alternating root and fifth, chord on 2 and 4, shuffle |
+| `blues/plain-strum` | blues | 1 | two | strum on all four beats in shuffle, root and fifth bass |
+| `blues/plain-slow` | blues | 0 | two | root, chord and fifth on the triplets |
 
 </details>
 
@@ -83,7 +86,7 @@
 | `rockabilly/psycho` | crunch 🔁 | 0 | eighths | eighth-note power chords, very fast offbeat drums |
 | `rockabilly/latin` | twang 🔁 | 0 | tumbao | bass and chops on the clave, toms |
 | `rockabilly/ballad` | twang 🔁 | 0 | slow | chords on the triplets, slapback |
-| `rockabilly/hillbilly` | twang 🔁 | 0.5 | walk | 5-6 boogie over country drums, half swing |
+| `rockabilly/hillbilly` | twang 🔁 | 0.5 | walk | 5-6 boogie with slapback over rockabilly drums, half swing |
 | `rockabilly/shuffle` | twang 🔁 | 1 | walk | chops on 2 and 4 only, room for the double bass |
 | `rockabilly/sun` | twang 🔁 | 0.3 | rootfifth | root, chord and fifth with muted offbeats |
 | `rockabilly/chuck` | crunch | 0 | eighths | straight 5-6 boogie and crunch |

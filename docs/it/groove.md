@@ -16,7 +16,7 @@
 <p align="center"><b>🇮🇹 Italiano</b> · <a href="../en/grooves.md">🇬🇧 English</a></p>
 <!-- /nav -->
 
-150 groove in 9 stili. Colonne: ampli, swing (0 = dritto, 1 = terzinato), basso (`--bass`) e descrizione;
+153 groove in 9 stili. Colonne: ampli, swing (0 = dritto, 1 = terzinato), basso (`--bass`) e descrizione;
 🎧 = chitarra doppiata L/R, 🔁 = slapback. Un groove si sceglie con `groove:` nel brano, anche sezione per sezione.
 
 <details>
@@ -44,7 +44,7 @@
 </details>
 
 <details>
-<summary><b>🎷 Blues</b> — 15 groove</summary>
+<summary><b>🎷 Blues</b> — 18 groove</summary>
 
 | Groove | Ampli | Swing | Basso | Descrizione |
 |---|---|---|---|---|
@@ -63,6 +63,9 @@
 | `blues/hill` | crunch | 0 | eighths | boogie ipnotico dritto, cassa doppia (stile R.L. Burnside) |
 | `blues/halfshuffle` | blues | 1 | walk | half-time shuffle alla Purdie, ghost note sul rullante |
 | `blues/chicago` | blues | 1 | walk | accordo lungo su 1 e 3, chop su 2 e 4 |
+| `blues/plain` | blues | 1 | two | tonica e quinta alternate, accordo sul 2 e 4, shuffle |
+| `blues/plain-strum` | blues | 1 | two | pennata sui quattro tempi in shuffle, basso tonica e quinta |
+| `blues/plain-slow` | blues | 0 | two | tonica, accordo e quinta sulle terzine |
 
 </details>
 
@@ -83,7 +86,7 @@
 | `rockabilly/psycho` | crunch 🔁 | 0 | eighths | power chord a ottavi, batteria in levare velocissima |
 | `rockabilly/latin` | twang 🔁 | 0 | tumbao | basso e chop sulla clave, tom |
 | `rockabilly/ballad` | twang 🔁 | 0 | slow | accordi sulle terzine, slapback |
-| `rockabilly/hillbilly` | twang 🔁 | 0.5 | walk | boogie 5-6 su batteria country, mezzo swing |
+| `rockabilly/hillbilly` | twang 🔁 | 0.5 | walk | boogie 5-6 con slapback su batteria rockabilly, mezzo swing |
 | `rockabilly/shuffle` | twang 🔁 | 1 | walk | solo chop su 2 e 4, spazio al contrabbasso |
 | `rockabilly/sun` | twang 🔁 | 0.3 | rootfifth | tonica, accordo e quinta con levare stoppati |
 | `rockabilly/chuck` | crunch | 0 | eighths | boogie 5-6 dritto e crunch |
