@@ -31,6 +31,7 @@ PAGES = [
     ("dev", "sviluppo.md", "development.md", "⚙️ Sviluppo", "⚙️ Development"),
 ]
 STYLES = [("rock", "🤘", "Rock"), ("blues", "🎷", "Blues"), ("rockabilly", "🕺", "Rockabilly"), ("country", "🤠", "Country"),
+          ("bluegrass", "🪕", "Bluegrass"),
           ("jazz", "🎺", "Jazz"), ("funk", "🪩", "Funk"), ("reggae", "🌴", "Reggae"), ("soul", "🎤", "Soul")]
 TXT = {
     "it": dict(home="🏠 Home", readme="../../README.it.md", prev="Precedente", next="Successiva", top="⬆ Inizio pagina",

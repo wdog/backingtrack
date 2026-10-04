@@ -6,6 +6,7 @@ Evento chitarra: (beat, tipo, velocity[, durata in beat])
   B / B5  nota di basso: tonica / quinta
   R5 R6 R7  bicordi boogie (tonica + 5a / 6a / 7a minore)
   J  voicing jazz a 4 note (tonica, 7a, 3a, 5a/estensione)
+  N<n>  nota singola, n semitoni sopra la tonica grave (run)   A<n>  corda n del voicing (arpeggio)
   suffisso "m" = stoppato (palm mute)
 
 Evento batteria: (beat, nota GM, velocity). I beat in levare (.5) vengono spostati dallo swing.
@@ -587,6 +588,92 @@ GROOVES.update({
     "soul/boogaloo": g("Soul boogaloo: chop sincopati e cassa a sedicesimi", "clean",
                        pat("X..x..X...x.X...", 100, 65), BOOGALOO_BEAT, FUNK_TURN, bass="funk", swing=0.2,
                        voicing="triad"),
+})
+
+
+# ---------------------------------------------------------------- bluegrass
+# Niente batteria nel bluegrass tradizionale: al massimo una spazzola sul 2 e 4.
+GRASS_BEAT = hits(SNARE, (1, 3), 58) + hits(KICK, (0, 2), 42)
+GRASS_TRAD = hits(SNARE, (1, 3), 40)
+GRASS_TURN = [(3, SNARE, 62), (3.5, SNARE, 46)]
+GRASS_FILL = [(2, SNARE, 48), (2.5, SNARE, 44), (3, SNARE, 60), (3.5, SNARE, 68)]
+GRASS_TRAIN = hits(KICK, (0, 2), 60) + [(i / 4, SNARE, 72 if i in (4, 12) else (46 if i % 2 == 0 else 30))
+                                        for i in range(16)]
+NEWGRASS_BEAT = hits(KICK, (0, 1.5, 2), 82) + hits(STICK, (1, 3), 85) + hat8(62, 42)
+
+
+def run(*notes, vel=95):
+    """Run a note singole: (beat, semitoni dalla tonica[, durata])."""
+    return [(n[0], "N%d" % n[1], vel) + tuple(n[2:]) for n in notes]
+
+
+# G run (in SOL: SOL LA LA# SI RE MI RE SOL), dalle trascrizioni di Lester Flatt, Del McCoury, Doc Watson
+RUN_STD = run((0, 0), (0.5, 2), (0.75, 3), (1, 4), (1.25, 7), (1.5, 9), (1.75, 7), (2, 12, 2))
+RUN_SHORT = run((3, 7), (3.25, 9), (3.5, 12, 0.5))  # coda corta RE-MI-SOL
+RUN_DEL = run((0, 0), (0.5, 2), (0.75, 3), (1, 4), (1.25, 7), (1.5, 10), (2, 12, 1))
+RUN_DOC = run((0, -3), (0.25, 0), (0.5, 2), (0.75, 3), (1, 4), (1.25, 7), (1.5, 9), (1.75, 7), (2, 12, 2))
+# walkdown di basso verso la quinta (SOL FA# MI RE), un'ottava sopra la tonica grave
+RUN_WALK = run((0, 12), (1, 11), (2, 9), (3, 7, 1))
+GR = dict(bass="two", voicing="open")
+
+GROOVES.update({
+    "bluegrass": g("Bluegrass: boom-chuck, tonica e quinta col plettro, pennata sul 2 e 4, G run a fine sezione",
+                   "clean", pat("B.D.F.D.", 102, 64), GRASS_BEAT, GRASS_TURN, GRASS_FILL, lick=RUN_STD, **GR),
+    "bluegrass/boomchucka": g("Boom-chucka: basso, poi pennata giù e su in levare (Carter scratch)", "clean",
+                              pat("B.DuF.Du", 100, 58), GRASS_BEAT, GRASS_TURN, GRASS_FILL, lick=RUN_STD, **GR),
+    "bluegrass/flatt": g("Lester Flatt: boom-chuck asciutto senza batteria e la G run classica a fine sezione",
+                         "clean", pat("B.D.F.D.", 100, 60), GRASS_TRAD, GRASS_TURN, GRASS_FILL, lick=RUN_STD, **GR),
+    "bluegrass/mccoury": g("Del McCoury: ritmica potente, levare del 4 spinto, run bluesy con la 7a minore", "clean",
+                           pat("B.D.F.DU", 108, 70), GRASS_BEAT, GRASS_TURN, GRASS_FILL, lick=RUN_DEL, **GR),
+    "bluegrass/doc": g("Doc Watson: plettro alternato continuo giù-su, run partendo dal MI grave", "clean",
+                       pat("BuDuFuDu", 98, 55), GRASS_TRAD, GRASS_TURN, GRASS_FILL, lick=RUN_DOC, **GR),
+    "bluegrass/rice": g("Tony Rice: ritmica sincopata con anticipi in levare, G run", "clean",
+                        pat("B.DU-UDU", 104, 66), GRASS_BEAT, GRASS_TURN, GRASS_FILL, lick=RUN_STD, **GR),
+    "bluegrass/crosspick": g("Crosspicking: arpeggio 3+3+2 sulle corde 3-2-1 lasciate suonare (Clarence White)",
+                             "clean", [(i / 2, "A%d" % s, 96 if i in (0, 3, 6) else 72, 1.0)
+                                       for i, s in enumerate((3, 2, 1, 3, 2, 1, 3, 2))],
+                             GRASS_TRAD, GRASS_TURN, GRASS_FILL, **GR),
+    "bluegrass/chop": g("Chop di mandolino sul 2 e 4 (Bill Monroe), tonica e quinta in battere", "clean",
+                        pat("B.X.F.X.", 102, 60), GRASS_TRAD, GRASS_TURN, GRASS_FILL, mute_len=0.12, **GR),
+    "bluegrass/breakdown": g("Breakdown: boom-chuck veloce e trascinante, basso in quarti (Foggy Mountain)", "clean",
+                             pat("B.D.F.Du", 104, 62), BLUEGRASS_BEAT, GRASS_TURN, GRASS_FILL, bass="rootfifth",
+                             voicing="open", lick=RUN_STD),
+    "bluegrass/train": g("Treno: pennate stoppate a ottavi e spazzole a sedicesimi (Orange Blossom Special)", "clean",
+                         pat("MmMmMmMm", 100, 70), GRASS_TRAIN, GRASS_TURN, GRASS_FILL, mute_len=0.3, **GR),
+    "bluegrass/hoedown": g("Hoedown / fiddle tune: boom-chuck con levare sul 4, basso in quarti da ballo", "clean",
+                           pat("B.D.F.Du", 98, 58), BLUEGRASS_BEAT, GRASS_TURN, GRASS_FILL, bass="rootfifth",
+                           voicing="open"),
+    "bluegrass/gospel": g("Gospel bluegrass: quattro pennate per battuta, accento sul 2 e 4", "clean",
+                          pat("d.D.d.D.", 100, 76), GRASS_BEAT, GRASS_TURN, GRASS_FILL, lick=RUN_STD, **GR),
+    "bluegrass/slow": g("Bluegrass lento in 12/8: basso e accordo sulle terzine, spazzole", "clean",
+                        pat("B--D-uF--D-u", 95, 55), BRUSH_BEAT, BRUSH_TURN, BRUSH_TURN, **GR),
+    "bluegrass/ballad": g("Ballata bluegrass: basso sull'1, accordo lungo sul 2, levare leggero", "clean",
+                          pat("B-D-F-du", 92, 55), GRASS_TRAD, GRASS_TURN, GRASS_FILL, lick=RUN_SHORT, **GR),
+    "bluegrass/blues": g("Bluegrass blues: boom-chucka swingato e pesante (stile Bill Monroe)", "clean",
+                         pat("B.DuF.Du", 102, 60), BRUSH_BEAT, BRUSH_TURN, BRUSH_TURN, swing=0.6, **GR),
+    "bluegrass/texas": g("Accompagnamento Texas fiddle: basso alternato e accordi jazz in swing", "clean",
+                         [(0, "B", 98), (1, "J", 85, 0.5), (1.5, "J", 62, 0.4), (2, "B5", 94), (3, "J", 85, 0.5)],
+                         BRUSH_BEAT, BRUSH_TURN, BRUSH_TURN, bass="two", swing=0.6, voicing="jazz"),
+    "bluegrass/newgrass": g("Newgrass: accordi sincopati a sedicesimi, cross-stick e hi-hat (New Grass Revival)",
+                            "clean", pat("D..U..D.d..U..D.", 100, 62), NEWGRASS_BEAT, GRASS_TURN, GRASS_FILL,
+                            bass="rootfifth", voicing="open"),
+    "bluegrass/shuffler": g("Crosspicking alla George Shuffler (Stanley Brothers): 3+3+2 sulle corde 4-3-2",
+                            "clean", [(i / 2, "A%d" % s, 96 if i in (0, 3, 6) else 70, 1.0)
+                                      for i, s in enumerate((4, 3, 2, 4, 3, 2, 4, 3))],
+                            GRASS_TRAD, GRASS_TURN, GRASS_FILL, **GR),
+    "bluegrass/roll": g("Roll alla Scruggs sulla chitarra: pollice su tonica e quinta, indice e medio sui cantini",
+                        "clean", [(0, "B", 98), (0.5, "A2", 66, 1.0), (1, "A1", 72, 1.0), (1.5, "A3", 80, 1.0),
+                                  (2, "B5", 94), (2.5, "A2", 66, 1.0), (3, "A1", 72, 1.0), (3.5, "A3", 70, 1.0)],
+                        GRASS_TRAD, GRASS_TURN, GRASS_FILL, **GR),
+    "bluegrass/carter": g("Carter scratch: il pollice fa la linea di basso (1-3-5-3), pennata in su in levare",
+                          "clean", run((0, 0, 0.5), (1, 4, 0.5), (2, 7, 0.5), (3, 4, 0.5), vel=98) +
+                          [(b + 0.5, "U", 62, 0.4) for b in range(4)], GRASS_TRAD, GRASS_TURN, GRASS_FILL, **GR),
+    "bluegrass/walkdown": g("Boom-chuck con walkdown di basso SOL-FA#-MI-RE a fine sezione (verso la quinta)",
+                            "clean", pat("B.D.F.D.", 100, 60), GRASS_TRAD, GRASS_TURN, GRASS_FILL,
+                            lick=RUN_WALK, **GR),
+    "bluegrass/halftime": g("Bluegrass a metà tempo: basso sull'1, pennata lunga sul 3 (strofe lente, gospel)",
+                            "clean", pat("B---D-u-", 96, 56), GRASS_TRAD, GRASS_TURN, GRASS_FILL,
+                            lick=RUN_SHORT, **GR),
 })
 
 

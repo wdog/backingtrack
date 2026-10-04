@@ -16,7 +16,7 @@
 <p align="center"><b>🇬🇧 English</b> · <a href="../it/brani.md">🇮🇹 Italiano</a></p>
 <!-- /nav -->
 
-`examples/` holds **84 songs** grouped by style. They contain **only the chord progression**
+`examples/` holds **87 songs** grouped by style. They contain **only the chord progression**
 (no melody or lyrics), for practice; tempos and keys are the most common or simplified ones.
 
 ```sh
@@ -124,6 +124,17 @@ backingtrack render examples/rockabilly/*.yaml --mp3     # all the rockabilly
 | [`jambalaya`](../../examples/country/jambalaya.yaml) | Jambalaya *(progression)* | 120 | `country` |
 | [`jolene`](../../examples/country/jolene.yaml) | Jolene *(progression)* | 112 | `rock/strum` |
 | [`wagon_wheel`](../../examples/country/wagon_wheel.yaml) | Wagon Wheel *(progression)* | 150 | `country` |
+
+</details>
+
+<details>
+<summary><b>🪕 Bluegrass</b> — 3 songs</summary>
+
+| File | Song | BPM | Groove |
+|---|---|---|---|
+| [`foggy_mountain_breakdown`](../../examples/bluegrass/foggy_mountain_breakdown.yaml) | Foggy Mountain Breakdown *(progression)* | 168 | `bluegrass/breakdown` |
+| [`salty_dog_blues`](../../examples/bluegrass/salty_dog_blues.yaml) | Salty Dog Blues *(progression)* | 150 | `bluegrass/flatt` |
+| [`will_the_circle_be_unbroken`](../../examples/bluegrass/will_the_circle_be_unbroken.yaml) | Will the Circle Be Unbroken *(progression)* | 112 | `bluegrass/carter`, `bluegrass/gospel` |
 
 </details>
 

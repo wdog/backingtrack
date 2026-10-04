@@ -18,6 +18,18 @@ def guitar_bus(amp, side, slap):
     return "gtr:%s:%s%s" % (amp, side, ":slap" if slap else "")
 
 
+OPEN_STRINGS = (40, 45, 50, 55, 59, 64)  # MI grave … mi cantino
+
+
+def single_note(chord, iv):
+    """Nota della run sulla tonica grave; sugli accordi minori la terza (4) e il suo cromatismo (3)
+    scendono di un semitono. Corda = la più acuta con la corda vuota non sopra la nota."""
+    if chord.third == 3 and iv % 12 in (3, 4):
+        iv -= 1
+    p = max(40, chord.low_root() + iv)  # sotto il MI grave non si scende
+    return p, 6 - max(i for i, o in enumerate(OPEN_STRINGS) if o <= p)
+
+
 class Arranger:
     def __init__(self, song, tempo=None, bass=False):
         self.song = song
@@ -75,6 +87,11 @@ class Arranger:
             notes = chord.bass_note("5" if base == "B5" else "R")
         elif base in ("R5", "R6", "R7"):
             notes = chord.dyad({"R5": 7, "R6": 9, "R7": 10}[base])
+        elif base[0] == "N":  # nota singola: semitoni sopra la tonica grave (run, G run)
+            notes = [single_note(chord, int(base[1:]))]
+        elif base[0] == "A":  # arpeggio: una corda del voicing (crosspicking)
+            v = chord.voicing(voicing)
+            notes = [n for n in v if n[1] == int(base[1:])] or v[:1]
         else:
             raise SongError(_("evento chitarra sconosciuto '%s'") % kind)
         t1 = min(t1, t0 + PPQ * mute_len) if muted else t1 - PPQ * 0.02
@@ -170,6 +187,10 @@ class Arranger:
 
             if sec["guitar"]:
                 events = sorted(g["guitar"], key=lambda e: e[0])
+                lick = g.get("lick")
+                if lick and bar["last"] and sec["fill"]:  # run di chitarra a fine sezione (G run)
+                    start = min(e[0] for e in lick)
+                    events = sorted([e for e in events if e[0] < start - 1e-6] + list(lick), key=lambda e: e[0])
                 for k, ev in enumerate(events):
                     beat, kind, vel = ev[:3]
                     c = chord_at(segs, beat)

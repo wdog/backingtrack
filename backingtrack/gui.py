@@ -35,7 +35,7 @@ SWING_HINT = "0 = ottavi dritti · 0.5 = swing leggero · 1 = shuffle terzinato"
 TRI_VAL = [None, True, False]
 
 SECTION_COLORS = ["#ffb86c", "#8be9fd", "#50fa7b", "#bd93f9", "#f1fa8c", "#ff79c6", "#ff5555", "#6272a4"]  # Dracula
-STYLE_EMOJI = {"rock": "🤘", "blues": "🎷", "rockabilly": "🕺", "country": "🤠", "jazz": "🎺",
+STYLE_EMOJI = {"rock": "🤘", "blues": "🎷", "rockabilly": "🕺", "country": "🤠", "bluegrass": "🪕", "jazz": "🎺",
                "funk": "🪩", "reggae": "🌴", "soul": "🎤"}
 
 # Guida (menu Aiuto › Guida, F1): pagine (titolo, icona, voci). Voce: ("p", testo) paragrafo, ("h", titolo)
@@ -508,7 +508,7 @@ def icon_button(icon, tooltip, callback, *args):
     return b
 
 
-STYLE_NAMES = {"rock": "Rock", "blues": "Blues", "rockabilly": "Rockabilly", "country": "Country", "jazz": "Jazz",
+STYLE_NAMES = {"rock": "Rock", "blues": "Blues", "rockabilly": "Rockabilly", "country": "Country", "bluegrass": "Bluegrass", "jazz": "Jazz",
                "funk": "Funk", "reggae": "Reggae", "soul": "Soul"}
 
 

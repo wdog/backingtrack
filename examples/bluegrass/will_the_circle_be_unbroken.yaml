@@ -1,0 +1,18 @@
+# Tradizionale (Carter Family, 1935). I-IV-I-V-I in sol.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Will the Circle Be Unbroken (progressione)"
+tempo: 112
+groove: bluegrass/carter
+
+sections:
+  - name: Strofa
+    chords: |
+      | G | G7 | C | G |
+      | G | G | D | G |
+  - name: Ritornello
+    groove: bluegrass/gospel
+    chords: |
+      | G | G7 | C | G |
+      | G | G | D | G |
+
+arrangement: [Strofa, Ritornello, Strofa, Ritornello x2]

@@ -80,7 +80,7 @@ backingtrack/
 │   ├── mixer.py       # ampli, EQ, riverbero, loudness (ffmpeg)
 │   ├── packs.py       # download selettivo dei campioni
 │   └── midi.py        # export MIDI
-├── examples/          # brani di esempio (blues, rock, rockabilly, country, jazz)
+├── examples/          # brani di esempio (blues, rock, rockabilly, country, bluegrass, jazz)
 ├── docs/              # documentazione it/ ed en/, immagini, make_docs.py, make_images.py
 ├── tests/             # python -m unittest discover tests
 ├── install.sh         # installer Linux/macOS

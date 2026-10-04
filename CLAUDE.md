@@ -5,7 +5,7 @@ Guida per Claude Code su questo repository.
 ## Progetto
 
 `backingtrack`: CLI Python che genera backing track (chitarra ritmica + batteria, contrabbasso opzionale)
-da un file YAML con tempo, groove, sezioni ripetibili e accordi. Stili: rock, blues, rockabilly, country, jazz, funk, reggae, soul (≥15 groove ciascuno).
+da un file YAML con tempo, groove, sezioni ripetibili e accordi. Stili: rock, blues, rockabilly, country, bluegrass, jazz, funk, reggae, soul (≥15 groove ciascuno).
 Codice e commenti in **italiano**; UI, messaggi e documentazione in **italiano e inglese**: testi scritti in italiano
 avvolti in `_()` (`i18n.py`), traduzioni in `locale_en.py` (`EN`, `GROOVES_EN`); un test fallisce se ne manca una.
 Le costanti di modulo (HELP, SCALE_DESC…) restano grezze e si traducono dove vengono mostrate (mai `_()` a livello di
@@ -160,7 +160,7 @@ sedicesimi; maiuscolo forte, minuscolo piano; D U X=chop M/N=stoppati P/p J B F=
 Bassi (`arranger.bass_bar`): eighths rootfifth stop slow walk two octave funk reggae quarters dotted tumbao.
 Nuovo stile = prefisso del nome + `STYLE_EMOJI`/`STYLE_NAMES` in gui.py + logo (`docs/make_images.py`).
 Batteria: solo note in `SALAMANDER_MAP` (niente cowbell/clap: si usa `BELL` 53 = campana del ride).
-Tipi evento chitarra: `D U C P B B5 R5 R6 R7 J` (J = voicing jazz a 4 note, `Chord.jazz`).
+Tipi evento chitarra: `D U C P B B5 R5 R6 R7 J N<n> A<n>` (J = voicing jazz a 4 note, `Chord.jazz`; N<n> = nota singola n semitoni sopra la tonica grave, `arranger.single_note`; A<n> = corda n del voicing, crosspicking). Groove con `lick=` (lista di eventi) = run al posto della chitarra nell'ultima battuta di sezione con fill (G run bluegrass).
   Voicing di D/U/C: `Chord.voicing(barre|open|jazz|triad)`, default del groove (`voicing=`), il brano lo cambia con
   `voicing:`; forme aperte in `theory.OPEN_SHAPES` (open ripiega sul barré) + suffisso `m` (stoppato). Aggiornare la tabella in `docs/groove.md`.
 

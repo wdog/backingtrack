@@ -79,7 +79,7 @@ backingtrack/
 │   ├── mixer.py       # amp, EQ, reverb, loudness (ffmpeg)
 │   ├── packs.py       # selective sample download
 │   └── midi.py        # MIDI export
-├── examples/          # example songs (blues, rock, rockabilly, country, jazz)
+├── examples/          # example songs (blues, rock, rockabilly, country, bluegrass, jazz)
 ├── docs/              # it/ and en/ documentation, images, make_docs.py, make_images.py
 ├── tests/             # python -m unittest discover tests
 ├── install.sh         # Linux/macOS installer

@@ -1,0 +1,13 @@
+# Flatt & Scruggs, 1949. Strumentale in sol: I e vi relativo, poi V-I.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Foggy Mountain Breakdown (progressione)"
+tempo: 168
+groove: bluegrass/breakdown
+
+sections:
+  - name: Giro
+    chords: |
+      | G | G | Em | Em |
+      | G | G | D | G |
+
+arrangement: [Giro x6]

@@ -1,0 +1,15 @@
+# Tradizionale (Flatt & Scruggs, 1950). Giro ragtime I-VI7-II7-V7 in sol.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Salty Dog Blues (progressione)"
+tempo: 150
+groove: bluegrass/flatt
+
+sections:
+  - name: Strofa
+    chords: |
+      | G | G | E7 | E7 |
+      | A7 | A7 | D7 | D7 |
+      | G | G | E7 | E7 |
+      | A7 | D7 | G | G |
+
+arrangement: [Strofa x5]
