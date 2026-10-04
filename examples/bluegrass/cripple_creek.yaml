@@ -1,0 +1,16 @@
+# Tradizionale (old-time, Appalachi). Parte A e parte B in la: il primo pezzo di molti banjoisti.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Cripple Creek (progressione)"
+tempo: 130
+groove: bluegrass/hoedown
+
+sections:
+  - name: A
+    chords: |
+      | A | A | A | E A |
+  - name: B
+    groove: bluegrass/boomchucka
+    chords: |
+      | A | D A | A | E A |
+
+arrangement: [A x2, B x2, A x2, B x2, A x2, B x2]

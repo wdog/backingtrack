@@ -16,7 +16,7 @@
   <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
   <img alt="Styles" src="https://img.shields.io/badge/styles-rock%20%7C%20blues%20%7C%20rockabilly%20%7C%20country%20%7C%20jazz%20%7C%20funk%20%7C%20reggae%20%7C%20soul-F5A623">
   <img alt="Grooves" src="https://img.shields.io/badge/grooves-153-8E44AD">
-  <img alt="Examples" src="https://img.shields.io/badge/examples-84%20songs-C0392B">
+  <img alt="Examples" src="https://img.shields.io/badge/examples-90%20songs-C0392B">
   <img alt="Languages" src="https://img.shields.io/badge/lang-English%20%7C%20Italiano-2E86C1">
 </p>
 
@@ -54,7 +54,7 @@
   suggested** from the section's chords and **chord tones in real time** while the track plays.
 - 🌐 **English and Italian**: interface, guide, messages and documentation; language picked from the Help menu (🇬🇧 / 🇮🇹).
 - 📤 **Output**: WAV, MP3, **MIDI** for your DAW and separate **stems**. ⚡ 2 minutes of song in about 5 seconds.
-- 📚 **87 example songs** with the progressions of blues, rock, rockabilly, country, bluegrass and jazz classics.
+- 📚 **90 example songs** with the progressions of blues, rock, rockabilly, country, bluegrass and jazz classics.
 
 ---
 
@@ -142,7 +142,7 @@ The whole editor, screen by screen: **[docs/en/gui.md](docs/en/gui.md)**.
 | [🎓 Tutorial and examples](docs/en/tutorial.md) | your first backing track step by step, complete song examples |
 | [📝 Song format](docs/en/format.md) | YAML keys, how to read a bar, supported chords |
 | [🥁 Grooves](docs/en/grooves.md) | the 153 grooves, style by style |
-| [📚 Example songs](docs/en/songs.md) | the 84 included songs |
+| [📚 Example songs](docs/en/songs.md) | the 90 included songs |
 | [⌨️ Commands](docs/en/commands.md) | every command-line option |
 | [❓ FAQ](docs/en/faq.md) | common problems |
 | [⚙️ How it works](docs/en/development.md) | the audio pipeline, translations and the code structure |

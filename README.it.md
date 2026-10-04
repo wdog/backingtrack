@@ -16,7 +16,7 @@
   <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
   <img alt="Styles" src="https://img.shields.io/badge/stili-rock%20%7C%20blues%20%7C%20rockabilly%20%7C%20country%20%7C%20jazz%20%7C%20funk%20%7C%20reggae%20%7C%20soul-F5A623">
   <img alt="Grooves" src="https://img.shields.io/badge/groove-153-8E44AD">
-  <img alt="Examples" src="https://img.shields.io/badge/esempi-84%20brani-C0392B">
+  <img alt="Examples" src="https://img.shields.io/badge/esempi-90%20brani-C0392B">
   <img alt="Languages" src="https://img.shields.io/badge/lingua-Italiano%20%7C%20English-2E86C1">
 </p>
 
@@ -54,7 +54,7 @@
   suggerite** dagli accordi della sezione e **note dell'accordo in tempo reale** mentre la base suona.
 - 🌐 **Italiano e inglese**: interfaccia, guida, messaggi e documentazione; lingua scelta dal menu Aiuto (🇮🇹 / 🇬🇧).
 - 📤 **Output**: WAV, MP3, **MIDI** per la tua DAW e **stems** separati. ⚡ 2 minuti di brano in circa 5 secondi.
-- 📚 **87 brani di esempio** con le progressioni di classici blues, rock, rockabilly, country, bluegrass e jazz.
+- 📚 **90 brani di esempio** con le progressioni di classici blues, rock, rockabilly, country, bluegrass e jazz.
 
 ---
 
@@ -142,7 +142,7 @@ Tutto l'editor, schermata per schermata: **[docs/it/gui.md](docs/it/gui.md)**.
 | [🎓 Tutorial ed esempi](docs/it/tutorial.md) | la prima backing track passo passo, esempi di brani completi |
 | [📝 Formato della canzone](docs/it/formato.md) | chiavi del YAML, come si legge una battuta, accordi supportati |
 | [🥁 Groove](docs/it/groove.md) | i 153 groove, stile per stile |
-| [📚 Brani di esempio](docs/it/brani.md) | gli 84 brani inclusi |
+| [📚 Brani di esempio](docs/it/brani.md) | i 90 brani inclusi |
 | [⌨️ Comandi](docs/it/comandi.md) | tutte le opzioni della riga di comando |
 | [❓ FAQ](docs/it/faq.md) | problemi comuni |
 | [⚙️ Come funziona](docs/it/sviluppo.md) | la pipeline audio, le traduzioni e la struttura del codice |

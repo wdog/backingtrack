@@ -1,0 +1,17 @@
+# Osborne Brothers, 1967. Strofa in sol, ritornello che parte dal relativo minore (Em D F C).
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Rocky Top (progressione)"
+tempo: 140
+groove: bluegrass/breakdown
+
+sections:
+  - name: Strofa
+    chords: |
+      | G | G | C G | G |
+      | G | G | D | G |
+  - name: Ritornello
+    chords: |
+      | Em | D | F | C |
+      | G | G | D | G |
+
+arrangement: [Strofa x2, Ritornello, Strofa x2, Ritornello x2]

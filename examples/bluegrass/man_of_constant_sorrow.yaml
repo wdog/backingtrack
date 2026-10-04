@@ -1,0 +1,16 @@
+# Tradizionale (Dick Burnett, 1913; Soggy Bottom Boys, 2000). Strofa in sol su I-IV-V.
+# Solo la progressione di accordi (niente melodia né testo), a scopo didattico.
+title: "Man of Constant Sorrow (progressione)"
+tempo: 120
+groove: bluegrass/mccoury
+
+sections:
+  - name: Intro
+    chords: |
+      | G | G | D | G |
+  - name: Strofa
+    chords: |
+      | G | G | C | G |
+      | G | G | D | G |
+
+arrangement: [Intro, Strofa x6]
