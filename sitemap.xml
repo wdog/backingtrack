@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://wdog.github.io/backingtrack/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/dev/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/dev/grooves/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/grooves/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/grooves/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/dev/libraries/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/libraries/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/libraries/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/dev/setup/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/setup/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/setup/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/dev/structure/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/structure/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/structure/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/dev/tools/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/tools/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/tools/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/dev/translations/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/translations/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/translations/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/editor/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/editor/chords/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/chords/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/chords/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/editor/files/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/files/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/files/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/editor/player/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/player/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/player/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/editor/scales/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/scales/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/scales/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/editor/sections/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/sections/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/sections/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/editor/shortcuts/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/shortcuts/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/shortcuts/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/editor/song/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/song/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/song/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/editor/templates/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/templates/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/templates/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/examples/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/examples/bluegrass/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/bluegrass/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/bluegrass/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/examples/blues/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/blues/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/blues/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/examples/country/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/country/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/country/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/examples/jazz/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/jazz/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/jazz/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/examples/rock/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/rock/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/rock/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/examples/rockabilly/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/rockabilly/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/rockabilly/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/grooves/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/grooves/bluegrass/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/bluegrass/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/bluegrass/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/grooves/blues/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/blues/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/blues/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/grooves/country/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/country/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/country/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/grooves/funk/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/funk/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/funk/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/grooves/jazz/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/jazz/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/jazz/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/grooves/reggae/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/reggae/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/reggae/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/grooves/rock/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/rock/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/rock/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/grooves/rockabilly/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/rockabilly/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/rockabilly/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/grooves/soul/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/soul/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/soul/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/reference/commands/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/reference/commands/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/reference/commands/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/reference/diagnostics/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/reference/diagnostics/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/reference/diagnostics/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/reference/faq/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/reference/faq/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/reference/faq/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/songs/bars/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/songs/bars/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/songs/bars/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/songs/chords/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/songs/chords/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/songs/chords/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/songs/format/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/songs/format/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/songs/format/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/start/examples/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/start/examples/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/start/examples/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/start/install/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/start/install/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/start/install/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/start/samples/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/start/samples/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/start/samples/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/start/tutorial/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/start/tutorial/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/start/tutorial/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/start/update/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/start/update/"/>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/start/update/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/dev/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/dev/grooves/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/grooves/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/grooves/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/dev/libraries/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/libraries/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/libraries/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/dev/setup/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/setup/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/setup/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/dev/structure/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/structure/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/structure/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/dev/tools/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/tools/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/tools/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/dev/translations/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/dev/translations/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/dev/translations/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/editor/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/editor/chords/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/chords/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/chords/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/editor/files/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/files/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/files/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/editor/player/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/player/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/player/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/editor/scales/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/scales/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/scales/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/editor/sections/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/sections/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/sections/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/editor/shortcuts/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/shortcuts/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/shortcuts/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/editor/song/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/song/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/song/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/editor/templates/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/editor/templates/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/editor/templates/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/examples/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/examples/bluegrass/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/bluegrass/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/bluegrass/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/examples/blues/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/blues/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/blues/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/examples/country/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/country/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/country/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/examples/jazz/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/jazz/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/jazz/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/examples/rock/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/rock/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/rock/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/examples/rockabilly/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/examples/rockabilly/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/examples/rockabilly/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/grooves/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/grooves/bluegrass/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/bluegrass/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/bluegrass/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/grooves/blues/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/blues/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/blues/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/grooves/country/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/country/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/country/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/grooves/funk/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/funk/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/funk/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/grooves/jazz/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/jazz/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/jazz/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/grooves/reggae/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/reggae/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/reggae/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/grooves/rock/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/rock/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/rock/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/grooves/rockabilly/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/rockabilly/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/rockabilly/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/grooves/soul/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/grooves/soul/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/grooves/soul/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/reference/commands/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/reference/commands/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/reference/commands/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/reference/diagnostics/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/reference/diagnostics/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/reference/diagnostics/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/reference/faq/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/reference/faq/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/reference/faq/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/songs/bars/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/songs/bars/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/songs/bars/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/songs/chords/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/songs/chords/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/songs/chords/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/songs/format/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/songs/format/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/songs/format/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/start/examples/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/start/examples/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/start/examples/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/start/install/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/start/install/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/start/install/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/start/samples/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/start/samples/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/start/samples/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/start/tutorial/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/start/tutorial/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/start/tutorial/"/>
+    </url>
+    <url>
+        <loc>https://wdog.github.io/backingtrack/it/start/update/</loc>
+        <lastmod>2026-10-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="it" href="https://wdog.github.io/backingtrack/it/start/update/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wdog.github.io/backingtrack/start/update/"/>
+    </url>
+</urlset>

@@ -1,0 +1,60 @@
+/* tema scuro Dracula, come la GUI: accento viola #bd93f9, rosa #ff79c6 */
+[data-md-color-scheme="slate"] {
+  --md-hue: 231;
+  --md-default-bg-color: #1e1f29;
+  --md-default-fg-color: #f8f8f2;
+  --md-default-fg-color--light: #c9c9d6;
+  --md-default-fg-color--lighter: #6272a4;
+  --md-default-fg-color--lightest: #343746;
+  --md-primary-fg-color: #21222c;
+  --md-primary-bg-color: #f8f8f2;
+  --md-accent-fg-color: #ff79c6;
+  --md-typeset-a-color: #bd93f9;
+  --md-code-bg-color: #282a36;
+  --md-code-fg-color: #f8f8f2;
+  --md-code-hl-keyword-color: #ff79c6;
+  --md-code-hl-string-color: #f1fa8c;
+  --md-code-hl-name-color: #8be9fd;
+  --md-code-hl-number-color: #bd93f9;
+  --md-code-hl-comment-color: #6272a4;
+  --md-code-hl-function-color: #50fa7b;
+  --md-code-hl-constant-color: #bd93f9;
+  --md-typeset-table-color: #343746;
+  --md-footer-bg-color: #191a21;
+  --md-footer-bg-color--dark: #14151b;
+}
+
+/* caratteri più grandi (Material: testo .8rem, menu .7rem) */
+.md-typeset { font-size: .85rem; line-height: 1.65; }
+.md-nav { font-size: .74rem; }
+.md-tabs__link { font-size: .76rem; }
+.md-typeset code, .md-typeset pre > code { font-size: .86em; }
+.md-typeset table:not([class]) { font-size: .78rem; }
+
+/* titoli e menu in monospazio, aspetto da documentazione tecnica */
+.md-typeset h1, .md-typeset h2, .md-typeset h3,
+.md-header__topic, .md-tabs__link, .md-nav__title {
+  font-family: var(--md-code-font-family);
+  letter-spacing: -.01em;
+}
+.md-typeset h1 { font-weight: 700; color: #f8f8f2; }
+.md-typeset h2 {
+  font-weight: 600; color: #bd93f9;
+  border-bottom: 1px solid #343746; padding-bottom: .3em;
+}
+.md-typeset h3 { font-weight: 600; color: #ff79c6; }
+
+.md-header, .md-tabs { background-color: #21222c; border-bottom: 1px solid #343746; }
+.md-tabs__item--active .md-tabs__link { color: #ff79c6; }
+.md-nav__link--active, .md-nav__link:hover { color: #ff79c6 !important; }
+
+.md-typeset pre > code { border: 1px solid #343746; border-radius: 4px; }
+.md-typeset code { border-radius: 3px; }
+.md-typeset table:not([class]) { border: 1px solid #343746; border-radius: 4px; }
+.md-typeset table:not([class]) th { background: #282a36; color: #8be9fd; font-family: var(--md-code-font-family); }
+
+/* pagina più larga, tabelle compatte, nomi (groove, file) senza a capo */
+.md-grid { max-width: 1440px; }
+.md-typeset table:not([class]) td, .md-typeset table:not([class]) th { padding: .55em 1em; }
+.md-typeset td:first-child code { white-space: nowrap; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
