@@ -424,11 +424,15 @@ popover.menu modelbutton:hover, popover.menu modelbutton:selected {
 .bt-main list.boxed-list > row:first-child { border-top-left-radius: 12px; border-top-right-radius: 12px; }
 .bt-main list.boxed-list > row:last-child { border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
 .bt-main list.boxed-list > row.activatable:hover { background-color: alpha(currentColor, 0.04); }
-.bt-main switch { border: none; border-radius: 999px; background-color: #44475a;
-                  box-shadow: inset 0 0 0 1px alpha(#f8f8f2, 0.18); }
-.bt-main switch > slider { border: none; border-radius: 999px; background: #c9c9d6; box-shadow: 0 1px 2px alpha(black, 0.4); }
-.bt-main switch:checked > slider { background: white; }
-.bt-main switch:checked { background-color: #bd93f9; box-shadow: none; }
+/* interruttori: misure fisse (il tema di sistema fa il pallino più alto del binario) */
+.bt-main switch { border: none; border-radius: 999px; background-color: #343746; background-image: none;
+                  box-shadow: inset 0 0 0 1px alpha(#bd93f9, 0.22); padding: 3px; min-width: 38px; min-height: 18px;
+                  outline: none; }
+.bt-main switch > image { opacity: 0; }
+.bt-main switch > slider { border: none; border-radius: 999px; background: #8b8fa8; background-image: none;
+                           min-width: 18px; min-height: 18px; margin: 0; box-shadow: 0 1px 2px alpha(black, 0.4); }
+.bt-main switch:checked > slider { background: #e9dcff; }
+.bt-main switch:checked { background-color: #8a5fd8; box-shadow: none; }
 
 /* barra laterale delle sezioni */
 .navigation-sidebar > row { border-radius: 10px; margin: 2px 6px; }
